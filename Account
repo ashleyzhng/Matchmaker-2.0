@@ -1,0 +1,17 @@
+public abstract class Account{
+    private String username;
+    private String password;
+    private String email;
+    private boolean emailVeirfy;
+    private int verifyCode;
+    private boolean accountStatus;
+
+    // contructors, accessors & mutators
+    public boolean correctPass(String pass){
+        if(pass == this.password){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
