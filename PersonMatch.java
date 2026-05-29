@@ -2,7 +2,6 @@ public abstract class PersonMatch extends Match{
     public static final char PENDING = 'P';
     public static final char ACCEPT = 'A';
     public static final char REJECT = 'R';
-    public static final long DAY_IN_MILLI= 
 
     public static final int MATCH_LIFETIME = 1;
     private String matchType;
@@ -11,7 +10,7 @@ public abstract class PersonMatch extends Match{
     private char[] status = new char[2];
     private int[] satisfactionRating = new int[2];
 
-   
+   /* 
     public PersonMatch(String m, String exp, User u){
         matchType = m;
         //not proper for expiry date
@@ -32,5 +31,6 @@ public abstract class PersonMatch extends Match{
         return status[0]== ACCEPT && status[1]==ACCEPT;
     }
     public boolean isExpire
+    */
 
 }
