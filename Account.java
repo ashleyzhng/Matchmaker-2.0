@@ -6,7 +6,14 @@ public abstract class Account{
     private int verifyCode;
     private boolean accountStatus;
 
-    // contructors, accessors & mutators
+    public Account(String u, String p, String e, int v){
+        username = u;
+        password = p;
+        email = e;
+        emailVerified = false;
+        accountStatus = true;
+    }
+    // ccessors & mutators
     public boolean correctPass(String pass){
         if(pass == this.password){
             return true;
