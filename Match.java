@@ -2,33 +2,23 @@ public abstract class Match{
     private static int nextMatchNum = 1;
     private int matchNum;
     private double score;
-    private User user;
 
     
-    public Match(User u){
+    public Match(){
         matchNum = nextMatchNum;
         nextMatchNum +=1;
         score = -1;
-        user = u;
     }
 
     //---accessors and mutators as necessary---
     public abstract void execute(Object[] pool);
     public abstract boolean isRejection();
     public abstract boolean isAcceptance();
-    public abstract boolean isExpire();
+    public abstract boolean isExpire(String curDate);
     public abstract void deleteMatch();
-
-    public boolean userAvailable(){
-        return user.isUserAvailable();
-    }
-    public boolean storeMatch(){
-        if(userAvailable()){
-            user.storeMatch(this);
-            return true;
-        }
-        return false;
-    }
+    public abstract boolean storeMatch();
+    public abstract boolean isAvailable();
+    
     public double compareScore(Match other){
         return score - other.score;
     }
