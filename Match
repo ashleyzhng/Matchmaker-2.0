@@ -1,5 +1,0 @@
-public abstract class Match{
-    private static int nextMatchNum;
-    private int matchNum;
-    private double score;
-}
