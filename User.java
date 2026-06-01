@@ -24,11 +24,17 @@ public class User extends Account {
         interestTag = new Tag(0,0,0,0,0,0,0,0,0,0);
     }
     // accesors mutators
+    public char getGender(){
+        return gender;
+    }
+    public char getPreferredGender(){
+        return preferredGender;
+    }
     public boolean editProfile(String s){
         return true;
     }
 
-    public boolean  isUserAvailable(){
+    public boolean  isAvailable(){
         return false;
     }
     public void storeMatch(Match m){
@@ -37,4 +43,5 @@ public class User extends Account {
     public void deleteMatch(Match m){
         //blehbleh
     }
+    
 }
