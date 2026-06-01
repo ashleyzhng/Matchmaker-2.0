@@ -24,7 +24,54 @@ public abstract class Account{
             verifyCode = (int)(Math.random() * 1000000);
         }
     }
-    // ccessors & mutators
+    public String getUsername(){
+        return username;
+    }
+
+    public void setUsername(String u){
+        username = u;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String p){
+        password = p;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String e){
+        email = e;
+    }
+
+    public boolean isEmailVerified(){
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean ev){
+        emailVerified = ev;
+    }
+
+    public int getVerifyCode(){
+        return verifyCode;
+    }
+
+    public void setVerifyCode(int vc){
+        verifyCode = vc;
+    }
+
+    public boolean isAccountStatus(){
+        return accountStatus;
+    }
+
+    public void setAccountStatus(boolean as){
+        accountStatus = as;
+    }
+
     public boolean correctPass(String pass){
         if(pass == this.password){
             return true;
@@ -32,9 +79,7 @@ public abstract class Account{
             return false;
         }
     }
-    public void logout(){
-        // implement after matchmaker is made[
-    }
+
     public boolean changePass(String curPass, String newPass){
         if(correctPass(curPass)){
             this.password = newPass;
@@ -45,9 +90,17 @@ public abstract class Account{
     }
     public boolean changeUsername(String pass, String newUsername){
         if(correctPass(pass)){ // and check if uesrname exists or not
-            this.username = newUsername;
-            return true;
+            /* 
+            if(AccountsDatabase.searchByUsername(newUsername) == null){
+                this.username = newUsername;
+                return true;
+            }else{
+                */
+                System.out.println("Username Already Exsits");
+                return false;
+            }
         }else{
+            System.out.println("Incorrect Password");
             return false;
         }
     }

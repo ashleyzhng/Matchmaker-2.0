@@ -115,4 +115,8 @@ public class Tag {
         animal += an;
         reading += re;
     }
+
+    public int compareTo(Tag other){
+        return 1;
+    }
 }
