@@ -34,4 +34,7 @@ public class User extends Account {
     public void storeMatch(Match m){
         //blehbleh
     }
+    public void deleteMatch(Match m){
+        //blehbleh
+    }
 }
