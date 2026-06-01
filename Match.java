@@ -1,3 +1,5 @@
+import java.time.*;
+
 public abstract class Match{
     private static int nextMatchNum = 1;
     private int matchNum;
@@ -14,7 +16,7 @@ public abstract class Match{
     public abstract void execute(Object[] pool);
     public abstract boolean isRejection();
     public abstract boolean isAcceptance();
-    public abstract boolean isExpire(String curDate);
+    public abstract boolean isExpire(ZonedDateTime curDate);
     public abstract void deleteMatch();
     public abstract boolean storeMatch();
     public abstract boolean isAvailable();
