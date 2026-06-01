@@ -13,6 +13,17 @@ public abstract class Account{
         emailVerified = false;
         accountStatus = true;
     }
+    
+    public Account(String u, String p, String e, boolean ev, int v){
+        username = u;
+        password = p;
+        email = e;
+        emailVerified = ev;
+        accountStatus = true;
+        if(emailVerified){
+            verifyCode = (int)(Math.random() * 1000000);
+        }
+    }
     // ccessors & mutators
     public boolean correctPass(String pass){
         if(pass == this.password){
@@ -42,7 +53,7 @@ public abstract class Account{
     }
     public boolean resetPass(String email, String newPass){
         if(this.email == email && emailVerified){
-            //print verifyication code
+            System.out.println(verifyCode);
             //idk how im gonna do this
             return true;
         }else{
@@ -52,7 +63,7 @@ public abstract class Account{
     public boolean verifyEmail(String pass){
         if(correctPass(pass)){
             emailVerified = true;
-            // set code to somethign random 
+            verifyCode = (int)(Math.random() * 1000000);
             return true;
         }else{
             return false;
