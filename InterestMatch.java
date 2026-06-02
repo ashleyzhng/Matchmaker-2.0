@@ -8,7 +8,7 @@ public class InterestMatch extends PersonMatch{
     }
 
     public void execute(Object[] pool){
-        /* 
+        
         User[] poolUser = new User[pool.length];
         if (pool != null && pool.length > 0) {
             for(int i = 0; i < pool.length; i ++){
@@ -21,9 +21,9 @@ public class InterestMatch extends PersonMatch{
         tagsCount = evaluateTags(other);
         setSoulmate(other);
         storeMatch();
-        */
+        
     }
-    /* 
+    
     private User execute(User[] pool, int idx, User best, double maxTags){
         if(pool == null || pool.length == 0){
             return null;
@@ -45,5 +45,5 @@ public class InterestMatch extends PersonMatch{
         return owner.getTag().compareTo(other.getTag());
     }
 
-    */
+    
 }
