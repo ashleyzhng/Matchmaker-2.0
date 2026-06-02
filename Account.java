@@ -88,6 +88,7 @@ public abstract class Account{
             return false;
         }
     }
+    /* 
     public boolean changeUsername(String pass, String newUsername){
         if(correctPass(pass)){ // and check if uesrname exists or not
             /* 
@@ -95,7 +96,7 @@ public abstract class Account{
                 this.username = newUsername;
                 return true;
             }else{
-                */
+                
                 System.out.println("Username Already Exsits");
                 return false;
             }
@@ -104,6 +105,7 @@ public abstract class Account{
             return false;
         }
     }
+    */
     public boolean resetPass(String email, String newPass){
         if(this.email == email && emailVerified){
             System.out.println(verifyCode);
