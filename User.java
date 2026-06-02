@@ -98,6 +98,10 @@ public class User extends Account {
     public void setNumMatches(int n){
         numMatches = n;
     }
+
+    public Tag getTag(){
+        return interestTag;
+    }
     
     public boolean editProfile(String s){
         return true;
