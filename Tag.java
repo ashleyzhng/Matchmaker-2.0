@@ -1,4 +1,12 @@
+/**
+	File Name: Tag.java
+	Name: Joyce Lin
+	Class: ICS4U1
+	Date: June 2, 2026
+	Description: This program represents a Tag object
+*/
 public class Tag {
+    public static final int NUM_TAGS = 10;
     private int religion;
     private int sports;
     private int music;
@@ -9,7 +17,12 @@ public class Tag {
     private int cooking;
     private int animal;
     private int reading;
-
+    
+    /**
+    * Sets 
+    *
+    * @param String  the card holder's name	
+    */ 
     public Tag(int r, int s, int m, int a, int t, int f, int g, int c, int an, int re){
         religion = r;
         sports = s;
@@ -116,7 +129,28 @@ public class Tag {
         reading += re;
     }
 
-    public int compareTo(Tag other){
-        return 1;
+    public double compareTo(Tag other){
+        int total = 0;
+        total += compareCategory(religion, other.religion);
+        total += compareCategory(sports, other.sports);
+        total += compareCategory(music, other.music);
+        total += compareCategory(art, other.art);
+        total += compareCategory(traveling, other.traveling);
+        total += compareCategory(fitness, other.fitness);
+        total += compareCategory(gaming, other.gaming);
+        total += compareCategory(cooking, other.cooking);
+        total += compareCategory(animal, other.animal);
+        total += compareCategory(reading, other.reading);
+
+        return total/NUM_TAGS*100;
+    }
+
+    public double compareCategory(int tag1, int tag2){
+        int larger = Math.max(tag1, tag2);
+        if(larger == 0){
+            return 1;
+        }else{
+            return (double) Math.min(tag1, tag2)/larger;
+        }
     }
 }
