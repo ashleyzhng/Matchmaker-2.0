@@ -22,7 +22,7 @@ public abstract class Event {
         this.attended = false; // Default to not attended
     }
 
-    public abstract String[] getCategoryNames();
+    public abstract void changeEventDetails();
     public abstract String approveEvent();
     public abstract boolean attendEvent(User user);
     public abstract boolean cancelEvent(Event event);

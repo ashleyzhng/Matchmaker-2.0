@@ -1,0 +1,14 @@
+public class Virtual extends Event {
+    private String platform;
+    private int meetingID;
+    private int password;
+
+    public Virtual(String title, String date, String startTime, double duration, double originalCost, Tag[] categories, String platform, int meetingID, int password) {
+        super(title, date, startTime, duration, originalCost, categories);
+        this.platform = platform;
+        this.meetingID = meetingID;
+        this.password = password;
+    }
+
+    public 
+}
