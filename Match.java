@@ -18,8 +18,7 @@ public abstract class Match{
     public abstract boolean isAcceptance();
     public abstract boolean isExpire(ZonedDateTime curDate);
     public abstract void deleteMatch();
-    public abstract boolean storeMatch();
-    public abstract boolean isAvailable();
+    public abstract void storeMatch();
     
     public double compareScore(Match other){
         return score - other.score;

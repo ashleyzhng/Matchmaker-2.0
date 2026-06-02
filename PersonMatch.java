@@ -13,6 +13,7 @@ public abstract class PersonMatch extends Match{
 
    
     public PersonMatch(String m, ZonedDateTime exp, User u){
+        super();
         matchType = m;
         //not proper for expiry date
         expiryDate = exp;
@@ -24,6 +25,13 @@ public abstract class PersonMatch extends Match{
         rating[1] = -1;
     }
     
+    public User getOwner(){
+        return pair[0];
+    }
+    public void setSoulmate(User u){
+        pair[1]=u;
+    }
+
     public abstract void execute(Object[] pool);
     
     public boolean isRejection(){
@@ -42,17 +50,9 @@ public abstract class PersonMatch extends Match{
         pair[1].deleteMatch(this);
     }
 
-    public boolean storeMatch(){
-        if (isAvailable(pair[0]) && isAvailable(pair[1])){
-            pair[0].storeMatch(this);
-            pair[1].storeMatch(this);
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean isAvailable(User u){
-        return u.isAvailable();
+    public void storeMatch(){
+        pair[0].storeMatch(this);
+        pair[1].storeMatch(this);
     }
 
     public void updateUserDecision(User u, char c){
@@ -67,8 +67,8 @@ public abstract class PersonMatch extends Match{
         return (rating[0]+rating[1])/2.0;
     }
 
-    public boolean checkGenderCompatibilty(){
-        return pair[0].getGender() == pair[1].getPreferredGender() && pair[1].getGender() == pair[0].getPreferredGender();
+    public boolean checkGenderCompatibilty(User u){
+        return pair[0].getGender() == u.getPreferredGender() && u.getGender() == pair[0].getPreferredGender();
     }
-
+    
 }
