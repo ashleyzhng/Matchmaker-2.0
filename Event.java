@@ -6,8 +6,11 @@ public abstract class Event {
     private double originalCost;
     private Tag[] categories;
     private boolean approved;
-    private String currentUser1;
-    private String currentUser2;
+
+    //I changed this to User object - ASHLEY
+    private User currentUser1;
+    private User currentUser2;
+
     private boolean attended;
     private User[] attendanceHistory;
 
@@ -20,6 +23,15 @@ public abstract class Event {
         this.categories = categories;
         this.approved = false; // Default to not approved
         this.attended = false; // Default to not attended
+    }
+
+    //ADDED THIS-ASHLEY
+    public void setUser(User u){
+        if(currentUser1 == null){
+            currentUser1 = u;
+        }else{
+            currentUser2 = u;
+        }
     }
 
     public abstract void changeEventDetails();

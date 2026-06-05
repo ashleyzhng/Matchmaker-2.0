@@ -1,3 +1,6 @@
+
+import java.time.*;
+
 public class User extends Account {
     public static final int MAX_MATCHES = 5;
     private String name;
@@ -120,6 +123,25 @@ public class User extends Account {
             return true;
         }
     }
+
+    //ALSO NEED THIS -ASHLEY
+    public boolean isAvailable(ZonedDateTime start, ZonedDateTime end){
+        for (int i = 0; i < matches.length; i ++){
+            if (matches[i] != null && matches[i] instanceof EventMatch){
+                EventMatch eventMatch = (EventMatch) matches[i];
+                if (eventMatch.isAcceptance()){
+                    if (start.isBefore(eventMatch.getEnd()) && end.isAfter(eventMatch.getStart())){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+        
+        
+
+    
     public void storeMatch(Match m){
         matches[numMatches] = m;
         numMatches ++;
