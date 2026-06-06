@@ -1,17 +1,20 @@
 public class Indoor extends Event {
-    private String location;
+    private String location; //Note: This needs to be the postal code
     private int floorNumber;
     private String room;
     private String user3;
     private String user4;
 
-    public Indoor(String title, String date, String startTime, double duration, double originalCost, Tag[] categories, String location, int floorNumber, String room) {
+    public Indoor(String title, String date, String startTime, double duration, double originalCost, Tag categories, String location, int floorNumber, String room) {
         super(title, date, startTime, duration, originalCost, categories);
         this.location = location;
         this.floorNumber = floorNumber;
         this.room = room;
     }
 
+    public String getLocation(){
+        return location;
+    }
     public void changeEventDetails() {
         // Implementation for changing event details specific to indoor events
     }

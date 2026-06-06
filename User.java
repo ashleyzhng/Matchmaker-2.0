@@ -4,7 +4,7 @@ import java.time.*;
 public class User extends Account {
     public static final int MAX_MATCHES = 5;
     private String name;
-    private String birthday;
+    private LocalDate birthday; // I CHANGED THIS -ASHLEY
     private String postalCode;
     private String city;
     private String bio;
@@ -20,7 +20,7 @@ public class User extends Account {
     public User(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg){
         super(u, p, e, v);
         name = n;
-        birthday = b;
+        birthday = LocalDate.parse(b);
         postalCode = pc;
         city = c;
         gender = g;
@@ -38,12 +38,12 @@ public class User extends Account {
         name = n;
     }
 
-    public String getBirthday(){
+    public LocalDate getBirthday(){
         return birthday;
     }
 
     public void setBirthday(String b){
-        birthday = b;
+        birthday = LocalDate.parse(b);
     }
 
     public String getPostalCode(){
@@ -125,7 +125,7 @@ public class User extends Account {
     }
 
     //ALSO NEED THIS -ASHLEY
-    public boolean isAvailable(ZonedDateTime start, ZonedDateTime end){
+    public boolean isAvailable(LocalTime start, LocalTime end){
         for (int i = 0; i < matches.length; i ++){
             if (matches[i] != null && matches[i] instanceof EventMatch){
                 EventMatch eventMatch = (EventMatch) matches[i];

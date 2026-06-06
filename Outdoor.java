@@ -1,5 +1,5 @@
 public class Outdoor extends Event {
-    private String location;
+    private String location; //note: This needs to be the postal code
     private int temperature;
     private int precipitation;
 
@@ -8,6 +8,10 @@ public class Outdoor extends Event {
         this.location = location;
         this.temperature = temperature;
         this.precipitation = precipitation;
+    }
+
+    public String getLocation(){
+        return location;
     }
 
     public void changeEventDetails() {

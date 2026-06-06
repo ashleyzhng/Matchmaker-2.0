@@ -11,4 +11,11 @@ public class Adult extends User {
         preferredMaxAge = max;
         preferredMinAge = min;
     }
+    
+    public int getPreferredMaxAge(){
+        return preferredMaxAge;
+    }
+    public int getPreferredMinAge(){
+        return preferredMinAge;
+    }
 }

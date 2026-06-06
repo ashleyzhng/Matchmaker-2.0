@@ -1,9 +1,8 @@
-import java.time.*;
 
 public class InterestMatch extends PersonMatch{
     private double tagsCount;
     
-    public InterestMatch(User u, ZonedDateTime exp){
+    public InterestMatch(User u, String exp){
         super("interest", exp, u);
     }
 
@@ -31,7 +30,7 @@ public class InterestMatch extends PersonMatch{
             return best;
         }else{
             //do not need this
-            if(pool[idx]!= getOwner() &&  checkGenderCompatibilty(pool[idx])){
+            if(pool[idx]!= getOwner() &&  prelimCheck(pool[idx])){
                 if (evaluateTags(pool[idx])> maxTags){
                     return execute(pool, idx+1, pool[idx],evaluateTags(pool[idx]) );
                 }

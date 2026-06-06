@@ -1,20 +1,21 @@
 import java.time.*;
 
 public class EventMatch extends Match{
-    public static final double INTEREST_WEIGHT = 0.70;
-    public static final double LOCATION_WEIGHT = 0.30;
+    public static final double INTEREST_WEIGHT = 0.60;
+    public static final double LOCATION_WEIGHT = 0.40;
     
     private String eventType;
-    private ZonedDateTime start;
-    private ZonedDateTime end;
+    private LocalTime start;
+    private LocalTime end;
     private char isAccepted;
     private int rating;
     private User user;
     private Event event;
 
-    public EventMatch(User u){
+    public EventMatch(User u, String e){
         super();
         user = u;
+        eventType = e;
         event = null;
         rating = -1;
         isAccepted = 'P';
@@ -23,14 +24,31 @@ public class EventMatch extends Match{
         end = null;
     }
 
-    public ZonedDateTime getStart(){
+    public LocalTime getStart(){
         return start;
     }
-    public ZonedDateTime getEnd(){
+    public LocalTime getEnd(){
         return end;
     }
 
-    public void execute(Object[] pool){}
+    public void execute(Object[] pool){
+        if (pool != null && pool.length >0){
+            Event[] ePool = new Event[pool.length];
+            for (int i = 0; i < pool.length; i ++){
+                ePool[i] = (Event)pool[i];
+            }
+            Event other = execute(ePool, 0, null, -1);
+            start = LocalTime.parse(other.getStartTime());
+            double duration = other.getDuration();
+            long hours = (long)duration;
+            long minutes = Math.round((duration - hours) * 60);
+            end = start.plusHours(hours).plusMinutes(minutes);
+            event = other;
+            storeMatch();
+            //NEED to update Event somehow
+        }
+        
+    }
 
     public Event execute(Event[] pool, int idx, Event best, double maxScore){
         if (pool == null || pool.length == 0){
@@ -55,8 +73,8 @@ public class EventMatch extends Match{
     public boolean isAcceptance(){
         return isAccepted == 'A';
     }
-    public boolean isExpire(ZonedDateTime current){
-        return end.isAfter(current);
+    public boolean isExpire(){
+        return end.isAfter(LocalTime.now());
     }
     public void storeMatch(){
         user.storeMatch(this);
@@ -67,17 +85,43 @@ public class EventMatch extends Match{
         event.cancelEvent(event);
     }
     
-    //TO BE DONE.
+    
     public double determineScore(Event e){
-        //IMPLEMENTATION TO BE DONE
-        return -1.0;
+        if (e == null){
+            return -1;
+        }
+        if (eventType.equals("Virtual")){
+            return countTags(e);
+        }
+        
+        return distanceTier(e) * LOCATION_WEIGHT +countTags(e) *INTEREST_WEIGHT;
+        
     }
-    //TO BE DONE.
+    
     public int distanceTier(Event e){
-        return -1;
+        if (e instanceof Virtual){
+            return 0;
+        }
+        
+        String eventLocation = "";
+        
+        if (e instanceof Indoor) {
+            Indoor indoorEvent = (Indoor) e;
+            eventLocation = indoorEvent.getLocation();
+        } 
+        
+        if (e instanceof Outdoor) {
+            Outdoor outdoorEvent = (Outdoor) e;
+            eventLocation = outdoorEvent.getLocation();
+        }
+        
+        return DistanceMatch.calculateDistanceTier(user.getPostalCode(), eventLocation);
     }
-    //TO BE DONE.
-    public int countTags(Event e){
-        return -1;
+    
+    public double countTags(Event e){
+        if (user.getTag() == null || e.getCategories() == null){
+            return -1;
+        }
+        return user.getTag().compareTo(e.getCategories());
     }
 }

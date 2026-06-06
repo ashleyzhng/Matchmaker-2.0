@@ -1,10 +1,9 @@
-import java.time.ZonedDateTime;
 
 public class DistanceMatch extends PersonMatch{
    
     private int distanceTier;
 
-    public DistanceMatch(User u, ZonedDateTime exp){
+    public DistanceMatch(User u, String exp){
         super("distance", exp, u);
     }
    
@@ -29,7 +28,7 @@ public class DistanceMatch extends PersonMatch{
             return best;
         }else{
             User current = pool[idx];
-            if(calculateDistanceTier(current)> maxTier){
+            if(calculateDistanceTier(current)> maxTier && prelimCheck(pool[idx])){
                 return execute(pool, idx+1, current, calculateDistanceTier(current));
              }else{
                 return execute(pool, idx + 1, best, maxTier);
@@ -44,7 +43,7 @@ public class DistanceMatch extends PersonMatch{
         return calculateDistanceTier(posCode1, posCode2);
     }
 
-    public int calculateDistanceTier(String ps1, String ps2){
+    public static int calculateDistanceTier(String ps1, String ps2){
         if (ps1 == null || ps2 == null){
             return -1;
         }

@@ -4,7 +4,8 @@ public abstract class Event {
     private String startTime;
     private double duration;
     private double originalCost;
-    private Tag[] categories;
+    //changed from object array to singular object
+    private Tag categories;
     private boolean approved;
 
     //I changed this to User object - ASHLEY
@@ -14,7 +15,7 @@ public abstract class Event {
     private boolean attended;
     private User[] attendanceHistory;
 
-    public Event(String title, String date, String startTime, double duration, double originalCost, Tag[] categories) {
+    public Event(String title, String date, String startTime, double duration, double originalCost, Tag categories) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
@@ -32,6 +33,16 @@ public abstract class Event {
         }else{
             currentUser2 = u;
         }
+    }
+    //ADDED THIS-ASHLEY
+    public Tag getCategories(){
+        return categories;
+    }
+    public String getStartTime(){
+        return startTime;
+    }
+    public double getDuration(){
+        return duration;
     }
 
     public abstract void changeEventDetails();

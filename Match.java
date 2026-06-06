@@ -1,4 +1,3 @@
-import java.time.*;
 
 public abstract class Match{
     private static int nextMatchNum = 1;
@@ -13,10 +12,16 @@ public abstract class Match{
     }
 
     //---accessors and mutators as necessary---
+    public int getMatchNum(){
+        return matchNum;
+    }
+    public double getScore(){
+        return score;
+    }
     public abstract void execute(Object[] pool);
     public abstract boolean isRejection();
     public abstract boolean isAcceptance();
-    public abstract boolean isExpire(ZonedDateTime curDate);
+    public abstract boolean isExpire();
     public abstract void deleteMatch();
     public abstract void storeMatch();
     

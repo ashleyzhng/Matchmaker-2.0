@@ -13,5 +13,11 @@ public class Senior extends User{
         preferredMinAge = min;
         hasMobilityLimitations = h;
     }
+    public int getPreferredMaxAge(){
+        return preferredMaxAge;
+    }
+    public int getPreferredMinAge(){
+        return preferredMinAge;
+    }
 }
 
