@@ -1,5 +1,6 @@
 
 import java.time.*;
+import java.util.ArrayList;
 
 public class User extends Account {
     public static final int MAX_MATCHES = 5;
@@ -13,8 +14,8 @@ public class User extends Account {
     private boolean matched;
     private Match[] matches;
     private int numMatches;
-    // event history
-    // event hosted
+    private ArrayList<Event> eventHistory;
+    private ArrayList<Event> eventHosted;
     private Tag interestTag;
 
     public User(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg){
@@ -28,6 +29,8 @@ public class User extends Account {
         interestTag = new Tag(0,0,0,0,0,0,0,0,0,0);
         matches = new Match[MAX_MATCHES];
         numMatches = matches.length;
+        eventHistory = new ArrayList<>();
+        eventHosted = new ArrayList<>();
     }
     // accesors mutators
     public String getName(){
@@ -127,8 +130,34 @@ public class User extends Account {
             return true;
         }
     }
-
-    //ALSO NEED THIS -ASHLEY
+    
+    public void storeMatch(Match m){
+        matches[numMatches] = m;
+        numMatches ++;
+    }
+    public void deleteMatch(Match m){
+        for(int i = 0; i < matches.length; i++){
+            if(matches[i] == m){
+                matches[i] = null;
+                numMatches--;
+                for(int j = i; j < matches.length - 1; j++){
+                    matches[j] = matches[j+1];
+                    matches[j+1] = null;
+                }
+            }
+        }
+    }
+    public boolean maxMatches(){
+        if(numMatches == MAX_MATCHES){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public void maxEvents(){
+        // update later
+    }
+        
     public boolean isAvailable(LocalTime start, LocalTime end){
         for (int i = 0; i < matches.length; i ++){
             if (matches[i] != null && matches[i] instanceof EventMatch){
@@ -142,16 +171,25 @@ public class User extends Account {
         }
         return true;
     }
-        
-        
 
-    
-    public void storeMatch(Match m){
-        matches[numMatches] = m;
-        numMatches ++;
+    public void updateTags(Event e){
+        // update user tags based on event tags
+        interestTag.updateTag(e.getCategories().getReligion(), e.getCategories().getSports(),
+        e.getCategories().getMusic(), e.getCategories().getArt(), e.getCategories().getTraveling(),
+        e.getCategories().getFitness(), e.getCategories().getGaming(), e.getCategories().getCooking(),
+        e.getCategories().getAnimal(), e.getCategories().getReading());
     }
-    public void deleteMatch(Match m){
-        //find where it is, shift all and set the last guy to null
+    public boolean reportUser(User u, String reason){
+        // create appeal object and sent to admin
+        Appeal appeal = new Appeal(u, reason);
+        // send appeal to admin
+        // admin.handleAppeal(appeal);
+        return true;
     }
-    
+     public boolean blockUser(User u){
+        // block user from matching with you
+        return true;
+    }
+
+
 }
