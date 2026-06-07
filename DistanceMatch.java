@@ -7,24 +7,28 @@ public class DistanceMatch extends PersonMatch{
         super("distance", exp, u);
     }
    
+    @Override
     public void execute(Object[] pool){
-         User[] poolUser = new User[pool.length];
-        if (pool != null && pool.length > 0) {
-            for(int i = 0; i < pool.length; i ++){
-                if(pool[i] instanceof User){
-                    poolUser[i]=(User)pool[i];
+        if (pool!= null){
+            User[] poolUser = new User[pool.length];
+            if (pool.length > 0) {
+                for(int i = 0; i < pool.length; i ++){
+                    if(pool[i] instanceof User){
+                        poolUser[i]=(User)pool[i];
+                    }
                 }
             }
-        }
-        User other = execute(poolUser, 0, null, 0);
-        setSoulmate(other);
-        storeMatch();
-        
+            User other = execute(poolUser, 0, null, 0);
+            setScore(distanceTier);
+            setSoulmate(other);
+            storeMatch();
+        }   
     }
     public User execute(User[] pool, int idx, User best, int maxTier){
         if (pool == null || pool.length == 0){
             return null;
         }else if(idx == pool.length){
+            distanceTier = calculateDistanceTier(best);
             return best;
         }else{
             User current = pool[idx];

@@ -6,21 +6,23 @@ public class InterestMatch extends PersonMatch{
         super("interest", exp, u);
     }
 
+    @Override
     public void execute(Object[] pool){
-        
-        User[] poolUser = new User[pool.length];
-        if (pool != null && pool.length > 0) {
-            for(int i = 0; i < pool.length; i ++){
-                if(pool[i] instanceof User){
-                    poolUser[i]=(User)pool[i];
+        if (pool != null){
+            User[] poolUser = new User[pool.length];
+            if (pool.length > 0) {
+                for(int i = 0; i < pool.length; i ++){
+                    if(pool[i] instanceof User){
+                        poolUser[i]=(User)pool[i];
+                    }
                 }
             }
+            User other = execute(poolUser, 0, null, 0);
+            tagsCount = evaluateTags(other);
+            setScore(tagsCount);
+            setSoulmate(other);
+            storeMatch();
         }
-        User other = execute(poolUser, 0, null, 0);
-        tagsCount = evaluateTags(other);
-        setSoulmate(other);
-        storeMatch();
-        
     }
     
     private User execute(User[] pool, int idx, User best, double maxTags){

@@ -3,10 +3,11 @@ public abstract class PersonMatch extends Match{
     public static final char PENDING = 'P';
     public static final char ACCEPT = 'A';
     public static final char REJECT = 'R';
+    private final String matchType;
+    private final LocalDate expiryDate;
 
     public static final int MATCH_LIFETIME = 1;
-    private String matchType;
-    private LocalDate expiryDate;
+    
     private User[] pair = new User [2];
     private char[] status = new char[2];
     private int[] rating = new int[2];
@@ -32,24 +33,30 @@ public abstract class PersonMatch extends Match{
         pair[1]=u;
     }
 
+    @Override
     public abstract void execute(Object[] pool);
     
+    @Override
     public boolean isRejection(){
         return status[0]== REJECT && status[1]==REJECT;
     }
+    @Override
     public boolean isAcceptance(){
         return status[0]== ACCEPT && status[1]==ACCEPT;
     }
     
+    @Override
     public boolean isExpire(){
         return expiryDate.isBefore(LocalDate.now());
     }
 
+    @Override
     public void deleteMatch(){
         pair[0].deleteMatch(this);
         pair[1].deleteMatch(this);
     }
 
+    @Override
     public void storeMatch(){
         pair[0].storeMatch(this);
         pair[1].storeMatch(this);
@@ -99,6 +106,7 @@ public abstract class PersonMatch extends Match{
         return uAge >= mainUser.getPreferredMinAge() && uAge <= mainUser.getPreferredMaxAge() && mainAge >= user.getPreferredMinAge() && mainAge <= user.getPreferredMaxAge();
         
     }
+    @Override
     public String toString(){
         String s = "=======================\n";
         s += "Match Number: " + this.getMatchNum() + "\n";

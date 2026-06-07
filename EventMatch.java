@@ -33,6 +33,7 @@ public class EventMatch extends Match{
         return end;
     }
 
+    @Override
     public void execute(Object[] pool){
         if (pool != null && pool.length >0){
             Event[] ePool = new Event[pool.length];
@@ -69,19 +70,24 @@ public class EventMatch extends Match{
 
     }
 
+    @Override
     public boolean isRejection(){
         return isAccepted == 'R';
     }
+    @Override
     public boolean isAcceptance(){
         return isAccepted == 'A';
     }
+    @Override
     public boolean isExpire(){
         return date.isBefore(LocalDate.now()) && end.isAfter(LocalTime.now());
     }
+    @Override
     public void storeMatch(){
         user.storeMatch(this);
         event.setUser(user);
     }
+    @Override
     public void deleteMatch(){
         user.deleteMatch(this);
         event.cancelEvent(event);

@@ -18,6 +18,9 @@ public abstract class Match{
     public double getScore(){
         return score;
     }
+    public void setScore(double s){
+        score = s;
+    }
     public abstract void execute(Object[] pool);
     public abstract boolean isRejection();
     public abstract boolean isAcceptance();
