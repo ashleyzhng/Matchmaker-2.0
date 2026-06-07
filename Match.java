@@ -28,8 +28,5 @@ public abstract class Match{
     public double compareScore(Match other){
         return score - other.score;
     }
-    public String toString(){
-        return "Match Number: " + matchNum + "\nScore: " + score;
-    }
-
+    public abstract String toString();
 }

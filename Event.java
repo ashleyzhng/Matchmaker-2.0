@@ -44,6 +44,12 @@ public abstract class Event {
     public double getDuration(){
         return duration;
     }
+    public String getDate(){
+        return date;
+    }
+    public String getTitle(){
+        return title;
+    }
 
     public abstract void changeEventDetails();
     public abstract String approveEvent();

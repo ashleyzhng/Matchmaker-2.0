@@ -7,6 +7,7 @@ public class EventMatch extends Match{
     private String eventType;
     private LocalTime start;
     private LocalTime end;
+    private LocalDate date;
     private char isAccepted;
     private int rating;
     private User user;
@@ -22,6 +23,7 @@ public class EventMatch extends Match{
         eventType = null;
         start = null;
         end = null;
+        date = null;
     }
 
     public LocalTime getStart(){
@@ -74,7 +76,7 @@ public class EventMatch extends Match{
         return isAccepted == 'A';
     }
     public boolean isExpire(){
-        return end.isAfter(LocalTime.now());
+        return date.isBefore(LocalDate.now()) && end.isAfter(LocalTime.now());
     }
     public void storeMatch(){
         user.storeMatch(this);
@@ -123,5 +125,32 @@ public class EventMatch extends Match{
             return -1;
         }
         return user.getTag().compareTo(e.getCategories());
+    }
+    public String toString(){
+        String s = "=======================\n";
+        s += "Match Number: " + this.getMatchNum() + "\n";
+        s += "Match Type: Event Match\n";
+        s += "Date: " + date + "\n";
+        s += "Start time: " + start + " End time: " + end + "\n";
+        s += "Score: " + this.getScore() + "\n";
+        s += "-----------------------\n";
+    
+        // User Info
+        s += "User 1: ";
+        if (user != null) {
+            s += user.getName() + "\n";
+        } 
+        s += "User Status: " + isAccepted + "\n";
+        s += "User Rating: " + rating + "\n";
+        s += "-----------------------\n";
+    
+        // Event Info
+        s += "Event: ";
+        if (event != null) {
+            s +=  event.getTitle() + "\n";
+        } else {
+            s += "Searching...\n";
+        }
+        return s;
     }
 }

@@ -104,7 +104,7 @@ public abstract class PersonMatch extends Match{
         s += "Match Number: " + this.getMatchNum() + "\n";
         s += "Match Type: " + matchType + "\n";
         s += "Expiry Date: " + expiryDate + "\n";
-        s += "Score: " + this.getScore() + "\n";
+        s += "Score: " + (this.getScore()*100) + "%\n";
         s += "-----------------------\n";
     
         // User 1 (Owner) Info
