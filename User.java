@@ -94,7 +94,11 @@ public class User extends Account {
         matched = m;
     }
 
-    public int getNunMatches(){
+    public Match[] getMatches(){
+        return matches;
+    }
+
+    public int getNumMatches(){
         return numMatches;
     }
 
