@@ -132,6 +132,8 @@ public class EventMatch extends Match{
         }
         return user.getTag().compareTo(e.getCategories());
     }
+    
+    @Override
     public String toString(){
         String s = "=======================\n";
         s += "Match Number: " + this.getMatchNum() + "\n";
