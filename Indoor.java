@@ -15,6 +15,43 @@ public class Indoor extends Event {
     public String getLocation(){
         return location;
     }
+
+    public void setLocation(String location){
+        this.location = location;
+    }
+
+    public int getFloorNumber(){
+        return floorNumber;
+    }
+
+    public void setFloorNumber(int floorNumber){
+        this.floorNumber = floorNumber;
+    }
+
+    public String getRoom(){
+        return room;
+    }
+
+    public void setRoom(String room){
+        this.room = room;
+    }
+
+    public String getUser3() {
+        return user3;
+    }
+
+    public void setUser3(String user3) {
+        this.user3 = user3;
+    }
+
+    public String getUser4() {
+        return user4;
+    }
+
+    public void setUser4(String user4) {
+        this.user4 = user4;
+    }
+
     public void changeEventDetails() {
         // Implementation for changing event details specific to indoor events
     }
@@ -39,7 +76,7 @@ public class Indoor extends Event {
         return getOriginalCost(); // Placeholder return value
     }
 
-    private String[] getCategoryNames() {
+    /*private String[] getCategoryNames() {
         Tag[] categories = getCategories();
         String[] categoryNames = new String[categories.length];
         for (int i = 0; i < categories.length; i++) {
@@ -47,6 +84,7 @@ public class Indoor extends Event {
         }
         return categoryNames;
     }
+    */
 
     public String toString() {
         return "Indoor Details:" +

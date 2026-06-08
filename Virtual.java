@@ -10,8 +10,32 @@ public class Virtual extends Event {
         this.password = password;
     }
 
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public int getMeetingID() {
+        return meetingID;
+    }
+
+    public void setMeetingID(int meetingID) {
+        this.meetingID = meetingID;
+    }
+
+    public int getPassword() {
+        return password;
+    }
+
+    public void setPassword(int password) {
+        this.password = password;
+    }
+
     public void changeEventDetails() {
-        // Implementation for changing event details specific to virtual events
+        
     }
 
     public String approveEvent() {

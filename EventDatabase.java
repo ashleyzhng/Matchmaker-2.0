@@ -19,7 +19,7 @@ public class EventDatabase {
             numPendingEvents++;
             return true;
         }
-        return false; // Pending event list is full
+        return false; 
     }
 
     public boolean addApprovedEvent(Event event) {
@@ -28,41 +28,41 @@ public class EventDatabase {
             numApprovedEvents++;
             return true;
         }
-        return false; // Approved event list is full
+        return false; 
     }
 
     public boolean removePendingEvent(Event event) {
         for (int i = 0; i < numPendingEvents; i++) {
             if (pendingEventList[i].equals(event)) {
-                // Shift remaining events to the left
+                
                 for (int j = i; j < numPendingEvents - 1; j++) {
                     pendingEventList[j] = pendingEventList[j + 1];
                 }
-                pendingEventList[numPendingEvents - 1] = null; // Clear last element
+                pendingEventList[numPendingEvents - 1] = null; 
                 numPendingEvents--;
                 return true;
             }
         }
-        return false; // Event not found in pending list
+        return false;
     }
 
     public boolean removeApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {
             if (approvedEventList[i].equals(event)) {
-                // Shift remaining events to the left
+                
                 for (int j = i; j < numApprovedEvents - 1; j++) {
                     approvedEventList[j] = approvedEventList[j + 1];
                 }
-                approvedEventList[numApprovedEvents - 1] = null; // Clear last element
+                approvedEventList[numApprovedEvents - 1] = null; 
                 numApprovedEvents--;
                 return true;
             }
         }
-        return false; // Event not found in approved list
+        return false;
     }
 
     public void sortEventsByTime() {
-
+        
     }
 
     public void sortEventsByType() {
@@ -91,7 +91,7 @@ public class EventDatabase {
                 return approvedEventList[i];
             }
         }
-        return null; // Event not found
+        return null; 
     }
 
     public Event searchPendingEventByTitle(String title) {
@@ -100,11 +100,11 @@ public class EventDatabase {
                 return pendingEventList[i];
             }
         }
-        return null; // Event not found
+        return null; 
     }
 
     public boolean bookEvent(Event event, User user1, User user2) {
-        // Implementation for booking an event for two users
-        return true; // Placeholder return value
+        
+        return true; 
     }
 }
