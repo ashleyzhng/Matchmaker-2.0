@@ -48,8 +48,11 @@ public class Matchmaker {
         for (int i = 0; i < all.size(); i ++){
             User cur1 = all.get(i).getCurrentUser1();
             User cur2 = all.get(i).getCurrentUser2();
-            if(cur1 != user && cur2 != null && cur2 != user){
-                pool.add(all[i]);
+            
+            if (cur1 != null && cur2!= null){
+                if(cur1 != user && cur2!= user){
+                    pool.add(all.get(i));
+                }
             }
         }
         Object[] poolArray = new Object[pool.size()];
