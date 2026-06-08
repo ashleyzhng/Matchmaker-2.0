@@ -10,10 +10,37 @@ public class Outdoor extends Event {
         this.precipitation = precipitation;
     }
 
+<<<<<<< HEAD:Outdoor.java
     public String getLocation(){
         return location;
     }
 
+=======
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public int getPrecipitation() {
+        return precipitation;
+    }
+
+    public void setPrecipitation(int precipitation) {
+        this.precipitation = precipitation;
+    }
+
+>>>>>>> 0613ea3 (eventstuff):Outdoor
     public void changeEventDetails() {
         // Implementation for changing event details specific to outdoor events
     }
