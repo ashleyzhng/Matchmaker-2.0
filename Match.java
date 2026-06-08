@@ -27,6 +27,7 @@ public abstract class Match{
     public abstract boolean isExpire();
     public abstract void deleteMatch();
     public abstract void storeMatch();
+
     
     public double compareScore(Match other){
         return score - other.score;

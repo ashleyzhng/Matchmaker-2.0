@@ -32,6 +32,9 @@ public abstract class PersonMatch extends Match{
     public void setSoulmate(User u){
         pair[1]=u;
     }
+    public User getSoulmate(){
+        return pair[1];
+    }
 
     @Override
     public abstract void execute(Object[] pool);
@@ -53,6 +56,8 @@ public abstract class PersonMatch extends Match{
     @Override
     public void deleteMatch(){
         pair[0].deleteMatch(this);
+
+        //CANNOT DO THIS, need ot make a new copy, soulmate stuff is different
         pair[1].deleteMatch(this);
     }
 
