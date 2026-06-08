@@ -10,31 +10,55 @@ public class Admin extends Account {
         appeals = new ArrayList<Appeal>();
         userDB = adb;
     }
+
+    public ArrayList<Appeal> getAppeals(){
+        return appeals;
+    }
+    public void setAppeals(ArrayList<Appeal> a){
+        appeals = a;
+    }
+    public AccountsDatabase getUserDB(){
+        return userDB;
+    }
+    public void setUserDB(AccountsDatabase adb){
+        userDB = adb;
+    }
+
     public void viewAllUsers(){
-        Account[] users = userDB.getUsers();
+        User[] users = userDB.getUsers();
         for(int i = 0; i<users.length; i++){
             System.out.println(users[i].getUsername() + " - " + users[i].isAccountStatus());
         }
     }
     public void viewUserInfo(User u){
-        if(u == null){
+        if(u == null || !(u instanceof User)){
             System.out.println("User not found.");
-            return;
+        }else{
+            System.out.println(u);
         }
+    }
 
-        System.out.println("----- User Information -----");
-        System.out.println("Username: " + u.getUsername());
-        System.out.println("Name: " + u.getName());
-        System.out.println("Email: " + u.getEmail());
-        System.out.println("Email Verified: " + u.isEmailVerified());
-        System.out.println("Account Active: " + u.isAccountStatus());
-        System.out.println("Birthday: " + u.getBirthday());
-        System.out.println("City: " + u.getCity());
-        System.out.println("Postal Code: " + u.getPostalCode());
-        System.out.println("Gender: " + u.getGender());
-        System.out.println("Preferred Gender: " + u.getPreferredGender());
-        System.out.println("Bio: " + (u.getBio() == null ? "N/A" : u.getBio()));
-        System.out.println("Matched: " + u.getMatched());
-        System.out.println("Number of Matches: " + u.getNumMatches());
+    public void viewAllAppeals(){
+        for(int i = 0; i<appeals.size(); i++){
+            System.out.println(appeals.get(i));
+        }
+    }
+    public void addAppeal(Appeal a){
+        appeals.add(a);
+    }
+    public Admin promoteUser(User u){
+        if(u == null || !(u instanceof User)){
+            System.out.println("User not found.");
+            return null;
+        }else{
+            Admin newAdmin = new Admin(u.getUsername(), u.getPassword(), u.getEmail(), u.getVerifyCode(), userDB);
+            if(userDB.deleteAccount(u, u.getPassword())){
+                System.out.println("User promoted to admin.");
+                return newAdmin;
+            }else{
+                System.out.println("Failed to promote user.");
+                return null;
+            }
+        }
     }
 }

@@ -2,24 +2,22 @@ import java.util.ArrayList;
 
 public class AccountsDatabase {
     private ArrayList<User> users;
-    private int numUsers;
 
     public AccountsDatabase(){
         users = new ArrayList<User>();
     }
-
-    public void updateNumUsers(){
-        for(int i = 0; i<users.size(); i++){
-            if(users.get(i) instanceof User){
-                numUsers++;
-            }
+    public boolean deleteAccount(User u, String pass){
+        if(u != null && u.correctPass(pass)){
+            users.remove(u);
+            //call logout() method
+            return true;
+        }else{
+            return false;
         }
     }
-
-    public Account[] getUsers(){
-        Account[] userArray = new Account[numUsers];
+    public User[] getUsers(){
+        User[] userArray = new User[users.size()];
         int index = 0;
-
         for(int i = 0; i<users.size(); i++){
             if(users.get(i) instanceof User){
                 userArray[index] = users.get(i);
@@ -28,7 +26,7 @@ public class AccountsDatabase {
         }
         return userArray;
     }
-
+    /* 
     // add user from file
     public Account searchByUsername(String targetUsername){
         boolean found = false;
@@ -44,7 +42,14 @@ public class AccountsDatabase {
         }
         return foundUser;
     }
-    /*
+    public boolean changePass(String curPass, String newPass){
+        if(correctPass(curPass)){
+            this.password = newPass;
+            return true;
+        }else{
+            return false;
+        }
+    }
     /* 
     public boolean changeUsername(String pass, String newUsername){
         if(correctPass(pass)){ // and check if uesrname exists or not
@@ -81,15 +86,6 @@ public class AccountsDatabase {
             return false;
         }
     }
-    public boolean deleteAccount(String pass){
-        if(correctPass(pass)){
-            // remove account from user database array
-            //call logout() method
-            return true;
-        }else{
-            return false;
-        }
-    }
     public boolean inactivateAccount(String pass){
         if(correctPass(pass)){
             accountStatus = false;
@@ -101,7 +97,7 @@ public class AccountsDatabase {
     }
     public boolean activateAccount(String pass){
         if(correctPass(pass)){
-            
+            /*
             if ID in list of accounts
             if status is inactive
             checks if current password matches 
@@ -114,14 +110,5 @@ public class AccountsDatabase {
             return false;
         }
     }
-    public boolean changePass(String curPass, String newPass){
-        if(correctPass(curPass)){
-            this.password = newPass;
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     */
 }

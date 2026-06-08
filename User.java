@@ -14,6 +14,7 @@ public class User extends Account {
     private boolean matched;
     private Match[] matches;
     private int numMatches;
+    private ArrayList<Match> matchHistory;
     private ArrayList<Event> eventHistory;
     private ArrayList<Event> eventHosted;
     private Tag interestTag;
@@ -109,6 +110,13 @@ public class User extends Account {
         numMatches = n;
     }
 
+    public ArrayList<Match> getMatchHistory(){
+        return matchHistory;
+    }
+    public ArrayList<Event> getEventHistory(){
+        return eventHistory;
+    }
+
     public Tag getTag(){
         return interestTag;
     }
@@ -117,29 +125,26 @@ public class User extends Account {
         return true;
     }
 
-    public boolean  isAvailable(){
-        int count = 0;
-        for(int i = 0; i< matches.length; i++){
-            if(matches[i] != null){
-                count++;
-            }
-        }
-        if(count == MAX_MATCHES){
-            return false;
-        }else{
-            return true;
-        }
+    public boolean isAvailable(Event e){
+        // check if user is available during event time
+        // searchEventByUser
     }
     
     public void storeMatch(Match m){
         matches[numMatches] = m;
         numMatches ++;
     }
+
+    public void storeMatchHistory(Match m){
+        matchHistory.add(m);
+    }
+
     public void deleteMatch(Match m){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] == m){
                 matches[i] = null;
                 numMatches--;
+                storeMatchHistory(m);
                 for(int j = i; j < matches.length - 1; j++){
                     matches[j] = matches[j+1];
                     matches[j+1] = null;
@@ -179,17 +184,17 @@ public class User extends Account {
         e.getCategories().getFitness(), e.getCategories().getGaming(), e.getCategories().getCooking(),
         e.getCategories().getAnimal(), e.getCategories().getReading());
     }
-    public boolean reportUser(User u, String reason){
-        // create appeal object and sent to admin
+    public Appeal reportUser(User u, String reason){
         Appeal appeal = new Appeal(u, reason);
-        // send appeal to admin
-        // admin.handleAppeal(appeal);
-        return true;
+        // semd to admin in runner class
+        return appeal;
     }
      public boolean blockUser(User u){
         // block user from matching with you
         return true;
     }
 
-
+    public String toString(){
+        return "sdf";
+    }
 }
