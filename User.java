@@ -116,6 +116,15 @@ public class User extends Account {
     public ArrayList<Event> getEventHistory(){
         return eventHistory;
     }
+    public ArrayList<Event> getEventHosted(){
+        return eventHosted;
+    }
+    public void setEventHistory(ArrayList<Event> eh){
+        eventHistory = eh;
+    }
+    public void setEventHosted(ArrayList<Event> eh){
+        eventHosted = eh;
+    }
 
     public Tag getTag(){
         return interestTag;
@@ -123,11 +132,6 @@ public class User extends Account {
     
     public boolean editProfile(String s){
         return true;
-    }
-
-    public boolean isAvailable(Event e){
-        // check if user is available during event time
-        // searchEventByUser
     }
     
     public void storeMatch(Match m){
@@ -189,12 +193,15 @@ public class User extends Account {
         // semd to admin in runner class
         return appeal;
     }
-     public boolean blockUser(User u){
-        // block user from matching with you
-        return true;
+
+    public Appeal reportUser(User u){
+        Appeal appeal = new Appeal(u, "No reason provided");
+        // semd to admin in runner class
+        return appeal;
     }
 
     public String toString(){
-        return "sdf";
+        // double check this formatting later
+        return "Username: " + getUsername() + "\nName: " + name + "\nBirthday: " + birthday + "\nPostal Code: " + postalCode + "\nCity: " + city + "\nBio: " + bio + "\nGender: " + gender + "\nPreferred Gender: " + preferredGender + "\nEmail: " + getEmail() + "\nEmail Verified: " + isEmailVerified() + "\nAccount Status: " + isAccountStatus();
     }
 }

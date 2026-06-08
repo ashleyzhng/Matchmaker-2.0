@@ -1,10 +1,12 @@
 public class Teen extends User {
     public static final int MIN_AGE = 13;
     private boolean parentalControls;
+    private Parent parent;
 
     //contructor, acces, muts
     public Teen(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg){
         super(u, p, e, v, n, b, pc, c, g, pg);
+        parent = null;
     }
     // accessors mutators
     public boolean hasParentalControls(){
@@ -14,9 +16,24 @@ public class Teen extends User {
         parentalControls = pc;
     }
 
-    public void requestParentApproval(){
+    public Parent getParent(){
+        return parent;
+    }
+    public void setParent(Parent p){
+        parent = p;
+    }
+
+    public void requestParentApproval(Match m){
         if(parentalControls){
-            // add match into parent approves
+            parent.addMatch(m);
+        }
+    }
+
+    public void storeMatch(Match m){
+        if(parentalControls){
+            requestParentApproval(m);
+        }else{
+            super.storeMatch(m);
         }
     }
     

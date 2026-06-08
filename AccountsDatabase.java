@@ -26,7 +26,21 @@ public class AccountsDatabase {
         }
         return userArray;
     }
+    // all the searching methods for accounts database
+    public User searchByUser(User u){
+        boolean found = false;
+        User foundUser = null;
+
+        for(int i = 0; i<users.size() && !found; i++){
+            if(users.get(i) == u){
+                foundUser = users.get(i);
+                found = true;
+            }
+        }
+        return foundUser;
+    }
     /* 
+    vv move all these methods to match maker class later vv
     // add user from file
     public Account searchByUsername(String targetUsername){
         boolean found = false;

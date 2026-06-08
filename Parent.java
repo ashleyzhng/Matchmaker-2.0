@@ -37,6 +37,7 @@ public class Parent extends Account {
             teens[numTeens] = t;
             numTeens++;
             t.setParentalControls(true);
+            t.setParent(this);
             return true;
         }else{
             return false;
@@ -62,12 +63,13 @@ public class Parent extends Account {
         approveMatches[numMatches] = m;
         numMatches++;
     }
-    public void approveMatch(Match m){
+    public void approveMatch(Teen t, Match m){
         for(int i = 0; i < numMatches; i++){
             if(approveMatches[i] == m){
                 // add match to teen matches
                 approveMatches[i] = null;
                 numMatches--;
+                t.storeMatch(m);
                 for(int j = 0; j < approveMatches.length - 1; j++){
                     approveMatches[j] = approveMatches[j+1];
                     approveMatches[j+1] = null;
