@@ -17,7 +17,7 @@ public abstract class Event {
     private boolean attended;
     private User[] attendanceHistory;
 
-    public Event(String title, String date, String startTime, double duration, double originalCost, Tag categories, boolean booked) {
+    public Event(String title, String date, String startTime, double duration, double originalCost, Tag categories) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
@@ -27,7 +27,7 @@ public abstract class Event {
         this.approved = false;
         this.attended = false;
         this.eventAdminFeedback = null;
-        this.booked = booked;
+        this.booked = false;
     }
 
     public void setUser(User u){
@@ -182,10 +182,6 @@ public abstract class Event {
     public abstract void changeEventDetails();
 
     public abstract String approveEvent();
-
-    public abstract boolean attendEvent(User user);
-
-    public abstract boolean cancelEvent(Event event);
 
     public abstract double calculateCost();
 
