@@ -13,30 +13,40 @@ public class DistanceMatch extends PersonMatch{
             User[] poolUser = new User[pool.length];
             if (pool.length > 0) {
                 for(int i = 0; i < pool.length; i ++){
-                    if(pool[i] instanceof User){
+                    if(pool[i] != null && pool[i] instanceof User){
                         poolUser[i]=(User)pool[i];
                     }
                 }
             }
-            User other = execute(poolUser, 0, null, 0);
-            setScore(distanceTier);
-            setSoulmate(other);
-            storeMatch();
+            User other = execute(poolUser, 0, null, -1);
+            if (other!= null){
+                setScore(distanceTier);
+                setSoulmate(other);
+                storeMatch();
+            }
+            
         }   
     }
     public User execute(User[] pool, int idx, User best, int maxTier){
         if (pool == null || pool.length == 0){
             return null;
         }else if(idx == pool.length){
-            distanceTier = calculateDistanceTier(best);
+            if (best != null){
+                distanceTier = calculateDistanceTier(best);;
+            }else{
+                distanceTier = -1;
+            }
             return best;
         }else{
             User current = pool[idx];
-            if(calculateDistanceTier(current)> maxTier && prelimCheck(pool[idx])){
-                return execute(pool, idx+1, current, calculateDistanceTier(current));
-             }else{
-                return execute(pool, idx + 1, best, maxTier);
-             }
+            if(current != null && prelimCheck(current)){
+                int currentTier = calculateDistanceTier(current); // FIXED: Calculate once and reuse
+                
+                if (currentTier > maxTier) {
+                    return execute(pool, idx + 1, current, currentTier);
+                }
+            }
+            return execute(pool, idx + 1, best, maxTier);
         }
     }
  

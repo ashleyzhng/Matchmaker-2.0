@@ -12,16 +12,18 @@ public class InterestMatch extends PersonMatch{
             User[] poolUser = new User[pool.length];
             if (pool.length > 0) {
                 for(int i = 0; i < pool.length; i ++){
-                    if(pool[i] instanceof User){
+                    if(pool[i]!= null && pool[i] instanceof User){
                         poolUser[i]=(User)pool[i];
                     }
                 }
             }
-            User other = execute(poolUser, 0, null, 0);
-            tagsCount = evaluateTags(other);
-            setScore(tagsCount);
-            setSoulmate(other);
-            storeMatch();
+            User other = execute(poolUser, 0, null, -1);
+            if(other!= null){
+                tagsCount = evaluateTags(other);
+                setScore(tagsCount);
+                setSoulmate(other);
+                storeMatch();
+            }
         }
     }
     
@@ -31,10 +33,10 @@ public class InterestMatch extends PersonMatch{
         }else if (idx == pool.length){
             return best;
         }else{
-            //do not need this
-            if(pool[idx]!= getOwner() &&  prelimCheck(pool[idx])){
-                if (evaluateTags(pool[idx])> maxTags){
-                    return execute(pool, idx+1, pool[idx],evaluateTags(pool[idx]) );
+            if(pool[idx] != null && pool[idx]!= getOwner() &&  prelimCheck(pool[idx])){
+                double score = evaluateTags(pool[idx]);
+                if (score > maxTags){
+                    return execute(pool, idx+1, pool[idx],score );
                 }
             }
             return execute(pool, idx + 1, best, maxTags);
@@ -42,6 +44,9 @@ public class InterestMatch extends PersonMatch{
         }
     }
     public double evaluateTags(User other){
+        if(other == null){
+            return -1;
+        }
         User owner = getOwner();
         return owner.getTag().compareTo(other.getTag());
     }
