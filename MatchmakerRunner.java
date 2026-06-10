@@ -4,6 +4,7 @@ public class MatchmakerRunner{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         Matchmaker system = new Matchmaker();
+        Menu menu = new Menu();
 
         boolean running = true;
         String currentMenu = "main";
@@ -12,18 +13,18 @@ public class MatchmakerRunner{
         while(running){
             switch (currentMenu){
                 case "main":
-                    currentMenu = system.getMainMenu(sc);
+                    currentMenu = menu.getMainMenu(sc);
                     break;
                 case "login":
-                    LoginResults loginResults = system.login(sc);
+                    LoginResults loginResults = menu.login(sc, system);
                     currentMenu = loginResults.getNextMenu();
                     currentAccount = loginResults.getUser();
                     break;
                 case "user":
-                    system.getUserMenu(currentAccount, sc);
+                    menu.getUserMenu(currentAccount, sc);
                     break;
                 case "admin":
-                    // do later
+                    // do later  
                     break;
                 case "parent":
                     // do later
