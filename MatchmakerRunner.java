@@ -38,6 +38,9 @@ public class MatchmakerRunner{
                 case "createAccount":
                     // do later
                     break;
+                case "matchMenu":
+                    currentMenu = menu.matchMenu();
+                    break;
                 case "logout":
                     currentAccount = null;
                     currentMenu = "main";

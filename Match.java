@@ -1,13 +1,8 @@
 
 public abstract class Match{
-    private static int nextMatchNum = 1;
-    private int matchNum;
     private double score;
 
-    
     public Match(){
-        matchNum = nextMatchNum;
-        nextMatchNum +=1;
         score = -1;
     }
 

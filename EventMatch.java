@@ -8,15 +8,16 @@ public class EventMatch extends Match{
     private LocalTime start;
     private LocalTime end;
     private LocalDate date;
+    private Duration duration;
     private char isAccepted;
     private int rating;
     private User user;
     private Event event;
 
-    public EventMatch(User u, String e){
+    public EventMatch(User u){
         super();
         user = u;
-        eventType = e;
+        eventType = null;
         event = null;
         rating = -1;
         isAccepted = 'P';
@@ -32,6 +33,12 @@ public class EventMatch extends Match{
     public LocalTime getEnd(){
         return end;
     }
+    public LocalDate getDate(){
+        return date;
+    }
+    public Duration getDuration(){
+        return duration;
+    }
 
     @Override
     public void execute(Object[] pool){
@@ -42,11 +49,19 @@ public class EventMatch extends Match{
             }
             Event other = execute(ePool, 0, null, -1);
             start = LocalTime.parse(other.getStartTime());
-            double duration = other.getDuration();
-            long hours = (long)duration;
-            long minutes = Math.round((duration - hours) * 60);
+            double dur = other.getDuration();
+            duration = Duration.between(start, end);
+            long hours = (long)dur;
+            long minutes = Math.round((dur - hours) * 60);
             end = start.plusHours(hours).plusMinutes(minutes);
             event = other;
+            if(event instanceof Virtual){
+                eventType = "Virtual";
+            }else if (event instanceof Indoor){
+                eventType = "Indoor";
+            }else{
+                eventType = "Outdoor";
+            }
             storeMatch();
             //NEED to update Event somehow
         }
@@ -57,7 +72,7 @@ public class EventMatch extends Match{
         if (pool == null || pool.length == 0){
             return null;
         }
-        if(idx ==pool.length){
+        if(idx == pool.length){
             return best;
         }
         Event current = pool[idx];
@@ -68,6 +83,9 @@ public class EventMatch extends Match{
         }
         return execute(pool, idx+1, best, maxScore);
 
+    }
+    public void updateDecision(char decision){
+        isAccepted = decision;
     }
 
     @Override

@@ -1,10 +1,11 @@
+import java.time.*;
 
 public class DistanceMatch extends PersonMatch{
    
     private int distanceTier;
 
-    public DistanceMatch(User u, String exp){
-        super("distance", exp, u);
+    public DistanceMatch(User u){
+        super("distance", LocalDate.now().plusDays(2), u);
     }
    
     @Override

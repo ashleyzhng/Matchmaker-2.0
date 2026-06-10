@@ -13,11 +13,10 @@ public abstract class PersonMatch extends Match{
     private int[] rating = new int[2];
 
    
-    public PersonMatch(String m, String exp, User u){
+    public PersonMatch(String m, User u){
         super();
         matchType = m;
-        //not proper for expiry date
-        expiryDate = LocalDate.parse(exp);
+         expiryDate = LocalDate.now().plusDays(2);
         pair[0]= u;
         pair[1]=null;
         status[0] = PENDING;
@@ -34,6 +33,9 @@ public abstract class PersonMatch extends Match{
     }
     public User getSoulmate(){
         return pair[1];
+    }
+    public LocalDate getExpiryDate(){
+        return expiryDate;
     }
 
     @Override
@@ -126,29 +128,39 @@ public abstract class PersonMatch extends Match{
         s += "Match Number: " + this.getMatchNum() + "\n";
         s += "Match Type: " + matchType + "\n";
         s += "Expiry Date: " + expiryDate + "\n";
-        s += "Score: " + (this.getScore()*100) + "%\n";
+        s += "Compatibility Score: " + (this.getScore()*100) + "%\n";
         s += "-----------------------\n";
     
         // User 1 (Owner) Info
         s += "User 1: ";
         if (pair[0] != null) {
             s += pair[0].getName() + "\n";
+            s += "User 1 Status: " + status[0] + "\n";
+            if(rating[0] == -1){
+                s+= "User 1 Rating: n/a \n";
+            }else{
+                 s += "User 1 Rating: " + rating[0] + "\n";
+            }
         } else {
             s += "None\n";
         }
-        s += "User 1 Status: " + status[0] + "\n";
-        s += "User 1 Rating: " + rating[0] + "\n";
+        
         s += "-----------------------\n";
     
         // User 2 (Soulmate) Info
         s += "User 2: ";
         if (pair[1] != null) {
             s += pair[1].getName() + "\n";
+            s += "User 2 Status: " + status[1] + "\n";
+             if(rating[1] == -1){
+                s+= "User 1 Rating: n/a \n";
+            }else{
+                 s += "User 1 Rating: " + rating[1] + "\n";
+            }
         } else {
             s += "Still Searching...\n";
         }
-        s += "User 2 Status: " + status[1] + "\n";
-        s += "User 2 Rating: " + rating[1] + "\n";
+        
         s += "=======================\n";
         
         return s;

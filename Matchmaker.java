@@ -1,4 +1,5 @@
 import java.util.*;
+import java.time.*;
 
 public class Matchmaker {
     EventDatabase events;
@@ -87,6 +88,36 @@ public class Matchmaker {
         System.out.println("Login Failed");
         return false;
     }
+    public InterestMatch generateInterestMatch(User user){
+        InterestMatch match = new InterestMatch(user);
+        Object[] pool = generateUserPool(user);
+        match.execute(pool);
+        return match;
+    }
+    public DistanceMatch generateDistanceMatch(User user){
+        DistanceMatch match = new DistanceMatch(user);
+        Object[] pool = generateUserPool(user);
+        match.execute(pool);
+        return match;
+    }
+    public EventMatch generateEventMatch(User user){
+        EventMatch match = new EventMatch(user);
+        Object[] pool = generateEventPool(user);
+        match.execute(pool);
+        return match;
+    }
+    public Match generateMatch(User user, int type){
+        if(type == 1){
+            return generateInterestMatch(user);
+        }else if (type == 2){
+            return generateDistanceMatch(user);
+        }else if (type == 3){
+             return generateEventMatch(user);
+        }
+        return null;
+    }
+
+
     /* 
     public boolean changeUsername(String pass, String newUsername){
         if(correctPass(pass)){ // and check if uesrname exists or not

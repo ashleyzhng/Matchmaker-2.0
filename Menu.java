@@ -89,7 +89,8 @@ public class Menu {
                 choice = sc.nextInt();
             }
         if(choice == 1){
-            // ASHLEY - CALL MATCH STUFF
+            System.out.flush();
+            return "match";
         }else if(choice == 2){
             // ASHLEY - views current matches and approves/denies matches
         }else if(choice == 3){
@@ -206,4 +207,126 @@ public class Menu {
         }
         return "";
     }
+
+    public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
+        System.out.println("=======================");
+        System.out.println("New Match Menu: ");
+        System.out.println("1. Interest Match");
+        System.out.println("2. Distance Match");
+        System.out.println("3. Event Match");
+        System.out.println("4. Exit");
+        System.out.println("=======================");
+        System.out.print("OPTION: ");
+        int choice = sc.nextInt();
+        while(choice < 1 || choice > 4){
+            System.out.println("Invalid option. Please try again.");
+                System.out.print("OPTION: ");
+                choice = sc.nextInt();
+        }
+        if (choice >= 1 && choice <= 3){
+           System.out.println(mm.generateMatch(user, choice));
+
+        } 
+        return "matchMenu";
+    }
+    public String matchMenu(Scanner sc){
+        System.out.println("=======================");
+        System.out.println("Match Menu: ");
+        System.out.println("1. View Current Matches");
+        System.out.println("2. Create New Match");
+        System.out.println("3. Exit");
+        System.out.println("=======================");
+        System.out.print("OPTION: ");
+        int choice = sc.nextInt();
+        while (choice < 1 || choice > 3){
+            System.out.println("Invalid option. Please try again.");
+            System.out.print("OPTION: ");
+            choice = sc.nextInt();
+        }
+        if(choice == 1){
+            return "currentMatchMenu";
+        }else if (choice == 2){
+            return "mainMatchMenu";
+        }else{
+            return "user";
+        }
+    }
+    public String currentMatchMenu(Scanner sc, User user){
+         System.out.println("=======================");
+        System.out.println("Current Matches Menu: ");
+        int matchNum = user.getMatches().length;
+        Match[] match = user.getMatches();
+        System.out.println("You have " + matchNum + " active Matches!");
+        for (int i = 0; i < matchNum ; i ++){
+            if (match[i] instanceof InterestMatch){
+                System.out.println((i+1) + ". InterestMatch: Expiry Date is " + ((InterestMatch)match[i]).getExpiryDate());
+            }else if (match[i] instanceof DistanceMatch){
+                System.out.println((i+1) + ". DistanceMatch: Expiry Date is " + ((DistanceMatch)match[i]).getExpiryDate());
+            }else{
+                EventMatch eMatch = (EventMatch)match[i];
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
+            }
+        }
+        System.out.println((match.length + 1) + " Exit");
+        System.out.print("OPTION: ");
+        int choice = sc.nextInt();
+        while(choice < 1 && choice > match.length){
+            System.out.println("Invalid option. Please try again.");
+            System.out.print("OPTION: ");
+            choice = sc.nextInt();
+        }
+        if(choice == match.length + 1){
+            return singleMatchMenu(match[choice-1], sc, user);
+        }
+        return "matchMenu";
+    }
+
+    public String singleMatchMenu(Match match, Scanner sc, User user){
+        System.out.println("=======================");
+        System.out.println(match);
+        System.out.println("1. Accept  Match");
+        System.out.println("2. Reject Match");
+        System.out.println("3. Exit");
+        System.out.println("=======================");
+        System.out.print("OPTION: ");
+        int choice = sc.nextInt();
+        while(choice <1 || choice > 3){
+            System.out.println("Invalid option. Please try again.");
+            System.out.print("OPTION: ");
+            choice = sc.nextInt();
+        }
+        if (choice == 1){
+            if (match instanceof  PersonMatch){
+               ((PersonMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
+            }else if (match instanceof EventMatch){
+                ((EventMatch)match).updateDecision(PersonMatch.ACCEPT);
+            }
+            System.out.println("Decision Updated");
+        }else if (choice == 2){
+            if (match instanceof  PersonMatch){
+               ((PersonMatch)match).updateUserDecision(user, PersonMatch.REJECT);
+            }else if (match instanceof EventMatch){
+                ((EventMatch)match).updateDecision(PersonMatch.REJECT);
+            }
+            System.out.println("Decision Updated");
+        }
+        return "matchMenu";
+    }
+
+    public int input(int firstChoice, int lastChoice, Scanner sc){
+    int choice;
+    while(true){
+        System.out.print("OPTION: ");
+        if(!sc.hasNextInt()){
+            System.out.println("Invalid Input. Please try again.");
+            sc.next();
+        }else{
+            choice = sc.nextInt();
+            if(choice >= firstChoice && choice <= lastChoice){
+                return choice;
+            }
+        }
+    }
+    }
+    
 }

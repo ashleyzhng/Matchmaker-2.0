@@ -2,8 +2,8 @@
 public class InterestMatch extends PersonMatch{
     private double tagsCount;
     
-    public InterestMatch(User u, String exp){
-        super("interest", exp, u);
+    public InterestMatch(User u){
+        super("interest", u);
     }
 
     @Override
