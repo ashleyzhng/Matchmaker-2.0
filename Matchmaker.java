@@ -62,4 +62,83 @@ public class Matchmaker {
         return poolArray;
         
     }
+
+    public boolean changePass(String curPass, String newPass){
+        if(correctPass(curPass)){
+            this.password = newPass;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /* 
+    public boolean changeUsername(String pass, String newUsername){
+        if(correctPass(pass)){ // and check if uesrname exists or not
+            /* 
+            if(AccountsDatabase.searchByUsername(newUsername) == null){
+                this.username = newUsername;
+                return true;
+            }else{
+                
+                System.out.println("Username Already Exsits");
+                return false;
+            }
+        }else{
+            System.out.println("Incorrect Password");
+            return false;
+        }
+    }
+    
+    public boolean resetPass(String email, String newPass){
+        if(this.email == email && emailVerified){
+            System.out.println(verifyCode);
+            //idk how im gonna do this
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean verifyEmail(String pass){
+        if(correctPass(pass)){
+            emailVerified = true;
+            verifyCode = (int)(Math.random() * 1000000);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean inactivateAccount(String pass){
+        if(correctPass(pass)){
+            accountStatus = false;
+            //cals id.logout()
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean activateAccount(String pass){
+        if(correctPass(pass)){
+            /*
+            if ID in list of accounts
+            if status is inactive
+            checks if current password matches 
+            if matches
+            ^^ add all this stuff in a diff method in matchmaker
+            
+           accountStatus = true;
+           return true;
+        }else{
+            return false;
+        }
+    } */
+
+    public void getMainMenu(){
+        System.out.println("Welcome to Matchmaker!");
+        System.out.println("=======================");
+        System.out.println("1. Login");
+        System.out.println("2. Reset Password");
+        System.out.println("3. Create Account");
+        System.out.println("4. Exit Program");
+        System.out.println("=======================");
+    }
 }
