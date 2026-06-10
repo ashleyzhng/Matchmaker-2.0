@@ -22,6 +22,8 @@ public abstract class Event {
 
     private boolean attended;
     private User[] attendanceHistory;
+    private int numPastAttendees;
+    public static int maxPast = 100;
 
     LocalTime todayTime = LocalTime.now();
     LocalDate todayDate = LocalDate.now();
@@ -36,9 +38,10 @@ public abstract class Event {
         this.categories = new Tag(r, s, m, a, t, f, g, c, an, re);
         this.approved = false;
         this.attended = false;
-        this.attendanceHistory = new User[100];
+        this.attendanceHistory = new User[maxPast];
         this.eventAdminFeedback = null;
         this.booked = false;
+        this.numPastAttendees = 0;
 
     }
 
@@ -224,15 +227,32 @@ public abstract class Event {
         }
     }
 
+    public boolean addPastAttendee(User user)   {
+        if (numPastAttendees < maxPast) {
+            attendanceHistory[numPastAttendees] = user;
+            numPastAttendees++;
+            return true;
+        } else {
+            attendanceHistory[0] = null;
+            for (int i = 0; i < numPastAttendees-1; i ++) {
+                attendanceHistory[i] = attendanceHistory[i+1];
+            }
+            attendanceHistory[numPastAttendees-1] = null;
+
+            numPastAttendees --;
+        }
+        
+        return false;
+    }
+
     public void attendEvent(User user) {
         if (determineDatePassed() && getBooked() == true) {
             setAttended(true);
             System.out.println("How would you rate this event out of 5: ");
             int rate = sc.nextInt();
-            
-        
+            addPastAttendee(user);
+            avgRating = ((numPastAttendees-1)*avgRating+rate)/numPastAttendees;
         } else {
-
             System.out.println("Event has not occurred yet.");
         }
     }
