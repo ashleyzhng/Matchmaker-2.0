@@ -9,9 +9,13 @@ public class Matchmaker {
         accounts = new AccountsDatabase();
     }
     public Object[] generatePool(User user, String type){
-        return null;
+        if(type.equals("PersonMatch")){
+            return generateUserPool(user);
+        }
+        return generateEventPool(user);
     }
-    public Object[] userPool(User user){
+    
+    public Object[] generateUserPool(User user){
         User[] all = accounts.getUsers();
         ArrayList <Match> matchHistory = user.getMatchHistory();
         
@@ -42,7 +46,7 @@ public class Matchmaker {
         return poolArray; 
     }
 
-    public Object[] generateEvent(User user){
+    public Object[] generateEventPool(User user){
         ArrayList <Event> all = events.getApprovedEventList();
         ArrayList <Event> pool = new ArrayList<Event>();
         for (int i = 0; i < all.size(); i ++){
@@ -57,8 +61,8 @@ public class Matchmaker {
                     }
                 }
             }else{
-                User cur3 = all.get(i).getUser3();
-                User cur4 = all.get(i).getUser4();
+                User cur3 = ((Indoor)all.get(i)).getUser3();
+                User cur4 = ((Indoor)all.get(i)).getUser4();
                     if (cur1 != null && cur2!= null && cur3!= null && cur4!= null){
                         if(cur1 != user && cur2!= user && cur3 != user && cur4 != user){
                             pool.add(all.get(i));
