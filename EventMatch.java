@@ -132,7 +132,7 @@ public class EventMatch extends Match{
         }
         return user.getTag().compareTo(e.getCategories());
     }
-    
+
     @Override
     public String toString(){
         String s = "=======================\n";
@@ -160,5 +160,9 @@ public class EventMatch extends Match{
             s += "Searching...\n";
         }
         return s;
+    }
+
+    public void setRating(int r){
+        rating = r;
     }
 }

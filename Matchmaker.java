@@ -46,13 +46,24 @@ public class Matchmaker {
         ArrayList <Event> all = events.getApprovedEventList();
         ArrayList <Event> pool = new ArrayList<Event>();
         for (int i = 0; i < all.size(); i ++){
+            
             User cur1 = all.get(i).getCurrentUser1();
             User cur2 = all.get(i).getCurrentUser2();
             
-            if (cur1 != null && cur2!= null){
-                if(cur1 != user && cur2!= user){
-                    pool.add(all.get(i));
+            if(all.get(i) instanceof Virtual || all.get(i) instanceof Outdoor){
+                if (cur1 != null && cur2!= null){
+                    if(cur1 != user && cur2!= user){
+                        pool.add(all.get(i));
+                    }
                 }
+            }else{
+                User cur3 = all.get(i).getUser3();
+                User cur4 = all.get(i).getUser4();
+                    if (cur1 != null && cur2!= null && cur3!= null && cur4!= null){
+                        if(cur1 != user && cur2!= user && cur3 != user && cur4 != user){
+                            pool.add(all.get(i));
+                        }
+                    }
             }
         }
         Object[] poolArray = new Object[pool.size()];
