@@ -39,6 +39,9 @@ public class EventMatch extends Match{
     public Duration getDuration(){
         return duration;
     }
+    public Event getEvent(){
+        return event;
+    }
 
     @Override
     public void execute(Object[] pool){
@@ -78,7 +81,7 @@ public class EventMatch extends Match{
         Event current = pool[idx];
         double curScore = determineScore(current);
 
-        if(curScore > maxScore){
+        if(curScore > maxScore && prelimCheck(pool[idx])){
             return execute(pool, idx + 1, current, curScore);
         }
         return execute(pool, idx+1, best, maxScore);
@@ -87,6 +90,8 @@ public class EventMatch extends Match{
     public void updateDecision(char decision){
         isAccepted = decision;
     }
+
+    public 
 
     @Override
     public boolean isRejection(){
