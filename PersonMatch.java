@@ -16,7 +16,7 @@ public abstract class PersonMatch extends Match{
     public PersonMatch(String m, User u){
         super();
         matchType = m;
-         expiryDate = LocalDate.now().plusDays(2);
+        expiryDate = LocalDate.now().plusDays(2);
         pair[0]= u;
         pair[1]=null;
         status[0] = PENDING;
@@ -29,7 +29,7 @@ public abstract class PersonMatch extends Match{
         return pair[0];
     }
     public void setSoulmate(User u){
-        pair[1]=u;
+        pair[1]= u;
     }
     public User getSoulmate(){
         return pair[1];
@@ -125,7 +125,6 @@ public abstract class PersonMatch extends Match{
     @Override
     public String toString(){
         String s = "=======================\n";
-        s += "Match Number: " + this.getMatchNum() + "\n";
         s += "Match Type: " + matchType + "\n";
         s += "Expiry Date: " + expiryDate + "\n";
         s += "Compatibility Score: " + (this.getScore()*100) + "%\n";

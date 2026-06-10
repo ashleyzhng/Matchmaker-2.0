@@ -7,10 +7,7 @@ public abstract class Match{
     }
 
     //---accessors and mutators as necessary---
-    public int getMatchNum(){
-        return matchNum;
-    }
-    public double getScore(){
+     public double getScore(){
         return score;
     }
     public void setScore(double s){
