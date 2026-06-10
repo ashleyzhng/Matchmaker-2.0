@@ -9,13 +9,6 @@ public class Matchmaker {
         events = new EventDatabase();
         accounts = new AccountsDatabase();
     }
-    public Object[] generatePool(User user, String type){
-        if(type.equals("PersonMatch")){
-            return generateUserPool(user);
-        }
-        return generateEventPool(user);
-    }
-
     public ArrayList <User> eligibleUserPool(User user){
         User[] all = accounts.getUsers();
         ArrayList <Match> matchHistory = user.getMatchHistory();
@@ -59,25 +52,75 @@ public class Matchmaker {
         return poolArray; 
     }
         
-    //THIS IS WRONG BTW.
-    public Object[] generateEventPool(User user){
-       Event[] all = events.getApprovedEventList();
+    
+    public Object[] generateSingleEventPool(User user){
+        if (user == null){
+            return null;
+        }
+        Event[] all = events.getApprovedEventList();
         ArrayList <Event> pool = new ArrayList<Event>();
-         ArrayList <User> eligibleUser = eligibleUserPool(user);
+        ArrayList <User> eligibleUsers = eligibleUserPool(user);
+
         for (int i = 0; i < all.length; i ++){
             Event curEvent = all[i];
-            User cur1 = all[i].getCurrentUser1();
-            User cur2 = all[i].getCurrentUser2();
-            
-            if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)) {
-                pool.add(curEvent);
+            if (curEvent instanceof Virtual || curEvent instanceof Outdoor){
+                User cur1 = all[i].getCurrentUser1();
+                User cur2 = all[i].getCurrentUser2();
+                
+                if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)) {
+                    pool.add(curEvent);
+                }
             }
+            
         }
-        Object[] poolArray = new Object[pool.size()];
-        for (int i = 0; i < pool.size(); i++){
-            poolArray[i] = pool.get(i);
+        return pool.toArray();
+    }
+
+    public Object[] generateDoubleEventPool(User user){
+        if(user == null){
+            return null;
         }
-        return poolArray;
+        Event[] all = events.getApprovedEventList();
+        ArrayList<Event> pool = new ArrayList<Event>();
+        ArrayList<User> eligibleUsers = eligibleUserPool(user);
+        for (int i = 0; i < all.length; i ++){
+            Event curEvent = all[i];
+            if(curEvent instanceof Indoor){
+                Indoor indoor = (Indoor)curEvent;
+                User cur1 = indoor.getCurrentUser1();
+                User cur2 = indoor.getCurrentUser2();
+                User cur3 = indoor.getUser3();
+                User cur4 = indoor.getUser4();
+                if (cur1!= user && cur2!= user && cur3!= user && cur4!= user){
+                    int attendeeCount = 0;
+                    if (cur1 != null) attendeeCount++;
+                    if (cur2 != null) attendeeCount++;
+                    if (cur3 != null) attendeeCount++;
+                    if (cur4 != null) attendeeCount++;
+                    boolean allAttendeesEligible = true;
+                    if(attendeeCount >= 1 && attendeeCount <= 3){
+                        if (cur1 != null && !eligibleUsers.contains(cur1)) {
+                            allAttendeesEligible = false;
+                        }
+                        if (cur2 != null && !eligibleUsers.contains(cur2)) {
+                            allAttendeesEligible = false;
+                        }
+                        if (cur3 != null && !eligibleUsers.contains(cur3)) {
+                            allAttendeesEligible = false;
+                        }
+                        if (cur4 != null && !eligibleUsers.contains(cur4)) {
+                            allAttendeesEligible = false;
+                        }
+
+                        if (allAttendeesEligible) {
+                            pool.add(indoor);
+                        }
+                    }
+                }
+            }
+
+        }
+        return pool.toArray();
     }
 
     public boolean login(String username, String password){
@@ -103,9 +146,15 @@ public class Matchmaker {
         match.execute(pool);
         return match;
     }
-    public EventMatch generateEventMatch(User user){
-        EventMatch match = new EventMatch(user);
-        Object[] pool = generateEventPool(user);
+    public EventMatch generateSingleEventMatch(User user){
+        EventMatch match = new SingleEventMatch(user);
+        Object[] pool = generateSingleEventPool(user);
+        match.execute(pool);
+        return match;
+    }
+    public EventMatch generateDoubleEventMatch(User user){
+        EventMatch match = new DoubleEventMatch(user);
+        Object[] pool = generateDoubleEventPool(user);
         match.execute(pool);
         return match;
     }
@@ -115,7 +164,9 @@ public class Matchmaker {
         }else if (type == 2){
             return generateDistanceMatch(user);
         }else if (type == 3){
-             return generateEventMatch(user);
+             return generateSingleEventMatch(user);
+        }else if (type == 4){
+            return generateDoubleEventMatch(user);
         }
         return null;
     }

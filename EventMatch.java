@@ -37,6 +37,7 @@ public abstract class EventMatch extends Match{
     public int getRating() { return rating; }
     public void setEventType(String x){eventType = x;}
     public void setEvent(Event e) {event = e;}
+    public String getEventType(){return eventType;}
     @Override
     public boolean isExpire(){
         if(date == null || end == null){

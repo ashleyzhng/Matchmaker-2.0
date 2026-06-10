@@ -17,6 +17,7 @@ public class SingleEventMatch extends EventMatch{
                 ePool[i] = (Event)pool[i];
             }
             Event event = execute(ePool, 0, null, -1);
+            setScore(determineScore(event));
             LocalTime start = event.getStartTime();
             Duration duration = event.getDuration();
             LocalTime end = start.plus(duration);
@@ -29,7 +30,7 @@ public class SingleEventMatch extends EventMatch{
             if(event instanceof Virtual){
                 setEventType("Virtual");
             }else{
-                setEventType("Oudoor");
+                setEventType("Outdoor");
             }
             pair[1]=event.getCurrentUser1();
             storeMatch();
@@ -84,7 +85,11 @@ public class SingleEventMatch extends EventMatch{
         }
         double tagScore = countTags(e);
         double distanceScore = (distanceTier(e)*1.0 / DistanceMatch.MAX_DISTANCE_TIER) * 100;
-        return tagScore * EventMatch.LOCATION_WEIGHT + distanceScore * EventMatch.LOCATION_WEIGHT;
+        if(e instanceof Outdoor){
+            return tagScore * EventMatch.LOCATION_WEIGHT + distanceScore * EventMatch.LOCATION_WEIGHT;
+        }else{
+            return tagScore;
+        }
     }
 
     public int distanceTier(Event e){
@@ -139,9 +144,38 @@ public class SingleEventMatch extends EventMatch{
         
     }
 
-   public String toString(){
-        return "";
-   }
+   @Override
+    public String toString() {
+        String s = "=======================\n";
+        s += "Match Type: " + getEventType() + "\n";
+        s += "Event Name: " + getEvent().getTitle() + "\n";
+        s += "Date: " + getDate() + "\n";
+        s += "Start Time: " + getStart() + "\n";
+        s += "End Time: " + getEnd() + "\n";
+        s += "Compatibility Score: " + (getScore()) + "%\n";
+        s += "-----------------------\n";
+    
+        s += "User 1: ";
+        if (pair[0] != null) {
+            s += pair[0].getName() + "\n";
+            s += "User 1 Status: " + status + "\n";
+        } else {
+            s += "None\n";
+        }
+        
+        s += "-----------------------\n";
+    
+        s += "User 2: ";
+        if (pair[1] != null) {
+            s += pair[1].getName() + "\n";
+        } else {
+            s += "Still Searching...\n";
+        }
+        
+        s += "=======================\n";
+        
+        return s;
+    }
 
 
 }

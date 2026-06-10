@@ -327,6 +327,59 @@ public class DoubleEventMatch extends EventMatch {
 
     @Override
     public String toString() {
-        return "";
+        String s = "=======================\n";
+        s += "Match Type: " + getEventType() + " (Double Date)\n";
+        s += "Event Name: " + getEvent().getTitle() + "\n";
+        s += "Date: " + getDate() + "\n";
+        s += "Start Time: " + getStart() + "\n";
+        s += "End Time: " + getEnd() + "\n";
+        s += "Compatibility Score: " + (getScore()) + "%\n";
+        s += "=======================\n";
+        s += "       PAIR 1\n";
+        s += "-----------------------\n";
+    
+        s += "User 1 (Host): ";
+        if (pair1[0] != null) {
+            s += pair1[0].getName() + "\n";
+            s += "User 1 Status: " + status[0] + "\n";
+        } else {
+            s += "None\n";
+        }
+        
+        s += "-----------------------\n";
+    
+        s += "User 2 (Date): ";
+        if (pair1[1] != null) {
+            s += pair1[1].getName() + "\n";
+            s += "User 2 Status: " + status[1] + "\n";
+        } else {
+            s += "Still Searching...\n";
+        }
+        
+        s += "=======================\n";
+        s += "       PAIR 2\n";
+        s += "-----------------------\n";
+    
+        s += "User 3: ";
+        if (pair2[0] != null) {
+            s += pair2[0].getName() + "\n";
+            s += "User 3 Status: " + status[2] + "\n";
+        } else {
+            s += "Still Searching...\n";
+        }
+        
+        s += "-----------------------\n";
+    
+        s += "User 4: ";
+        if (pair2[1] != null) {
+            s += pair2[1].getName() + "\n";
+            s += "User 4 Status: " + status[3] + "\n";
+        } else {
+            s += "Still Searching...\n";
+        }
+        
+        s += "=======================\n";
+        
+        return s;
     }
 }

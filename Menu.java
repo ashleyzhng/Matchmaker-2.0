@@ -213,8 +213,10 @@ public class Menu {
         System.out.println("New Match Menu: ");
         System.out.println("1. Interest Match");
         System.out.println("2. Distance Match");
-        System.out.println("3. Event Match");
-        System.out.println("4. Exit");
+        System.out.println("3. Single Date Match");
+        System.out.println("4. Double Date Match");
+        System.out.println("Please note: Double dates have a much lower success rate!");
+        System.out.println("5. Exit");
         System.out.println("=======================");
         System.out.print("OPTION: ");
         int choice = sc.nextInt();
@@ -262,8 +264,11 @@ public class Menu {
                 System.out.println((i+1) + ". InterestMatch: Expiry Date is " + ((InterestMatch)match[i]).getExpiryDate());
             }else if (match[i] instanceof DistanceMatch){
                 System.out.println((i+1) + ". DistanceMatch: Expiry Date is " + ((DistanceMatch)match[i]).getExpiryDate());
+            }else if (match[i] instanceof SingleEventMatch){
+                EventMatch eMatch = (SingleEventMatch)match[i];
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
             }else{
-                EventMatch eMatch = (EventMatch)match[i];
+               EventMatch eMatch = (DoubleEventMatch)match[i];
                 System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
             }
         }
@@ -282,6 +287,10 @@ public class Menu {
     }
 
     public String singleMatchMenu(Match match, Scanner sc, User user){
+        if (match == null){
+            System.out.println("Match not available anymore!");
+            return "matchMenu";
+        }
         System.out.println("=======================");
         System.out.println(match);
         System.out.println("1. Accept  Match");
@@ -298,15 +307,19 @@ public class Menu {
         if (choice == 1){
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
-            }else if (match instanceof EventMatch){
-                ((EventMatch)match).updateDecision(PersonMatch.ACCEPT);
+            }else if (match instanceof SingleEventMatch){
+                ((SingleEventMatch)match).updateUserDecision(PersonMatch.ACCEPT);
+            }else{
+                ((DoubleEventMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
             }
             System.out.println("Decision Updated");
         }else if (choice == 2){
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).updateUserDecision(user, PersonMatch.REJECT);
-            }else if (match instanceof EventMatch){
-                ((EventMatch)match).updateDecision(PersonMatch.REJECT);
+            }else if (match instanceof SingleEventMatch){
+                ((SingleEventMatch)match).updateUserDecision(PersonMatch.REJECT);
+            }else{
+                ((DoubleEventMatch)match).updateUserDecision(user, PersonMatch.REJECT);
             }
             System.out.println("Decision Updated");
         }
