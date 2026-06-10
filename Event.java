@@ -4,6 +4,7 @@ public abstract class Event {
     private String startTime;
     private double duration;
     private double originalCost;
+    private double avgRating;
 
     private Tag categories;
     private boolean approved;
@@ -17,25 +18,19 @@ public abstract class Event {
     private boolean attended;
     private User[] attendanceHistory;
 
-    public Event(String title, String date, String startTime, double duration, double originalCost, Tag categories) {
+    public Event(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
         this.duration = duration;
         this.originalCost = originalCost;
-        this.categories = categories;
+        this.categories = new Tag(r, s, m, a, t, f, g, c, an, re);
         this.approved = false;
         this.attended = false;
+        this.attendanceHistory = new User[100];
         this.eventAdminFeedback = null;
         this.booked = false;
-    }
 
-    public void setUser(User u){
-        if(currentUser1 == null){
-            currentUser1 = u;
-        }else{
-            currentUser2 = u;
-        }
     }
 
     public User getCurrentUser1() {
@@ -116,8 +111,8 @@ public abstract class Event {
     public void setEventAdminFeedback(String eventAdminFeedback) {
         this.eventAdminFeedback = eventAdminFeedback;
     }
-
-    public boolean isBooked() {
+    
+    public boolean getBooked() {
         return booked;
     }
 
@@ -179,11 +174,15 @@ public abstract class Event {
         }
     }
 
+    public abstract boolean addUser(User user);
+
     public abstract void changeEventDetails();
 
     public abstract String approveEvent();
 
     public abstract double calculateCost();
+
+    public abstract void attendEvent(User user);
 
     public String toString() {
         return "Event{" +

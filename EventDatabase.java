@@ -176,16 +176,53 @@ public class EventDatabase {
     }
 
     public Event searchPendingEventByTitle(String title) {
-        for (int i = 0; i < numPendingEvents; i++) {
-            if (pendingEventList[i].getTitle().equalsIgnoreCase(title)) {
-                return pendingEventList[i];
+        sortEventByAlphaTitle();
+        int bottom = 0;
+        int top = numPendingEvents - 1;
+        boolean found = false;
+        int index = -1;
+        int middle;
+        while (bottom <= top && !found) {
+            middle = (bottom + top) / 2;
+            if (pendingEventList[middle].getTitle().equalsIgnoreCase(title)) {
+                found = true;
+                index = middle;
+            } else if (pendingEventList[middle].getTitle().compareToIgnoreCase(title) > 0) {
+                top = middle - 1;
+            } else {
+                bottom = middle + 1;
             }
         }
-        return null; 
+        return pendingEventList[index];
+    }
+
+    public boolean searchForApprovedEvent(Event event) {
+        for (int i = 0; i < numApprovedEvents; i++) {
+            if (approvedEventList[i].equals(event)) {
+                return true;
+            }
+        }
+        return false; 
     }
 
     public boolean bookEvent(Event event, User user1, User user2) {
         
         return true; 
+    }
+
+    public void cancelBookedEvent(Event event) {
+        if (searchForApprovedEvent(event) && event instanceof Indoor) {
+            event.setCurrentUser1(null);
+            event.setCurrentUser2(null);
+            ((Indoor) event).setUser3(null);
+            ((Indoor) event).setUser4(null);           
+        }
+        else {
+            event.setCurrentUser1(null);
+            event.setCurrentUser2(null);
+        }
+            event.setBooked(false);
+            event.setDate(null);
+            System.out.println("Refunded amount: $" + event.calculateCost());
     }
 }
