@@ -200,8 +200,35 @@ public class User extends Account {
         return appeal;
     }
 
+    public void printMatchHistory(){
+        System.out.println("Match History:");
+        for(int i = 0; i < matchHistory.size(); i++){
+            System.out.println(matchHistory.get(i));
+        }
+    }
+    public void printEventHistory(){
+        System.out.println("Event History:");
+        for(int i = 0; i < eventHistory.size(); i++){
+            System.out.println(eventHistory.get(i));
+        }
+    }
+    public void printHostedEvents(){
+        System.out.println("Hosted Events:");
+        for(int i = 0; i < eventHosted.size(); i++){
+            System.out.println(eventHosted.get(i));
+        }
+    }
+
+    public void printProfile(){
+        System.out.println("Name: " + name);
+        System.out.println("Birthday: " + birthday);
+        System.out.println("City: " + city);
+        System.out.println("Bio: " + bio);
+        System.out.println("Gender: " + gender);
+        System.out.println("Preferred Gender: " + preferredGender);
+    }
+
     public String toString(){
-        // double check this formatting later
-        return "Username: " + getUsername() + "\nName: " + name + "\nBirthday: " + birthday + "\nPostal Code: " + postalCode + "\nCity: " + city + "\nBio: " + bio + "\nGender: " + gender + "\nPreferred Gender: " + preferredGender + "\nEmail: " + getEmail() + "\nEmail Verified: " + isEmailVerified() + "\nAccount Status: " + isAccountStatus();
+        return "Username: " + getUsername() + "\nName: " + name + "\nBirthday: " + birthday + "\nPostal Code: " + postalCode + "\nCity: " + city + "\nBio: " + bio + "\nGender
     }
 }
