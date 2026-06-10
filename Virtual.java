@@ -1,3 +1,4 @@
+import java.time.*;
 import java.util.*;
 
 public class Virtual extends Event {
@@ -7,7 +8,7 @@ public class Virtual extends Event {
     private int password;
     private String[] discountCodes = {"DISCOUNT10", "DISCOUNT20", "DISCOUNT30"};
 
-    public Virtual(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String platform, int meetingID, int password) {
+    public Virtual(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String platform, int meetingID, int password) {
         super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.platform = platform;
         this.meetingID = meetingID;
@@ -78,11 +79,19 @@ public class Virtual extends Event {
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                setDate(sc.nextLine());
+                String userdate = sc.nextLine();
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
-                System.out.println("Enter new start time (HH:MM): ");
-                setStartTime(sc.nextLine());
+                String usertime = sc.nextLine();
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new duration (in hours): ");

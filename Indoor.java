@@ -1,4 +1,5 @@
 import java.util.*;
+import java.time.*;
 public class Indoor extends Event {
     private Scanner sc = new Scanner(System.in);
     private String location; //Note: This needs to be the postal code
@@ -7,7 +8,7 @@ public class Indoor extends Event {
     private User user3;
     private User user4;
 
-    public Indoor(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int floorNumber, String room) {
+    public Indoor(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int floorNumber, String room) {
         super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.location = location;
         this.floorNumber = floorNumber;
@@ -16,11 +17,11 @@ public class Indoor extends Event {
         this.user4 = null;
     }
 
-    public String getLocation(){
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location){
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -100,11 +101,20 @@ public class Indoor extends Event {
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                setDate(sc.nextLine());
+                String userdate = sc.nextLine();
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
-                setStartTime(sc.nextLine());
+                String usertime = sc.nextLine();
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new duration (in hours): ");
@@ -117,7 +127,19 @@ public class Indoor extends Event {
                 sc.nextLine(); 
                 break;
             case 6:
-                System.out.println("Enter new categories (comma-separated): ");
+                System.out.println("Enter new applicable categories (space-separated): ");
+                String usertags = sc.nextLine();
+                String[] taglist = usertags.split(" ");
+                String listtags = "";
+                for (int i = 0; i < taglist.length; i ++) {
+                    if (taglist[i].equals("religion")) {
+                        listtags += "1,";
+                    } else {
+                        listtags += "0,";
+                    }
+                    if (taglist[i].equals("religion"))
+
+                }
                 setCategories(new Tag(sc.nextLine().split(",")));
                 break;
             case 7:

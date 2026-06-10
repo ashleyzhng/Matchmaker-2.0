@@ -1,11 +1,12 @@
 import java.util.*;
+import java.time.*;
 public class Outdoor extends Event {
     private Scanner sc = new Scanner(System.in);
     private String location; //note: This needs to be the postal code
     private int temperature;
     private int precipitation;
 
-    public Outdoor(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int temperature, int precipitation) {
+    public Outdoor(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int temperature, int precipitation) {
         super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.location = location;
         this.temperature = temperature;
@@ -72,11 +73,20 @@ public class Outdoor extends Event {
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                setDate(sc.nextLine());
+                String userdate = sc.nextLine();
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
-                setStartTime(sc.nextLine());
+                String usertime = sc.nextLine();
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new duration (in hours): ");

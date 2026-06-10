@@ -41,7 +41,6 @@ public abstract class Event {
         this.eventAdminFeedback = null;
         this.booked = false;
         this.numPastAttendees = 0;
-
     }
 
     public User getCurrentUser1() {
@@ -142,15 +141,13 @@ public abstract class Event {
     }
 
     public boolean determineDatePassed() {
-        int yearnow = Integer.parseInt((todayDate + "").substring(0,4));
-        int daynow = Integer.parseInt((todayDate + "").substring(8, 10));
-        int monthnow = Integer.parseInt((todayDate + "").substring(5,7));
-
-        int daythis = Integer.parseInt(this.date.substring(8, 10));
-
-        int yearthis = Integer.parseInt(this.date.substring(0, 4));
-        
-        int monththis = Integer.parseInt(this.date.substring(5, 7));
+        int yearthis = date.getYear();
+        int monththis = date.getMonthValue();
+        int daythis = date.getDayOfMonth();
+  
+        int yearnow = todayDate.getYear();
+        int monthnow = todayDate.getMonthValue();
+        int daynow = todayDate.getDayOfMonth();
         
         if (yearthis < yearnow) {
             return true;
@@ -183,16 +180,18 @@ public abstract class Event {
     }
 
     public Event compareToTime(Event other) {
-        int yearthis = Integer.parseInt(this.date.substring(0, 4));
-        int yearother = Integer.parseInt(other.date.substring(0, 4));
-        int monththis = Integer.parseInt(this.date.substring(5, 7));
-        int monthother = Integer.parseInt(other.date.substring(5, 7));
-        int daythis = Integer.parseInt(this.date.substring(8, 10));
-        int dayother = Integer.parseInt(other.date.substring(8, 10));
-        int hourthis = Integer.parseInt(this.startTime.substring(0, 2));
-        int hourother = Integer.parseInt(other.startTime.substring(0, 2));
-        int minthis = Integer.parseInt(this.startTime.substring(3, 5));
-        int minother = Integer.parseInt(other.startTime.substring(3, 5));
+        int yearthis = this.date.getYear();
+        int monththis = this.date.getMonthValue();
+        int daythis = this.date.getDayOfMonth();
+        int hourthis = this.startTime.getHour();
+        int minthis = this.startTime.getMinute();
+       
+        int yearother = other.date.getYear();
+        int monthother = other.date.getMonthValue();
+        int dayother = other.date.getDayOfMonth();
+        int hourother = other.startTime.getHour();
+        int minother = other.startTime.getMinute();
+        
         if (yearthis < yearother) {
             return this;
         } else if (yearthis > yearother) {
