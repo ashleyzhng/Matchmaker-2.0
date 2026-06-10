@@ -39,9 +39,8 @@ public class AccountsDatabase {
         }
         return foundUser;
     }
-    /* 
     // add user from file
-    public Account searchByUsername(String targetUsername){
+    public User searchByUsername(String targetUsername){
         boolean found = false;
         User foundUser = null;
 
@@ -56,5 +55,4 @@ public class AccountsDatabase {
         return foundUser;
     }
     
-    */
 }

@@ -77,7 +77,17 @@ public class Matchmaker {
         return poolArray;
         
     }
-
+    public boolean login(String username, String password){
+        User[] users = accounts.getUsers();
+        for(int i = 0; i < users.length; i++){
+            if(users[i] != null && users[i].getUsername().equals(username) && users[i].correctPass(password)){
+                System.out.println("Login Successful");
+                return true;
+            }
+        }
+        System.out.println("Login Failed");
+        return false;
+    }
     public boolean changePass(User u, String curPass, String newPass){
         if(u.correctPass(curPass)){
             u.setPassword(newPass);
@@ -146,7 +156,9 @@ public class Matchmaker {
             return false;
         }
     } */
-
+    public User searchByUsername(String targetUsername){
+        return accounts.searchByUsername(targetUsername);
+    }
     public void getMainMenu(){
         System.out.println("Welcome to Matchmaker!");
         System.out.println("=======================");
@@ -155,5 +167,30 @@ public class Matchmaker {
         System.out.println("3. Create Account");
         System.out.println("4. Exit Program");
         System.out.println("=======================");
+        System.out.print("\nEnter your choice (number): ");
     }
+    public void getUserMenu(){
+        System.out.println("=======================");
+        System.out.println("1. Match!");
+        System.out.println("2. View current Matches ");
+        System.out.println("3. View Match History");
+        System.out.println("4. View Event History");
+        System.out.println("5. View Hosted Events");
+        System.out.println("6. View Profile");
+        System.out.println("7. Account Settings");
+        System.out.println("8. Logout");
+        System.out.println("=======================");
+        System.out.print("\nEnter your choice (number): ");
+    }
+
+    public void getAccountCreationMenu(){
+        System.out.println("=======================");
+        System.out.println("Pick Account Creation Method: ");
+        System.out.println("1. Load From File");
+        System.out.println("2. User Account");
+        System.out.println("3. Parent Account");
+        System.out.println("=======================");
+        System.out.print("OPTION: ");
+    }
+
 }
