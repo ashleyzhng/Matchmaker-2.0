@@ -2,6 +2,7 @@
 public class DistanceMatch extends PersonMatch{
    
     private int distanceTier;
+    public static final int MAX_DISTANCE_TIER = 6;
 
     public DistanceMatch(User u){
         super("distance", u);

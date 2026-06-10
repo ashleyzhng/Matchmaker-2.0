@@ -17,11 +17,10 @@ public abstract class Match{
     public abstract boolean isRejection();
     public abstract boolean isAcceptance();
     public abstract boolean isExpire();
-    public abstract void deleteMatch();
     public abstract void storeMatch();
     public abstract boolean prelimCheck(User u);
-    public abstract boolean checkGenderCompatibility(User u);
     public abstract boolean checkAgeCompatibility(User u);
+    public abstract boolean checkGenderCompatibilty(User u);
 
     
     public double compareScore(Match other){

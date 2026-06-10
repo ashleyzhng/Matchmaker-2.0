@@ -55,7 +55,7 @@ public abstract class PersonMatch extends Match{
         return expiryDate.isBefore(LocalDate.now());
     }
 
-    @Override
+    
     public void deleteMatch(){
         pair[0].deleteMatch(this);
 
@@ -81,14 +81,17 @@ public abstract class PersonMatch extends Match{
         return (rating[0]+rating[1])/2.0;
     }
 
+    @Override
     public boolean prelimCheck(User u){
         return checkGenderCompatibilty(u) && checkAgeCompatibility(u);
     }
 
+    @Override
     public boolean checkGenderCompatibilty(User u){
         return pair[0].getGender() == u.getPreferredGender() && u.getGender() == pair[0].getPreferredGender();
     }
-
+    
+    @Override
     public boolean checkAgeCompatibility(User u){
         if (u instanceof Teen){
             return true;
