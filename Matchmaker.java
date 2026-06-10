@@ -14,7 +14,7 @@ public class Matchmaker {
         }
         return generateEventPool(user);
     }
-    
+
     public Object[] generateUserPool(User user){
         User[] all = accounts.getUsers();
         ArrayList <Match> matchHistory = user.getMatchHistory();
@@ -25,10 +25,10 @@ public class Matchmaker {
         
         ArrayList <User> pool = new ArrayList<User>();
         for (int i = 0; i < all.length; i ++){
-            if (all[i] != null){
+            if (all[i] != null && all[i] != user){
                 boolean alreadyMatched = false;
-                for (int k = 0; i < matchHistory.size(); k ++){
-                   Match cur = matchHistory.get(i);
+                for (int k = 0; k < matchHistory.size(); k ++){
+                   Match cur = matchHistory.get(k);
                    if(cur instanceof PersonMatch && ((PersonMatch)cur).getSoulmate() == all[i]){
                      alreadyMatched = true;
                    }
@@ -50,32 +50,31 @@ public class Matchmaker {
         ArrayList <Event> all = events.getApprovedEventList();
         ArrayList <Event> pool = new ArrayList<Event>();
         for (int i = 0; i < all.size(); i ++){
-            
+            Event curEvent = all.get(i);
             User cur1 = all.get(i).getCurrentUser1();
             User cur2 = all.get(i).getCurrentUser2();
             
-            if(all.get(i) instanceof Virtual || all.get(i) instanceof Outdoor){
-                if (cur1 != null && cur2!= null){
-                    if(cur1 != user && cur2!= user){
-                        pool.add(all.get(i));
-                    }
+            if (curEvent instanceof Virtual || curEvent instanceof Outdoor) {
+                if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)) {
+                    pool.add(curEvent);
                 }
-            }else{
-                User cur3 = ((Indoor)all.get(i)).getUser3();
-                User cur4 = ((Indoor)all.get(i)).getUser4();
-                    if (cur1 != null && cur2!= null && cur3!= null && cur4!= null){
-                        if(cur1 != user && cur2!= user && cur3 != user && cur4 != user){
-                            pool.add(all.get(i));
-                        }
-                    }
+            }else if (curEvent instanceof Indoor) {
+                Indoor indoor = (Indoor) curEvent;
+                User cur3 = indoor.getUser3();
+                User cur4 = indoor.getUser4();
+                
+                if ((cur1 != user && cur2 != user && cur3 != user && cur4 != user) && 
+                    (cur1 == null || cur2 == null || cur3 == null || cur4 == null)) {
+                    pool.add(curEvent);
+                }
             }
+
         }
         Object[] poolArray = new Object[pool.size()];
         for (int i = 0; i < pool.size(); i++){
             poolArray[i] = pool.get(i);
         }
         return poolArray;
-        
     }
     public boolean login(String username, String password){
         User[] users = accounts.getUsers();

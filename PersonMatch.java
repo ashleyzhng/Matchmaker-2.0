@@ -100,7 +100,7 @@ public abstract class PersonMatch extends Match{
         elapse = Period.between(pair[0].getBirthday(), now);
         int mainAge = elapse.getYears();
         
-        if(u instanceof  Adult){
+        if(u instanceof Adult){
             Adult user = (Adult)u;
             Adult mainUser = (Adult)pair[0];
             return uAge >= mainUser.getPreferredMinAge() && uAge <= mainUser.getPreferredMaxAge() && mainAge >= user.getPreferredMinAge() && mainAge <= user.getPreferredMaxAge();
@@ -111,6 +111,15 @@ public abstract class PersonMatch extends Match{
         return uAge >= mainUser.getPreferredMinAge() && uAge <= mainUser.getPreferredMaxAge() && mainAge >= user.getPreferredMinAge() && mainAge <= user.getPreferredMaxAge();
         
     }
+
+    public void setRating(int r, User u){
+        if (u == pair[0]){
+            rating[0]=r;
+        }else{
+            rating[1]=r;
+        }
+    }
+
     @Override
     public String toString(){
         String s = "=======================\n";
@@ -136,12 +145,12 @@ public abstract class PersonMatch extends Match{
         if (pair[1] != null) {
             s += pair[1].getName() + "\n";
         } else {
-            s += "Searching...\n";
+            s += "Still Searching...\n";
         }
         s += "User 2 Status: " + status[1] + "\n";
         s += "User 2 Rating: " + rating[1] + "\n";
         s += "=======================\n";
         
         return s;
-}
+    }
 }
