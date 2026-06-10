@@ -7,8 +7,8 @@ public class Indoor extends Event {
     private User user3;
     private User user4;
 
-    public Indoor(String title, String date, String startTime, double duration, double originalCost, Tag categories, String location, int floorNumber, String room) {
-        super(title, date, startTime, duration, originalCost, categories);
+    public Indoor(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int floorNumber, String room) {
+        super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.location = location;
         this.floorNumber = floorNumber;
         this.room = room;
@@ -56,6 +56,25 @@ public class Indoor extends Event {
         this.user4 = user4;
     }
 
+    public boolean addUser(User user) {
+        if (getCurrentUser1() == null) {
+            setCurrentUser1(user);
+            return true;
+        } else if (getCurrentUser2() == null) {
+            setCurrentUser2(user);
+            return true;
+        } else if (user3 == null) {
+            setUser3(user);
+            return true;
+        } else if (user4 == null) {
+            setUser4(user);
+            return true;
+        } else {
+            System.out.println("Event is already fully booked.");
+            return false;
+        }
+    }
+
     public void changeEventDetails() {
         System.out.println("Changing event details for indoor event: " + getTitle());
         System.out.println("1. Current title: " + getTitle());
@@ -96,7 +115,7 @@ public class Indoor extends Event {
                 break;
             case 6:
                 System.out.println("Enter new categories (comma-separated): ");
-                setCategories(new Tag(sc.nextLine()));
+                setCategories(new Tag(sc.nextLine().split(",")));
                 break;
             case 7:
                 System.out.println("Enter new location: ");
