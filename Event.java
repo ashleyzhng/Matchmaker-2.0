@@ -1,12 +1,11 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Scanner;
 
 public abstract class Event {
     Scanner sc = new Scanner(System.in);
     private String title;
-    private String date;
-    private String startTime;
+    private LocalDate date;
+    private LocalTime startTime;
     private double duration;
     private double originalCost;
     private double avgRating;
@@ -29,7 +28,7 @@ public abstract class Event {
     LocalDate todayDate = LocalDate.now();
 
 
-    public Event(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
+    public Event(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
@@ -68,11 +67,11 @@ public abstract class Event {
     public void setCategories(Tag categories) {
         this.categories = categories;
     }
-    public String getStartTime(){
+    public LocalTime getStartTime(){
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
@@ -84,11 +83,11 @@ public abstract class Event {
         this.duration = duration;
     }
 
-    public String getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -233,7 +232,6 @@ public abstract class Event {
             numPastAttendees++;
             return true;
         } else {
-            attendanceHistory[0] = null;
             for (int i = 0; i < numPastAttendees-1; i ++) {
                 attendanceHistory[i] = attendanceHistory[i+1];
             }
@@ -264,7 +262,6 @@ public abstract class Event {
     public abstract String approveEvent();
 
     public abstract double calculateCost();
-
 
     public String toString() {
         return "Event{" +
