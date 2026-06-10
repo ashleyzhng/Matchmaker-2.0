@@ -63,9 +63,9 @@ public class Matchmaker {
         
     }
 
-    public boolean changePass(String curPass, String newPass){
-        if(correctPass(curPass)){
-            this.password = newPass;
+    public boolean changePass(User u, String curPass, String newPass){
+        if(u.correctPass(curPass)){
+            u.setPassword(newPass);
             return true;
         }else{
             return false;
