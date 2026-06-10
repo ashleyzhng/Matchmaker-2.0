@@ -59,20 +59,19 @@ public class Matchmaker {
         return poolArray; 
     }
         
+    //THIS IS WRONG BTW.
     public Object[] generateEventPool(User user){
-        ArrayList <Event> all = events.getApprovedEventList();
+       Event[] all = events.getApprovedEventList();
         ArrayList <Event> pool = new ArrayList<Event>();
          ArrayList <User> eligibleUser = eligibleUserPool(user);
-        for (int i = 0; i < all.size(); i ++){
-            Event curEvent = all.get(i);
-            User cur1 = all.get(i).getCurrentUser1();
-            User cur2 = all.get(i).getCurrentUser2();
+        for (int i = 0; i < all.length; i ++){
+            Event curEvent = all[i];
+            User cur1 = all[i].getCurrentUser1();
+            User cur2 = all[i].getCurrentUser2();
             
             if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)) {
                 pool.add(curEvent);
             }
-            
-
         }
         Object[] poolArray = new Object[pool.size()];
         for (int i = 0; i < pool.size(); i++){
@@ -80,7 +79,7 @@ public class Matchmaker {
         }
         return poolArray;
     }
-    
+
     public boolean login(String username, String password){
         User[] users = accounts.getUsers();
         for(int i = 0; i < users.length; i++){
