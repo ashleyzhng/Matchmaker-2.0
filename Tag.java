@@ -154,3 +154,20 @@ public class Tag {
         }
     }
 }
+/*
+public int input(int firstChoice, int lastChoice, Scanner sc){
+    int choice;
+    while(true){
+        System.out.print("OPTION: ");
+        if(!sc.hasNextInt()){
+            System.out.println("Invalid Input. Please try again.");
+            sc.next();
+        }else{
+            choice = sc.nextInt();
+            if(choice >= firstChoice && choice <= lastChoice){
+                return choice;
+            }
+        }
+    }
+}
+*/
