@@ -38,11 +38,6 @@ public class Virtual extends Event {
         this.password = password;
     }
 
-    public void attendEvent(User user) {
-        if (addUser(user)) {
-            System.out.println(user.getName() + " is attending the virtual event: " + getTitle());
-        }
-    }
 
     public boolean addUser(User user) {
         if (getCurrentUser1() == null) {
@@ -50,7 +45,7 @@ public class Virtual extends Event {
             return true;
         } else if (getCurrentUser2() == null) {
             setCurrentUser2(user);
-            
+            setBooked(true);
             return true;
         } else {
             System.out.println("Event is already fully booked.");

@@ -1,4 +1,9 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Scanner;
+
 public abstract class Event {
+    Scanner sc = new Scanner(System.in);
     private String title;
     private String date;
     private String startTime;
@@ -17,6 +22,10 @@ public abstract class Event {
 
     private boolean attended;
     private User[] attendanceHistory;
+
+    LocalTime todayTime = LocalTime.now();
+    LocalDate todayDate = LocalDate.now();
+
 
     public Event(String title, String date, String startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
         this.title = title;
@@ -120,6 +129,47 @@ public abstract class Event {
         this.booked = booked;
     }
 
+    public boolean getAttended() {
+
+        return attended;
+    }
+
+    public void setAttended(boolean attended) {
+
+        this.attended = attended;
+    }
+
+    public boolean determineDatePassed() {
+        int yearnow = Integer.parseInt((todayDate + "").substring(0,4));
+        int daynow = Integer.parseInt((todayDate + "").substring(8, 10));
+        int monthnow = Integer.parseInt((todayDate + "").substring(5,7));
+
+        int daythis = Integer.parseInt(this.date.substring(8, 10));
+
+        int yearthis = Integer.parseInt(this.date.substring(0, 4));
+        
+        int monththis = Integer.parseInt(this.date.substring(5, 7));
+        
+        if (yearthis < yearnow) {
+            return true;
+        } else if (yearthis > yearnow) {
+            return false;
+        } else { 
+            if (monththis < monthnow) {
+                return true;
+            } else if (monththis > monthnow) {
+                return false;
+            } else {
+                if (daythis < daynow) {
+                    return true;
+                } else {
+                    return false;
+                } 
+            }
+        }
+    
+    }
+
     public Event compareToTitle(Event other) {
         if (this.title.compareToIgnoreCase(other.title) > 0) {
             return this;
@@ -174,6 +224,19 @@ public abstract class Event {
         }
     }
 
+    public void attendEvent(User user) {
+        if (determineDatePassed() && getBooked() == true) {
+            setAttended(true);
+            System.out.println("How would you rate this event out of 5: ");
+            int rate = sc.nextInt();
+            
+        
+        } else {
+
+            System.out.println("Event has not occurred yet.");
+        }
+    }
+
     public abstract boolean addUser(User user);
 
     public abstract void changeEventDetails();
@@ -182,7 +245,6 @@ public abstract class Event {
 
     public abstract double calculateCost();
 
-    public abstract void attendEvent(User user);
 
     public String toString() {
         return "Event{" +

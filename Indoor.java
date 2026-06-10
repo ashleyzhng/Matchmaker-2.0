@@ -62,12 +62,15 @@ public class Indoor extends Event {
             return true;
         } else if (getCurrentUser2() == null) {
             setCurrentUser2(user);
+            setBooked(true);
             return true;
         } else if (user3 == null) {
             setUser3(user);
+            setBooked(false);
             return true;
         } else if (user4 == null) {
             setUser4(user);
+            setBooked(true);
             return true;
         } else {
             System.out.println("Event is already fully booked.");

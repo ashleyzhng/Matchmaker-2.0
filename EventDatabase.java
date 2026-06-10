@@ -205,11 +205,6 @@ public class EventDatabase {
         return false; 
     }
 
-    public boolean bookEvent(Event event, User user1, User user2) {
-        
-        return true; 
-    }
-
     public void cancelBookedEvent(Event event) {
         if (searchForApprovedEvent(event) && event instanceof Indoor) {
             event.setCurrentUser1(null);
