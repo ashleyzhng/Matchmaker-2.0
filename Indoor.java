@@ -127,20 +127,45 @@ public class Indoor extends Event {
                 sc.nextLine(); 
                 break;
             case 6:
-                System.out.println("Enter new applicable categories (space-separated): ");
+                System.out.println("Enter new applicable categories (space-separated, lowercase): ");
                 String usertags = sc.nextLine();
                 String[] taglist = usertags.split(" ");
-                String listtags = "";
+                int r = 0, s = 0, m = 0, a = 0, t = 0, f = 0, g = 0, c = 0, an = 0, re = 0;
                 for (int i = 0; i < taglist.length; i ++) {
                     if (taglist[i].equals("religion")) {
-                        listtags += "1,";
-                    } else {
-                        listtags += "0,";
+                        r = 1;
                     }
-                    if (taglist[i].equals("religion"))
-
+                    if (taglist[i].equals("sports")) {
+                        s = 1;
+                    } 
+                    if (taglist[i].equals("music")) {
+                        m = 1;
+                    } 
+                    if (taglist[i].equals("art")) {
+                        a = 1;
+                    }
+                    if (taglist[i].equals("traveling")) {
+                        t = 1;
+                    } 
+                    if (taglist[i].equals("fitness")) {
+                        f = 1;
+                    } 
+                    if (taglist[i].equals("gaming")) {
+                        g = 1;
+                    } 
+                    if (taglist[i].equals("cooking")) {
+                        c = 1;
+                    } 
+                    if (taglist[i].equals("animal")) {
+                        an = 1;
+                    } 
+                    if (taglist[i].equals("reading")) {
+                        re = 1;
+                    } 
+                    
                 }
-                setCategories(new Tag(sc.nextLine().split(",")));
+                Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
+                setCategories(newtags);
                 break;
             case 7:
                 System.out.println("Enter new location: ");
