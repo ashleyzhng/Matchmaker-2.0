@@ -46,8 +46,8 @@ public class User extends Account {
         return birthday;
     }
 
-    public void setBirthday(String b){
-        birthday = LocalDate.parse(b);
+    public void setBirthday(LocalDate b){
+        birthday = b;
     }
 
     public String getPostalCode(){
@@ -130,10 +130,6 @@ public class User extends Account {
         return interestTag;
     }
     
-    public boolean editProfile(String s){
-        return true;
-    }
-    
     public void storeMatch(Match m){
         matches[numMatches] = m;
         numMatches ++;
@@ -156,6 +152,31 @@ public class User extends Account {
             }
         }
     }
+    /* public void deleteMatch(String name){
+for(int i = 0; i < matches.length; i++){
+            if(matches[i] instanceof DoubleEventMatch && (EventMatch)matches[i].getEventTitle().equals(name)){
+                matches[i] = null;
+                numMatches--;
+                storeMatchHistory(m);
+                for(int j = i; j < matches.length - 1; j++){
+                    matches[j] = matches[j+1];
+                    matches[j+1] = null;
+                }
+            }
+        }
+}*/
+    public Event getEventMatch(String name){
+        for(int i = 0; i < matches.length; i++){
+            if(matches[i] instanceof EventMatch){ 
+                //lil problem here
+                if ((EventMatch)matches[i]).getEventTitle().equals(name)){
+                    return ((EventMatch)matches[i]).getEvent();
+                }
+            }
+        }   
+        return null;
+    }  
+
     public boolean maxMatches(){
         if(numMatches == MAX_MATCHES){
             return true;
@@ -188,6 +209,12 @@ public class User extends Account {
         e.getCategories().getFitness(), e.getCategories().getGaming(), e.getCategories().getCooking(),
         e.getCategories().getAnimal(), e.getCategories().getReading());
     }
+    public void updateMatches(){
+        for(int i = 0; i<numMatches; i++){
+           // if(matches[1].)
+        }
+    }
+
     public Appeal reportUser(User u, String reason){
         Appeal appeal = new Appeal(u, reason);
         // semd to admin in runner class
@@ -219,7 +246,7 @@ public class User extends Account {
         }
     }
 
-    public void printProfile(){
+    public void printProfile(){ // method needs to be overrided/overloaded in subclassses
         System.out.println("Name: " + name);
         System.out.println("Birthday: " + birthday);
         System.out.println("City: " + city);

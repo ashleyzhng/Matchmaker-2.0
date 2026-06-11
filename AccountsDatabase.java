@@ -17,8 +17,8 @@ public class AccountsDatabase {
             return false;
         }
     }
-    public void addUser(User u){
-        accounts.add(u);
+    public void addAccount(Account a){
+        accounts.add(a);
     }
     public User[] getUsers(){
         User[] userArray = new User[accounts.size()];
@@ -61,9 +61,6 @@ public class AccountsDatabase {
                 if (in.readLine().equals("Admin")){
                     accounts.add(new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine())));
                 } 
-                if(in.readLine().equals("Parent")){
-                    //accounts.add(new Parent)
-                }
                 if(in.readLine().equals("Teen")){
                     accounts.add(new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                 }

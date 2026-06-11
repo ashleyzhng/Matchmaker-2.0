@@ -13,4 +13,8 @@ public class AppealDatabase {
     public void setAppeals(ArrayList<Appeal> a){
         appeals = a;
     }
+
+    public String toString(){
+        return "";
+    }
 }

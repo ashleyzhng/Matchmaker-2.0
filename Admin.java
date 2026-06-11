@@ -1,21 +1,11 @@
 public class Admin extends Account {
-    private AccountsDatabase userDB; // change to similar to appealdatabase??
-
     //constructs, accessors mutators
 
     public Admin(String u, String p, String e, boolean ev){
         super(u, p, e, ev);
-        userDB = null;
     }
 
-    public AccountsDatabase getUserDB(){
-        return userDB;
-    }
-    public void setUserDB(AccountsDatabase adb){
-        userDB = adb;
-    }
-
-    public void viewAllUsers(){
+    public void viewAllUsers(AccountsDatabase userDB){
         User[] users = userDB.getUsers();
         for(int i = 0; i<users.length; i++){
             System.out.println(users[i].getUsername() + " - " + users[i].getName());
@@ -37,7 +27,7 @@ public class Admin extends Account {
     public void addAppeal(Appeal a, AppealDatabase ap){
         ap.getAppeals().add(a);
     }
-    public Admin promoteUser(User u){
+    public Admin promoteUser(User u, AccountsDatabase userDB){
         if(u == null || !(u instanceof User)){
             System.out.println("User not found.");
             return null;

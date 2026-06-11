@@ -3,6 +3,7 @@ import java.util.*;
 public class Matchmaker {
     EventDatabase events;
     AccountsDatabase accounts;
+    AppealDatabase appeals;
 
     public Matchmaker(){
         events = new EventDatabase();
@@ -11,6 +12,9 @@ public class Matchmaker {
 
     public AccountsDatabase getAccounts(){
         return accounts;
+    }
+    public AppealDatabase getAppeals(){
+        return appeals;
     }
     public ArrayList <User> eligibleUserPool(User user){
         User[] all = accounts.getUsers();

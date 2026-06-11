@@ -9,16 +9,16 @@ public class Menu {
         System.out.flush();
         System.out.println("Enter the following information to login('0' to exit):");
 
-        User user = null;
+        Account a = null;
         String username, password;
-        while(user == null){
+        while(a == null){
             System.out.print("Username: ");
             username = sc.next();
             if(username.equals("0")){
                 return new LoginResults("main", null);
             }
-            user = mm.searchByUsername(username);
-            if(user == null){
+            a = mm.searchByUsername(username);
+            if(a == null){
                 System.out.println("Username not found. Please try again.");
             }
         }
@@ -29,8 +29,12 @@ public class Menu {
             if(password.equals("0")){
                 return new LoginResults("main", null);
             }
-            if(user.correctPass(password)){
-                return new LoginResults("login", user);
+            if(a.correctPass(password)){
+                if(a instanceof User){
+                    return new LoginResults("user", a);
+                }else{
+                    return new LoginResults("admin", a);
+                }
             }
 
             System.out.println("Incorrect password. Please try again.");
@@ -59,7 +63,7 @@ public class Menu {
         }
         return "";
     }
-    public String getUserMenu(User u, Scanner sc){
+    public String getUserMenu(User u, Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
@@ -78,62 +82,254 @@ public class Menu {
             u.printProfile();
             return "user";
         }else if(choice == 4){
-            return "accountSettings";  
-        }else{
-            System.out.println("Logout successful.");
-            return "logout"; 
+            return getAccountSettingsMenu(sc, u, mm); 
         }
-        return "";
+        System.out.println("Logout successful.");
+        return "logout"; 
     }
 
-    public void getAccountSettingsMenu(){
+    public String getAccountSettingsMenu(Scanner sc, Account a, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Account Settings: ");
-        System.out.println("1. Change Username");
-        System.out.println("2. Change Password");
-        System.out.println("3. Verify Email");
-        System.out.println("4. Inactivate Account");
-        System.out.println("5. Delete Account");
-        System.out.println("6. Other Settings");
+        System.out.println("1. Edit Account Details");
+        System.out.println("2. Verify Email");
+        System.out.println("3. Delete Account");
+        System.out.println("4. GO BACK");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
+        int choice = input(1,4,sc);
+        if(choice == 1){
+            if(a instanceof User){
+                userChangeDetails((User)a, sc, mm);
+                return "user";
+            }else if(a instanceof Admin){
+                accountChangeDetails(a, sc, mm);
+                return "admin";
+            }else{
+                accountChangeDetails(a, sc, mm);
+                return "parent";
+            }
+        }else if(choice == 2){
+            a.setEmailVerified(true);
+            System.out.println("Email verified.");
+            return "user";
+        }else if(choice == 3){
+            System.out.print("Enter Password to delete account: ");
+            String pass = sc.nextLine();
+            System.out.println("Account Deleted Succesfully. Logging out.");
+            mm.getAccounts().deleteAccount(a, pass);
+            return "logout";
+        }
+        return "user";
     }
 
-    public String getAdminMenu(){
+    public void userChangeDetails(User u, Scanner sc, Matchmaker mm){
+        System.out.println("=======================");
+        System.out.println("Choose one of the following to change");
+        System.out.println("1. Username");
+        System.out.println("2. Password");
+        System.out.println("3. Email");
+        System.out.println("4. name");
+        System.out.println("5. birthday");
+        System.out.println("6. postalCode");
+        System.out.println("7. city");
+        System.out.println("8. bio");
+        System.out.println("9. gender");
+        System.out.println("10. preferredGender");
+        int choice;
+        if(u instanceof Adult){
+            System.out.println("11. occupation");
+            System.out.println("12. marital status");
+            System.out.println("13. preferred max age");
+            System.out.println("14. preferred min age");
+            System.out.println("=======================");
+            choice = input(1,14,sc);
+        }else if(u instanceof Senior){
+            System.out.println("11. occupation");
+            System.out.println("12. marital status");
+            System.out.println("13. preferred max age");
+            System.out.println("14. preferred min age");
+            System.out.println("15. mbility mimitations");
+            System.out.println("=======================");
+            choice = input(1,15,sc);
+        }else{
+            System.out.println("=======================");
+            choice = input(1,10,sc);
+        }
+        editProfile(choice, u, sc, mm);
+    }
+
+    public void accountChangeDetails(Account a, Scanner sc, Matchmaker mm){
+        System.out.println("=======================");
+        System.out.println("Choose one of the following to change");
+        System.out.println("1. Username");
+        System.out.println("2. Password");
+        System.out.println("3. Email");
+        System.out.println("=======================");
+        int choice = input(1,3,sc);
+        editProfile(choice, a, sc, mm);
+    }
+
+    public void editProfile(int choice, Account a, Scanner sc, Matchmaker mm){
+        User u = null;
+        if(a instanceof User){
+            u = (User)a;
+        }
+        switch(choice) {
+            case 1:
+                System.out.print("Enter new username: ");
+                String username = sc.nextLine();
+                boolean userExists = mm.getAccounts().usernameExists(username);
+                    while(userExists){
+                        System.out.println("Username already exsits. Please input another username");
+                        System.out.print("Username: ");
+                        username = sc.next();
+                        userExists = mm.getAccounts().usernameExists(username);
+                    }
+                a.setUsername(sc.nextLine());
+                break;
+
+            case 2:
+                System.out.print("Enter new password: ");
+                a.setPassword(sc.nextLine());
+                break;
+
+            case 3:
+                System.out.print("Enter new email: ");
+                a.setEmail(sc.nextLine());
+                System.out.print("Email needs to be re-verified");
+                a.setEmailVerified(false);
+                break;
+
+            case 4:
+                System.out.print("Enter new name: ");
+                u.setName(sc.nextLine());
+                break;
+
+            case 5:
+                u.setBirthday(validLocalDate(sc)); 
+                break;
+
+            case 6:
+                System.out.print("Enter new postal code: ");
+                u.setPostalCode(sc.nextLine());
+                break;
+
+            case 7:
+                System.out.print("Enter new city: ");
+                u.setCity(sc.nextLine());
+                break;
+
+            case 8:
+                System.out.print("Enter new bio: ");
+                u.setBio(sc.nextLine());
+                break;
+
+            case 9:
+                System.out.print("Enter new Gender: (Male - 1 Female - 2 Other - 3) ");
+                int choice2 = input(1,3,sc);
+                    if(choice2 == 1){
+                        u.setGender('M');
+                    }else if(choice2 ==2){
+                        u.setGender('F');
+                    }else{
+                        u.setGender('O');
+                    }
+                break;
+
+            case 10:
+                System.out.print("Enter new preferred gender: (Male - 1 Female - 2 Other - 3) ");
+                choice2 = input(1,3,sc);
+                    if(choice2 == 1){
+                        u.setPreferredGender('M');
+                    }else if(choice2 ==2){
+                        u.setPreferredGender('F');
+                    }else{
+                        u.setPreferredGender('O');
+                    }
+                break;
+
+            case 11:
+                System.out.print("Enter occupation: ");
+                if(u instanceof Adult){
+                    ((Adult)u).setOccupation(sc.nextLine());
+                }else{
+                    ((Senior)u).setOccupation(sc.nextLine());
+                }
+                break;
+
+            case 12:
+                System.out.print("Enter marital status: ");
+                if(u instanceof Adult){
+                    ((Adult)u).setMaritalStatus(sc.nextLine());
+                }else{
+                    ((Senior)u).setMaritalStatus(sc.nextLine());
+                }
+                break;
+
+            case 13:
+                System.out.print("Enter maximum preferred age (max: 100)");
+                choice2 = input(Adult.MIN_AGE, 100, sc);
+                if(u instanceof Adult){
+                    ((Adult)u).setPreferredMaxAge(choice2);
+                }else{
+                    ((Senior)u).setPreferredMaxAge(choice2);
+                }
+                sc.nextLine();
+                break;
+
+            case 14:
+                System.out.print("Enter minimum preferred age (min: " + Adult.MIN_AGE);
+                choice2 = input(Adult.MIN_AGE, 100, sc);
+                if(u instanceof Adult){
+                    ((Adult)u).setPreferredMinAge(choice2);
+                }else{
+                    ((Senior)u).setPreferredMinAge(choice2);
+                }
+                sc.nextLine();
+                break;
+
+            case 15:
+                System.out.print("Enter mobility limitations (true/false): ");
+                ((Senior)u).setHasMobilityLimitations(Boolean.parseBoolean(sc.nextLine()));
+                break;
+        }
+    }
+
+    public String getAdminMenu(Scanner sc, Matchmaker mm, Admin ad){
         System.out.println("=======================");
         System.out.println("Admin Menu: ");
         System.out.println("1. View All Users");
         System.out.println("2. View User Info");
         System.out.println("3. View All Appeals");
         System.out.println("4. Promote User to Admin");
+        System.out.println("5. Logout");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
-        return "";
-    }
-
-    public String getParentMenu(){
-        System.out.println("=======================");
-        System.out.println("Parent Menu: ");
-        System.out.println("1. View Child's Matches");
-        System.out.println("2. View Child's Match History");
-        System.out.println("3. View Child's Event History");
-        System.out.println("4. View Child's Hosted Events");
-        System.out.println("5. View Child's Profile");
-        System.out.println("=======================");
-        System.out.print("OPTION: ");
-        return "";
+        int choice = input(1,5,sc);
+        if(choice == 1){
+            ad.viewAllUsers(mm.getAccounts());
+            return "admin";
+        }else if(choice == 2){
+            System.out.println("Enter username: ");
+            String username = sc.nextLine();
+            ad.viewUserInfo(mm.getAccounts().searchByUsername(username));
+            return "admin";
+        }else if(choice == 3){
+            ad.viewAllAppeals(mm.getAppeals());
+            return "admin";
+        }
+        return "Logout";
     }
 
     public String resetPassword(Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("=======================");
-        System.out.println("ENTER: ");
+        System.out.println("ENTER the following information");
         System.out.print("Username: ");
         String username = sc.next();
         System.out.print("Email: ");
         String email = sc.next();
         User u = mm.searchByUsername(username);
-        if(u != null && u.getEmail().equals(email)){
+        if(u != null && u.getEmail().equals(email)){ // use editProfile  method
             if(u.isEmailVerified()){
                 System.out.println("Enter new password: ");
                 String newPass = sc.next();
@@ -145,7 +341,7 @@ public class Menu {
                 return "main";
             }
         }
-        return "";
+        return "main";
     }
 
     public String getCreateAccountMenu(Scanner sc, Matchmaker mm){
@@ -154,8 +350,7 @@ public class Menu {
         System.out.println("Pick Account Creation Method");
         System.out.println("1. Load from File");
         System.out.println("2. User Account");
-        System.out.println("3. Parent Account");
-        System.out.println("4. GO BACK");
+        System.out.println("3. GO BACK");
         System.out.println("=======================");
         int choice = input(1,4,sc);
         if(choice == 1){
@@ -166,15 +361,13 @@ public class Menu {
             createUser(sc, mm);
             System.out.println("Account Created Succesfully. Please Login to start Matching!");
             return "main";
-        }else if(choice == 3){
-            //parent acc
         }
         return "main";
     }
 
     public void createUser(Scanner sc, Matchmaker mm){ 
         System.out.flush();
-        System.out.println("ENTER THE FOLLOWING INFORMATION (must complete to return to main menu)" );
+        System.out.println("ENTER THE FOLLOWING INFORMATION" );
         System.out.print("Username: ");
         String username = sc.next();
             boolean userExists = mm.getAccounts().usernameExists(username);
@@ -223,14 +416,14 @@ public class Menu {
             String occupation = sc.nextLine(); 
             System.out.print("Marital status: ");
             String maritalStatus = sc.nextLine();
-            System.out.print("maximum preferred age (max: 100");
+            System.out.print("maximum preferred age (max: 100)");
             int maxAge = input(Adult.MIN_AGE, 100, sc);
             System.out.print("minimum preferred age (min: " + Adult.MIN_AGE);
             int minAge = input(Adult.MIN_AGE, 100, sc);
             System.out.print("mobility status, invalid input will be treated as false (true/false): ");
             boolean mobilityStatus = Boolean.parseBoolean(sc.nextLine()); 
             Tag interestTag = tagMenu(sc);
-            mm.getAccounts().addUser(new Senior(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, mobilityStatus, interestTag));
+            mm.getAccounts().addAccount(new Senior(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, mobilityStatus, interestTag));
         }else if(age > Adult.MIN_AGE){
             System.out.println("Occupation: ");
             String occupation = sc.nextLine(); 
@@ -241,10 +434,10 @@ public class Menu {
             System.out.print("minimum preferred age (min: " + Adult.MIN_AGE);
             int minAge = input(Adult.MIN_AGE, 100, sc);
             Tag interestTag = tagMenu(sc);
-            mm.getAccounts().addUser(new Adult(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, interestTag));
+            mm.getAccounts().addAccount(new Adult(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, interestTag));
         }else if(age > Teen.MIN_AGE){
             Tag interestTag = tagMenu(sc);
-            mm.getAccounts().addUser(new Teen(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
+            mm.getAccounts().addAccount(new Teen(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
         }else{
             System.out.println("You are too young to use the service. Minmium age is 13");
         }
@@ -253,6 +446,7 @@ public class Menu {
     public Tag tagMenu(Scanner sc){
         int religion = 0, sports = 0, music = 0, art = 0, traveling = 0, fitness = 0, gaming = 0, cooking = 0, animal = 0, reading = 0;
         // prompts
+        System.out.println("Information can not be changed later.");
         System.out.print("Are you interested in religion? Enter Yes - 1, No - 2): ");
         int choice = input(1,2,sc);
         if(choice == 1){ 

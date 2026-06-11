@@ -8,7 +8,7 @@ public class MatchmakerRunner{
 
         boolean running = true;
         String currentMenu = "main";
-        User currentAccount = null;
+        Account currentAccount = null;
 
         while(running){
             switch (currentMenu){
@@ -18,20 +18,16 @@ public class MatchmakerRunner{
                 case "login":
                     LoginResults loginResults = menu.login(sc, system);
                     currentMenu = loginResults.getNextMenu();
-                    currentAccount = loginResults.getUser();
+                    currentAccount = loginResults.getAccount();
                     break;
                 case "user":
-                    // remove expired/rejected matches
-                    // (User)currentAccount.updateMatches();
-                    menu.getUserMenu(currentAccount, sc); //change return type
+                    ((User)currentAccount).updateMatches();
+                    menu.getUserMenu((User)currentAccount, sc, system); //change return type
                     break;
                 case "admin":
-                    // do later  
+                    currentMenu = menu.getAdminMenu(sc, system, (Admin)currentAccount); 
                     break;
                 case "parent":
-                    // do later
-                    break;
-                case "accountSettings":
                     // do later
                     break;
                 case "createAccount":
