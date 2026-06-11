@@ -205,6 +205,15 @@ public class EventDatabase {
         return false; 
     }
 
+        public boolean searchForPendingEvent(Event event) {
+        for (int i = 0; i < numPendingEvents; i++) {
+            if (pendingEventList[i].equals(event)) {
+                return true;
+            }
+        }
+        return false; 
+    }
+
     public void cancelBookedEvent(Event event) {
         if (searchForApprovedEvent(event) && event instanceof Indoor) {
             event.setCurrentUser1(null);

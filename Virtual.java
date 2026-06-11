@@ -61,12 +61,34 @@ public class Virtual extends Event {
         return 0;
     }
 
+    public double calculateCost() {
+        System.out.println("Discount code? (Y/N): ");
+        String response = sc.nextLine();
+        if (response.equalsIgnoreCase("N")) {
+            return getOriginalCost();
+        } else {
+            System.out.println("Enter discount code: ");
+            String code = sc.nextLine();     
+                switch (code.toUpperCase()) {
+                    case "DISCOUNT10":
+                        return getOriginalCost() * 0.9; // 10% discount
+                    case "DISCOUNT20":
+                        return getOriginalCost() * 0.8; // 20% discount
+                    case "DISCOUNT30":
+                        return getOriginalCost() * 0.7; // 30% discount
+                    default:
+                        System.out.println("Invalid discount code. No discount applied.");
+                        return getOriginalCost();
+                }       
+        }
+    }
+
     public boolean autoApproveEvent() {
         if (platform == null || meetingID == 0 || password == 0) {
             setApproved(false);
             setEventAdminFeedback("Rejected: lack of meeting info");
         return false;
-    }
+        }
         return true;
     }
 

@@ -129,9 +129,7 @@ public abstract class Event {
     
     public boolean getBooked() {
         return booked;
-    }
-
-    
+    }   
 
     public void setBooked(boolean booked) {
         this.booked = booked;
@@ -267,8 +265,6 @@ public abstract class Event {
     public abstract boolean addUser(User user);
 
     public abstract boolean autoApproveEvent();
-
-    public abstract String approveEvent();
 
     public abstract double calculateCost();
 
