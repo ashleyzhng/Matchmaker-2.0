@@ -1,18 +1,40 @@
 import java.time.*;
+/*
+   File Name: PersonMatch.java
+   Name: Ashley Zhong
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The PersonMatch class is an abstract subclass of Match. It stores 
+   person-related information such as match type, expiry date, user pair, status, and ratings. It also
+   defines abstract methods that subclasses must implement to matching alogrithims,
+   calculate score, and manage person-based matches.
+*/
 public abstract class PersonMatch extends Match{
+    // status constants
     public static final char PENDING = 'P';
     public static final char ACCEPT = 'A';
     public static final char REJECT = 'R';
-    private final String matchType;
-    private final LocalDate expiryDate;
-
-    public static final int MATCH_LIFETIME = 1;
     
+    //match type: "Interest" or "Distance"
+    private final String matchType;
+    //expiry date for the match, set to 2 days after creation (11:59 PM on the 2nd day)
+    private final LocalDate expiryDate;
+    //match pair and status/rating arrays
+    public static final int MATCH_LIFETIME = 1;
+    // pair[0] is the owner of the match, pair[1] is the soulmate
     private User[] pair = new User [2];
+    // status[0] is the owner's decision, status[1] is the soulmate's decision
     private char[] status = new char[2];
+    //rating[0] is the owner's rating, rating[1] is the soulmate's rating, -1 if not rated yet
     private int[] rating = new int[2];
 
    
+    /*
+     * Constructor for the PersonMatch class
+     * Parameters: m - the match type, u - the user for whom to create the match
+     */
     public PersonMatch(String m, User u){
         super();
         matchType = m;
@@ -24,7 +46,25 @@ public abstract class PersonMatch extends Match{
         rating[0] = -1;
         rating[1] = -1;
     }
-    
+    /*
+     * Constructor for the PersonMatch class - used for reading in file for User
+     * Parameters: score - the match score, m - the match type, u - the owner of the match, 
+     * s - the soulmate, exp - the expiry date, ownerStatus - the owner's decision, 
+     * soulmateStatus - the soulmate's decision, ownerRating - the owner's rating, soulmateRating - the soulmate's rating
+     */
+    public PersonMatch(double score, String m, User u, User s, String exp, char ownerStatus, char soulmateStatus, int ownerRating, int soulmateRating){
+        super(score);
+        matchType = m;
+        expiryDate = LocalDate.parse(exp);
+        pair[0]= u;
+        pair[1]= s;
+        status[0] = ownerStatus;
+        status[1] = soulmateStatus;
+        rating[0] = ownerRating;
+        rating[1] = soulmateRating;
+    }
+
+    //---accessors and mutators---
     public User getOwner(){
         return pair[0];
     }
@@ -37,38 +77,67 @@ public abstract class PersonMatch extends Match{
     public LocalDate getExpiryDate(){
         return expiryDate;
     }
+    public void setRating(int r, User u){
+        if (u == pair[0]){
+            rating[0]=r;
+        }else{
+            rating[1]=r;
+        }
+    }
 
-    @Override
+    ///---abstract methods that subclasses must implement, refer to subclasses for further details---
     public abstract void execute(Object[] pool);
     
-    @Override
+    /*
+     * Checks if the match has been rejected by both users
+     *Parameters: none
+     * Returns true if both users have rejected the match, false otherwise
+     */
     public boolean isRejection(){
         return status[0]== REJECT && status[1]==REJECT;
     }
+
+    /*
+     * Checks if the match has been accepted by both users
+     * Parameters: none
+     * Returns true if both users have accepted the match, false otherwise
+     */
     @Override
     public boolean isAcceptance(){
         return status[0]== ACCEPT && status[1]==ACCEPT;
     }
-    
+    /*
+     * Checks if the match has expired
+     * Parameters: none
+     * Returns true if the match has expired, false otherwise
+     */
     @Override
     public boolean isExpire(){
         return expiryDate.isBefore(LocalDate.now());
     }
-
-    
+    /*
+     * Deletes the match from both users
+     * Parameters: none
+     * Returns: none
+     */
     public void deleteMatch(){
         pair[0].deleteMatch(this);
-
-        //CANNOT DO THIS, need ot make a new copy, soulmate stuff is different
         pair[1].deleteMatch(this);
     }
-
-    @Override
+    /*
+     * Stores the match in both users' records
+     * Parameters: none
+     * Returns: none
+     */
     public void storeMatch(){
         pair[0].storeMatch(this);
         pair[1].storeMatch(this);
     }
-
+    /* 
+     * Updates the decision of a user in the match
+     * Parameters: u - the user whose decision to update, c - the new decision
+     * Returns: none
+     */
     public void updateUserDecision(User u, char c){
         if (u == pair[0]){
             status[0]=c;
@@ -76,21 +145,37 @@ public abstract class PersonMatch extends Match{
             status[1]=c;
         }
     }
-
+    /*
+     * Gets the average rating of the match
+     * Parameters: none
+     * Returns: the average rating
+     */
     public double getAverageRating(){
         return (rating[0]+rating[1])/2.0;
     }
-
+    /*  
+     * Checks the preliminary criteria for a user
+     * Parameters: u - the user to check
+     * Returns: true if the user meets the criteria, false otherwise
+     */
     @Override
     public boolean prelimCheck(User u){
         return checkGenderCompatibilty(u) && checkAgeCompatibility(u);
     }
-
+    /*
+     * Checks gender compatibility between users
+     * Parameters: u - the user to check
+     * Returns: true if the users are compatible, false otherwise
+     */
     @Override
     public boolean checkGenderCompatibilty(User u){
         return pair[0].getGender() == u.getPreferredGender() && u.getGender() == pair[0].getPreferredGender();
     }
-    
+    /*
+     * Checks age compatibility between users
+     * Parameters: u - the user to check
+     * Returns: true if the users are compatible, false otherwise
+     */
     @Override
     public boolean checkAgeCompatibility(User u){
         if (u instanceof Teen){
@@ -117,13 +202,10 @@ public abstract class PersonMatch extends Match{
         
     }
 
-    public void setRating(int r, User u){
-        if (u == pair[0]){
-            rating[0]=r;
-        }else{
-            rating[1]=r;
-        }
-    }
+    /*
+     * The string representation of the match
+     * Returns: a string containing the match details
+     */
 
     @Override
     public String toString(){
