@@ -1,50 +1,126 @@
 import java.time.*;
+/*
+   File Name: DoubleEventMatch.java
+   Name: Ashley Zhong
+   Class: ICS4U1
+   Date: June 2026
 
+   Description:
+   The DoubleEventMatch class extends EventMatch and represents a group-based
+   matchmaking system involving two pairs of users matched to a single event.
+   It evaluates compatibility across multiple users, organizes participants
+   into pairs, and manages match storage, validation, and scoring.
+*/
 public class DoubleEventMatch extends EventMatch {
+    //First pair of users (primary match group)
     private User[] pair1 = new User[2];
+    //Second pair of users (secondary match group)
     private User[] pair2 = new User[2];
+    //status tracking for up to 4 users (P=Pending, A = Accepted, R = Rejected)
     private char[] status = new char[4]; 
+    //rating tracking for up to 4 users
+    private int[] rating = new int [4];  // -1 if there is no rating
 
+    /*
+     * Constructor for DoubleEventMatch
+     * Parameters: u - the first user in the primary match group
+     * Returns: None
+     */
     public DoubleEventMatch(User u) {
         super();
         pair1[0] = u;    
         status[0] = 'P'; 
         status[1] = 'P'; 
-        status[2] = 'P'; 
+        status[2] = 'P';
+        status[3] = 'P'; 
     }
 
-    @Override
-    public void execute(Object[] pool) {
-        if (pool != null && pool.length > 0) {
-            Event[] ePool = new Event[pool.length];
-            for (int i = 0; i < pool.length; i++) {
-                ePool[i] = (Event) pool[i];
-            }
-            
-            Event event = execute(ePool, 0, null, -1);
-            
-            if (event != null) {
-                LocalTime start = event.getStartTime();
-                Duration duration = event.getDuration();
-                LocalTime end = start.plus(duration);
-                LocalDate date = event.getDate();
-                
-                setStart(start);
-                setEnd(end);
-                setDuration(duration);
-                setDate(date);
-                setEventType("Indoor");
-                setEvent(event); 
-                
-                sortIncomingUsers(event.getCurrentUser1(), event.getCurrentUser2(), ((Indoor)event).getUser3());
-                
-                storeMatch();
-                event.addUser(pair1[0]); 
-            }
-        }
+    /*
+     * Constructor for DoubleEventMatch
+     * Parameters: score - the compatibility score of the match
+     *             e - the event title
+     *             s - the event location
+     *             en - the event description
+     *             d - the event date
+     *             dur - the event duration
+     *             eve - the event object
+     *             u1, u2, u3, u4 - the four users involved in the match
+     *             s1, s2, s3, s4 - the status of each user (P = Pending, A = Accepted, R = Rejected)
+     *             r1, r2, r3, r4 - the rating of each user (-1 if no rating)
+     * Returns: None
+     */
+    public DoubleEventMatch(double score, String e, String s, String en, String d, String dur, Event eve, User u1, User u2, User u3, User u4, char s1, char s2, char s3, char s4, int r1, int r2, int r3, int r4) {
+        super(score, e, s, en, d, dur, eve);
+        pair1[0] = u1;
+        pair1[1] = u2;
+        pair2[0] = u3;
+        pair2[1] = u4;
+        status[0] = s1;
+        status[1] = s2;
+        status[2] = s3;
+        status[3] = s4;
+        rating[0] = r1;
+        rating[1] = r2;
+        rating[2] = r3;
+        rating[3] = r4;
     }
 
-    public Event execute(Event[] pool, int idx, Event best, double maxScore) {
+     /*
+      * Executes the matchmaking process for a double event match
+      * Parameters: pool - an array of potential events to match against
+      * Returns: None (the method updates the state of the match and involved users)
+      */
+     @Override   
+     public void execute(Object[] pool) {
+         if (pool != null && pool.length > 0) {
+             Event[] ePool = new Event[pool.length];
+             for (int i = 0; i < pool.length; i++) {
+                 ePool[i] = (Event) pool[i];
+             }
+             
+             Event event = execute(ePool, 0, null, -1);
+             
+             if (event != null) {
+                 LocalTime start = event.getStartTime();
+                 Duration duration = event.getDuration();
+                 LocalTime end = start.plus(duration);
+                 LocalDate date = event.getDate();
+                 
+                 setStart(start);
+                 setEnd(end);
+                 setDuration(duration);
+                 setDate(date);
+                 setEventType("Indoor");
+                 setEvent(event); 
+                 
+                 sortIncomingUsers(event.getCurrentUser1(), event.getCurrentUser2(), ((Indoor)event).getUser3());
+                 setEventTitle(event.getTitle());
+                 
+                 if (pair1[1] != null) {
+                     status[1] = pair1[1].getEventMatch(getEvent().getTitle()).getStatus(pair1[1]);
+                 }
+                 if (pair2[0] != null) {
+                     status[2] = pair2[0].getEventMatch(getEvent().getTitle()).getStatus(pair2[0]);
+                 }
+                 if (pair2[1] != null) {
+                     status[3] = pair2[1].getEventMatch(getEvent().getTitle()).getStatus(pair2[1]);
+                 }
+
+                 storeMatch();
+                 event.addUser(pair1[0]); 
+             }
+         }
+     }
+
+    /*
+     * Executes the matchmaking process for a double event match
+     * Parameters: pool - an array of potential events to match against
+     *             idx - the current index in the event pool
+     *             best - the best event found so far
+     *             maxScore - the maximum compatibility score found so far
+     * Returns: The best matching event or null if none found
+     */
+    private Event execute(Event[] pool, int idx, Event best, double maxScore) {
         if (pool == null || pool.length == 0) {
             return null;
         }
@@ -62,6 +138,11 @@ public class DoubleEventMatch extends EventMatch {
         return execute(pool, idx + 1, best, maxScore);
     }
 
+    /*
+     * Checks if the people in an event has one that is a valid candidate for matching with the initial user
+     * Parameters: e - the event to check
+     * Returns: true if the event is valid, false otherwise
+     */
     private boolean isValidEventCandidate(Event e) {
         User u1 = e.getCurrentUser1();
         User u2 = e.getCurrentUser2();
@@ -75,6 +156,11 @@ public class DoubleEventMatch extends EventMatch {
         return true;
     }
 
+    /*
+     * Sorts the incoming users for the event match
+     * Parameters: u1, u2, u3 - the users to sort
+     * Returns: true if the users can be sorted successfully, false otherwise
+     */
     private boolean sortIncomingUsers(User u1, User u2, User u3) {
         User[] attendees = {u1, u2, u3};
         
@@ -116,6 +202,11 @@ public class DoubleEventMatch extends EventMatch {
         return true;
     }
 
+    /*
+     * Checks if the users in an event can be sorted successfully
+     * Parameters: e - the event to check
+     * Returns: true if the users can be sorted successfully, false otherwise
+     */
     private boolean canBeSortedSuccessfully(Event e) {
         User u1 = e.getCurrentUser1();
         User u2 = e.getCurrentUser2();
@@ -162,6 +253,11 @@ public class DoubleEventMatch extends EventMatch {
             return true;
         }
 
+        /*
+         * Checks if two users are in the same age group
+         * Parameters: u1, u2 - the users to check
+         * Returns: true if the users are in the same age group, false otherwise
+         */
         public boolean isSameAgeGroup(User u1, User u2) {
             if (u1 == null || u2 == null) {
                 return false;
@@ -177,41 +273,75 @@ public class DoubleEventMatch extends EventMatch {
             }
             return false;
         }
-
+    /*
+        * Updates the decision for the user in the match
+        * Parameters: u - the user making the decision
+        *            x - the decision (A = Accept, R = Reject)
+        * Returns: None (the method updates the status of the user in the match)
+     */    
     public void updateUserDecision(User u, char x) {
-        if(u == pair1[0]){
-            status[0]=x;
-        }else if (u == pair1[1]){
-            status[1]=x;
-        }else if (u == pair2[0]){
-            status[2]=x;
-        }else if (u == pair2[1]){
-            status[3]=x;
+        if (u == pair1[0]) {
+            status[0] = x;
+            if (x == 'R'){
+                deleteMatch(pair1[0]);
+                pair1[0] = null;
+                getEvent().setCurrentUser1(null);
+            }
+        } else if (u == pair1[1]) {
+            status[1] = x;
+            if (x == 'R'){
+                deleteMatch(pair1[1]);
+                pair1[1] = null;
+                getEvent().setCurrentUser2(null);
+            } 
+        } else if (u == pair2[0]) {
+            status[2] = x;
+            if (x == 'R'){
+                deleteMatch(pair2[0]);
+                pair2[0] = null;
+                ((Indoor)getEvent()).setUser3(null);
+            }
+        } else if (u == pair2[1]) {
+            status[3] = x;
+            if (x == 'R'){
+                deleteMatch(pair2[1]);
+                pair2[1] = null;
+                ((Indoor)getEvent()).setUser4(null);
+            }
         }
     }
 
-    @Override
-    public boolean isRejection() {
-        return status[0] == 'R' || status[1] == 'R' || status[2] == 'R' || status[3] == 'R';
-    }
-
+    /*
+     * Checks if all users have accepted the match
+     * Parameters: None
+     * Returns: true if all users have accepted, false otherwise
+     */
     @Override
     public boolean isAcceptance() {
-        return status[0] == 'A' && status[1] == 'A' && status[2] == 'A' || status[3]=='A';
+        return status[0] == 'A' && status[1] == 'A' && status[2] == 'A' && status[3] == 'A';
     }
 
+    /*
+     * Stores the match information for all users
+     * Parameters: None
+     * Returns: None
+     */
     @Override
     public void storeMatch() {
         if (pair1[0] != null) {
+            pair1[0].deleteMatch(getEventTitle());
             pair1[0].storeMatch(this);
         }
         if (pair1[1] != null) {
+            pair1[1].deleteMatch(getEventTitle());
             pair1[1].storeMatch(this);
         }
         if (pair2[0] != null) {
+            pair2[0].deleteMatch(getEventTitle());
             pair2[0].storeMatch(this);
         }
         if (pair2[1] != null) {
+            pair2[1].deleteMatch(getEventTitle());
             pair2[1].storeMatch(this);
         }
 
@@ -221,15 +351,28 @@ public class DoubleEventMatch extends EventMatch {
             }
         }
     }
-
-    //deletes for the singular user
-    public void deleteMatch() {
-        if (pair1[0] != null){
+    /* 
+     * Deletes the match information for one users 
+     * Parameters: sys - the event database system to remove the event from
+     * Returns: None
+     */
+    public void deleteMatch (User u) {
+        if (pair1[0] == u){
             pair1[0].deleteMatch(this);
+        }else if (pair1[1] == u){
+            pair1[1].deleteMatch(this);
+        }else if (pair2[0] == u){
+            pair2[0].deleteMatch(this);
+        }else if (pair2[1] == u){
+            pair2[1].deleteMatch(this);
         }
     }
 
-    //deletes for all, also deletes event!
+    /* 
+     * Deletes the match information for all users and removes the event from the system
+     * Parameters: sys - the event database system to remove the event from
+     * Returns: None
+     */
     public void deleteMatch(EventDatabase sys) {
         if (pair1[0] != null) {
             pair1[0].deleteMatch(this);
@@ -248,6 +391,11 @@ public class DoubleEventMatch extends EventMatch {
         }
     }
 
+    /*
+     * Determines the score for the match based on event criteria
+     * Parameters: e - the event for which to determine the score
+     * Returns: the calculated score
+     */
     @Override
     public double determineScore(Event e) {
         if (e == null || pair1[0] == null) {
@@ -258,6 +406,11 @@ public class DoubleEventMatch extends EventMatch {
         return tagScore * EventMatch.INTEREST_WEIGHT + distanceScore * EventMatch.LOCATION_WEIGHT;
     }
 
+    /*
+     * Determines the distance tier for the match based on event location
+     * Parameters: e - the event for which to determine the distance tier
+     * Returns: the calculated distance tier
+     */
     @Override
     public int distanceTier(Event e) {
         if (e instanceof Indoor) {
@@ -268,6 +421,11 @@ public class DoubleEventMatch extends EventMatch {
        return 0;
     }
 
+    /*
+     * Counts the number of matching tags between the user and the event
+     * Parameters: e - the event for which to count tags
+     * Returns: the number of matching tags
+     */
     @Override
     public double countTags(Event e) {
         if (pair1[0].getTag() == null || e.getCategories() == null) {
@@ -275,27 +433,49 @@ public class DoubleEventMatch extends EventMatch {
         }
         return pair1[0].getTag().compareTo(e.getCategories());
     }
-
+    /*
+     * Performs a preliminary check to determine if the user is compatible with the match
+     * Parameters: u - the user for which to perform the check
+     * Returns: true if the user is compatible, false otherwise
+     */
     @Override
     public boolean prelimCheck(User u) {
         return checkGenderCompatibilty(u) && checkAgeCompatibility(u);
     }
-
+    /*
+     * Checks if two users are gender compatible
+     * Parameters: u - the user for which to perform the check
+     * Returns: true if the users are gender compatible, false otherwise
+     */
     @Override
     public boolean checkGenderCompatibilty(User u) {
         return checkGenderCompatibilityForPair(pair1[0], u);
     }
-
+    /*
+     * Checks if two users are gender compatible
+     * Parameters: u1, u2 - the users for which to perform the check
+     * Returns: true if the users are gender compatible, false otherwise
+     */
     private boolean checkGenderCompatibilityForPair(User u1, User u2) {
         if (u1 == null || u2 == null) return false;
         return u1.getGender() == u2.getPreferredGender() && u2.getGender() == u1.getPreferredGender();
     }
 
+    /*
+     * Checks if two users are age compatible
+     * Parameters: u1, u2 - the users for which to perform the check
+     * Returns: true if the users are age compatible, false otherwise
+     */
     @Override
     public boolean checkAgeCompatibility(User u) {
         return checkAgeCompatibilityForPair(pair1[0], u);
     }
 
+    /*
+     * Checks if two users are age compatible
+     * Parameters: u1, u2 - the users for which to perform the check
+     * Returns: true if the users are age compatible, false otherwise
+     */
     private boolean checkAgeCompatibilityForPair(User u1, User u2) {
         if (u1 == null || u2 == null) return false;
         if (!isSameAgeGroup(u1, u2)) {
@@ -325,6 +505,10 @@ public class DoubleEventMatch extends EventMatch {
                age1 >= tgtUser.getPreferredMinAge() && age1 <= tgtUser.getPreferredMaxAge();
     }
 
+    /*
+     * THe string representation of the match
+     * Returns: a string containing the match details
+     */
     @Override
     public String toString() {
         String s = "=======================\n";
@@ -381,5 +565,17 @@ public class DoubleEventMatch extends EventMatch {
         s += "=======================\n";
         
         return s;
+    }
+
+    public void setRating(User u, int r){
+        if (u == pair1[0]) {
+            rating[0] = r;
+        } else if (u == pair1[1]) {
+            rating[1] = r;
+        } else if (u == pair2[0]) {
+            rating[2] = r;
+        } else if (u == pair2[1]) {
+            rating[3] = r;
+        }
     }
 }

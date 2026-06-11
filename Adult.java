@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 public class Adult extends User {
     public static final int MIN_AGE = 13;
     private String occupation;
@@ -5,8 +6,8 @@ public class Adult extends User {
     private int preferredMaxAge;
     private int preferredMinAge;
     
-    public Adult(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg, String m, int max, int min){
-        super(u, p, e, v, n, b, pc, c, g, pg);
+    public Adult(String u, String p, String e, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, Tag t){
+        super(u, p, e, n, b, pc, c, bi, g, pg, t);
         maritalStatus = m;
         preferredMaxAge = max;
         preferredMinAge = min;

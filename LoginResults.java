@@ -1,10 +1,10 @@
 public class LoginResults {
     private String nextMenu;
-    User user;
+    private Account account;
 
-    public LoginResults(String n, User u) {
+    public LoginResults(String n, Account a) {
         nextMenu = n;
-        user = u;
+        account = a;
     }
 
     public String getNextMenu() {
@@ -13,10 +13,10 @@ public class LoginResults {
     public void setNextMenu(String n) {
         nextMenu = n;
     }
-    public User getUser() {
-        return user;
+    public Account getAccount() {
+        return account;
     }
-    public void setUser(User u) {
-        user = u;
+    public void setAccount(Account a) {
+        account = a;
     }
 }

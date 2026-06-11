@@ -1,13 +1,32 @@
-
+/*
+ * File Name: DistanceMatch.java
+ * Name: Ashley Zhong
+ * Class: ICS4U1
+ * Date: June 2026
+ *
+ * Description:
+ * The DistanceMatch class is a subclass of PersonMatch that implements distance-based matching logic.
+ */
 public class DistanceMatch extends PersonMatch{
-   
-    private int distanceTier;
+    // weight constants used in scoring calculations
     public static final int MAX_DISTANCE_TIER = 6;
+    //stores the distance tier between users, used in scoring calculations
+    private int distanceTier;
 
+    /*
+     * Constructor for DistanceMatch
+     * Parameters: u - the user for whom to find matches
+     * Returns: None
+     */
     public DistanceMatch(User u){
         super("distance", u);
     }
    
+    /*
+     * Executes the distance-based matching algorithm
+     * Parameters: pool - the array of users to match against
+     * Returns: None
+     */
     @Override
     public void execute(Object[] pool){
         if (pool!= null){
@@ -28,7 +47,15 @@ public class DistanceMatch extends PersonMatch{
             
         }   
     }
-    public User execute(User[] pool, int idx, User best, int maxTier){
+    /*
+     * Executes the distance-based matching algorithm
+     * Parameters: pool - the array of users to match against
+     *             idx - the current index in the user pool
+     *             best - the best user found so far
+     *             maxTier - the maximum distance tier found so far
+     * Returns: The best matching user or null if none found
+     */
+    private User execute(User[] pool, int idx, User best, int maxTier){
         if (pool == null || pool.length == 0){
             return null;
         }else if(idx == pool.length){
@@ -51,6 +78,11 @@ public class DistanceMatch extends PersonMatch{
         }
     }
  
+    /*
+     * Calculates the distance tier between two users based on their postal codes
+     * Parameters: other - the other user
+     * Returns: The distance tier (0-6)
+     */
     public int calculateDistanceTier(User other){
         User owner = getOwner();
         String posCode1 = owner.getPostalCode();
@@ -58,6 +90,12 @@ public class DistanceMatch extends PersonMatch{
         return calculateDistanceTier(posCode1, posCode2);
     }
 
+    /*
+     * Calculates the distance tier between two postal codes
+     * Parameters: ps1 - the first postal code
+     *             ps2 - the second postal code
+     * Returns: The distance tier (0-6)
+     */
     public static int calculateDistanceTier(String ps1, String ps2){
         if (ps1 == null || ps2 == null){
             return -1;
@@ -72,8 +110,5 @@ public class DistanceMatch extends PersonMatch{
             }
         }
         return count;
-    }
-    
-    
-    
+    } 
 }

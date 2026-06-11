@@ -1,11 +1,28 @@
-
+/*
+ * File Name: InterestMatch.java
+ * Name: Ashley Zhong
+ * Class: ICS4U1
+ * Date: June 2026
+ *
+ * Description:
+ * The InterestMatch class is a subclass of PersonMatch that implements interest-based matching logic.
+ */
 public class InterestMatch extends PersonMatch{
+    //stores the number of matching tags between users, used in scoring calculations
     private double tagsCount;
     
+    /*
+     * Constructor for the InterestMatch class
+     * Parameters: u - the user for whom to create the match
+     */
     public InterestMatch(User u){
         super("interest", u);
     }
-
+    /*
+     * Executes the interest-based matching algorithm
+     * Parameters: pool - the array of users to match against
+     * Returns: none
+     */
     @Override
     public void execute(Object[] pool){
         if (pool != null){
@@ -26,7 +43,11 @@ public class InterestMatch extends PersonMatch{
             }
         }
     }
-    
+    /*
+     * Executes the interest-based matching algorithm
+     * Parameters: pool - the array of users to match against, idx - the current index, best - the best match found so far, maxTags - the maximum number of matching tags
+     * Returns: the best match found
+     */
     private User execute(User[] pool, int idx, User best, double maxTags){
         if(pool == null || pool.length == 0){
             return null;
@@ -43,6 +64,11 @@ public class InterestMatch extends PersonMatch{
             
         }
     }
+    /*
+     * Evaluates the number of matching tags between users
+     * Parameters: other - the other user to compare
+     * Returns: the number of matching tags
+     */
     public double evaluateTags(User other){
         if(other == null){
             return -1;

@@ -1,9 +1,10 @@
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class EventMenu {
     Scanner sc = new Scanner(System.in);
-    EventDatabase evda = new EventDatabase();
+    
 
     public void payForEvent(Event event) {
         double amount;
@@ -85,315 +86,295 @@ public class EventMenu {
     }
 
     //virtual
-     public void manualApproveVirtualEvent(Event event) {
-  
-        if (event != null && event instanceof Virtual) {
-            String response;
-            System.out.println(("Title: " + event.getTitle()));
-            System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
-        if (response.equalsIgnoreCase("N")) {
-            System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
-        }
-
-        System.out.println(("Date: " + event.getDate()));
+     public String approveEvent() {
+        
+        String response;
+        System.out.println(("Title: " + getTitle()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println(("Start Time: " + event.getStartTime()));
+        System.out.println(("Date: " + getDate()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println("End Time: " + event.getEndTime());
+        System.out.println(("Start Time: " + getStartTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-  
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println(("Original Cost: $" + event.getOriginalCost()));
+        System.out.println("End Time: " + getEndTime());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Original Cost: $" + getOriginalCost()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println("Platform: " + ((Virtual) event).getPlatform());
+        System.out.println(("Categories: " + getCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println("Meeting ID: " + ((Virtual) event).getMeetingID());
+        System.out.println("Platform: " + getPlatform());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine() + "\n");
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println("Password: " + ((Virtual) event).getPassword());
+        System.out.println("Meeting ID: " + getMeetingID());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
+        }
 
+        System.out.println("Password: " + getPassword());
+        System.out.print("Do you approve this spec? (Y/N): ");
+        response = sc.nextLine();
+        if (response.equalsIgnoreCase("N")) {
+            System.out.println("Why was this event rejected? (Enter reason): ");
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
         
-        if (event.getEventAdminFeedback() == null) {
-            
-            boolean addapp = evda.addApprovedEvent(event);
-            if (addapp == true) {
-                event.setApproved(true);
-                System.out.println("Event succesfully approved!");
-            } else {
-                System.out.println("Reached max capacity of events. Remove old events.");
-            }
-        } 
-  
+        setEventAdminFeedback("Virtual event approved");
+        setApproved(true);
+        return getEventAdminFeedback();
+    }
+
+    public double calculateCost() {
+        System.out.println("Discount code? (Y/N): ");
+        String response = sc.nextLine();
+        if (response.equalsIgnoreCase("N")) {
+            return getOriginalCost();
         } else {
-            System.out.println("This event does not exist.");
+            System.out.println("Enter discount code: ");
+            String code = sc.nextLine();     
+                switch (code.toUpperCase()) {
+                    case "DISCOUNT10":
+                        return getOriginalCost() * 0.9; // 10% discount
+                    case "DISCOUNT20":
+                        return getOriginalCost() * 0.8; // 20% discount
+                    case "DISCOUNT30":
+                        return getOriginalCost() * 0.7; // 30% discount
+                    default:
+                        System.out.println("Invalid discount code. No discount applied.");
+                        return getOriginalCost();
+                }
+        
         }
     }
 
     //outdoor
-    public void manualApproveOutdoorEvent(Event event) {
-
-        if (event != null && event instanceof Outdoor) {
-            String response;
-        System.out.println(("Title: " + event.getTitle()));
+    public String approveEvent() {
+        String response;
+        System.out.println(("Title: " + getTitle()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println(("Date: " + event.getDate()));
+        System.out.println(("Date: " + getDate()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Start Time: " + event.getStartTime()));
+        System.out.println(("Start Time: " + getStartTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println("End Time: " + event.getEndTime());
+        System.out.println("End Time: " + getEndTime());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Original Cost: $" + event.getOriginalCost()));
+        System.out.println(("Original Cost: $" + getOriginalCost()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Categories: " + getCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println("Location: " + ((Outdoor)event).getLocation());
+        System.out.println("Location: " + getLocation());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println("Temperature: " + ((Outdoor)event).getTemperature() + "°C");
+        System.out.println("Temperature: " + getTemperature() + "°C");
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println("Precipitation: " + ((Outdoor)event).getPrecipitation() + "%");
+        System.out.println("Precipitation: " + getPrecipitation() + "%");
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        if (event.getEventAdminFeedback() == null) {
-            
-            boolean addapp = evda.addApprovedEvent(event);
-            if (addapp == true) {
-                event.setApproved(true);
-                System.out.println("Event succesfully approved!");
-            } else {
-                System.out.println("Reached max capacity of events. Remove old events.");
-            }
-        } 
-  
-        } else {
-            System.out.println("This event does not exist.");
-        }
-        
+        setEventAdminFeedback("Outdoor event approved");
+        setApproved(true);
+        return getEventAdminFeedback();
     }
 
     //indoor
-    public void manualApproveIndoorEvent(Event event) {
+    public String approveEvent() {
 
-if (event != null && event instanceof Indoor) {
         String response;
-        System.out.println(("Title: " + event.getTitle()));
+        System.out.println(("Title: " + getTitle()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        System.out.println(("Date: " + event.getDate()));
+        System.out.println(("Date: " + getDate()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Start Time: " + event.getStartTime()));
+        System.out.println(("Start Time: " + getStartTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("End Time: " + event.getEndTime()));
+        System.out.println(("End Time: " + getEndTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Original Cost: $" + event.getOriginalCost()));
+        System.out.println(("Original Cost: $" + getOriginalCost()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Categories: " + getCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Location: " + ((Indoor) event).getLocation()));
+        System.out.println(("Location: " + getLocation()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Floor Number: " + ((Indoor) event).getFloorNumber()));
+        System.out.println(("Floor Number: " + getFloorNumber()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
-        System.out.println(("Room: " + ((Indoor) event).getRoom()));
+        System.out.println(("Room: " + getRoom()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
-            event.setEventAdminFeedback(sc.nextLine());
-
+            setEventAdminFeedback(sc.nextLine());
+            return getEventAdminFeedback();
         }
 
-        if (event.getEventAdminFeedback() == null) {
-            
-            boolean addapp = evda.addApprovedEvent(event);
-            if (addapp == true) {
-                event.setApproved(true);
-                System.out.println("Event succesfully approved!");
-            } else {
-                System.out.println("Reached max capacity of events. Remove old events.");
-            }
-        } 
-  
-        } else {
-            System.out.println("This event does not exist.");
-        }
-
+        setEventAdminFeedback("Indoor event approved");
+        setApproved(true);
+        return getEventAdminFeedback();
     }
 
-
     //change pending details things
-    public void changeOutdoorPendingEventDetails(String eventname) {
-        Event event = evda.searchApprovedEventByTitle(eventname);
-        if (event != null && event instanceof Outdoor) {
-
-        System.out.println("Changing event details for outdoor event: " + event.getTitle());
-        System.out.println("1. Current title: " + event.getTitle());
-        System.out.println("2. Current date: " + event.getDate());
-        System.out.println("3. Current start time: " + event.getStartTime());
-        System.out.println("4. Current end time: " + event.getEndTime());
-        System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
-        System.out.println("7. Current location: " + ((Outdoor)event).getLocation());
-        System.out.println("8. Current temperature: " + ((Outdoor)event).getTemperature() + "°C");
-        System.out.println("9. Current precipitation: " + ((Outdoor)event).getPrecipitation() + "%");
+    public boolean changePendingEventDetails() {
+        System.out.println("Changing event details for outdoor event: " + getTitle());
+        System.out.println("1. Current title: " + getTitle());
+        System.out.println("2. Current date: " + getDate());
+        System.out.println("3. Current start time: " + getStartTime());
+        System.out.println("4. Current end time: " + getEndTime());
+        System.out.println("5. Current original cost: $" + getOriginalCost());
+        System.out.println("6. Current categories: " + getCategories());
+        System.out.println("7. Current location: " + getLocation());
+        System.out.println("8. Current temperature: " + getTemperature() + "°C");
+        System.out.println("9. Current precipitation: " + getPrecipitation() + "%");
 
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
         int choice = sc.nextInt();
@@ -401,35 +382,37 @@ if (event != null && event instanceof Indoor) {
         switch (choice) {
             case 1:
                 System.out.println("Enter new title: ");
-                event.setTitle(sc.nextLine());
-                System.out.println("Change successful!");
+                setTitle(sc.nextLine());
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
-                event.setDate(localuserdate);
-                System.out.println("Change successful!");
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
-                event.setStartTime(localusertime);
-                System.out.println("Change successful!");
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
-                event.setEndTime(endlocalusertime);
-                System.out.println("Change successful!");
+                int enduserhour = Integer.parseInt(endusertime.substring(0,2));
+                int endusermin = Integer.parseInt(endusertime.substring(3));
+                LocalTime endlocalusertime = LocalTime.of(enduserhour, endusermin);
+                setEndTime(endlocalusertime);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
+                setOriginalCost(sc.nextDouble());
                 sc.nextLine(); 
-                System.out.println("Change successful!");
                 break;
             case 6:
                 System.out.println("Enter new applicable categories (space-separated, lowercase): ");
@@ -469,24 +452,20 @@ if (event != null && event instanceof Indoor) {
                     }    
                 }
                 Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
-                event.setCategories(newtags);
-                System.out.println("Change successful!");
+                setCategories(newtags);
                 break;
             case 7:
                 System.out.println("Enter new location: ");
-                ((Outdoor)event).setLocation(sc.nextLine());
-                System.out.println("Change successful!");
+                setLocation(sc.nextLine());
                 break;
             case 8:
                 System.out.println("Enter new temperature (in °C): ");
-                ((Outdoor)event).setTemperature(sc.nextInt());
-                System.out.println("Change successful!");
+                setTemperature(sc.nextInt());
                 sc.nextLine(); 
                 break;
             case 9:
                 System.out.println("Enter new precipitation (in %): ");
-                ((Outdoor)event).setPrecipitation(sc.nextInt());
-                System.out.println("Change successful!");
+                setPrecipitation(sc.nextInt());
                 sc.nextLine(); 
                 break;
             case 0:
@@ -494,23 +473,22 @@ if (event != null && event instanceof Indoor) {
                 break;
             default:
                 System.out.println("Invalid choice. No changes made.");
+                return false;
         }
-    }
+        return true;
     }
 
-    public void changeVirtualPendingEventDetails(String eventname) {
-        Event event = evda.searchApprovedEventByTitle(eventname);
-        if (event != null && event instanceof Virtual) {
-        System.out.println("Changing event details for virtual event: " + event.getTitle());
-        System.out.println("1. Current title: " + event.getTitle());
-        System.out.println("2. Current date: " + event.getDate());
-        System.out.println("3. Current start time: " + event.getStartTime());
-        System.out.println("4. Current end time: " + event.getEndTime());
-        System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
-        System.out.println("7. Current platform: " + ((Virtual)event).getPlatform());
-        System.out.println("8. Current meeting ID: " + ((Virtual)event).getMeetingID());
-        System.out.println("9. Current password: " + ((Virtual)event).getPassword());
+    public boolean changePendingEventDetails() {
+        System.out.println("Changing event details for virtual event: " + getTitle());
+        System.out.println("1. Current title: " + getTitle());
+        System.out.println("2. Current date: " + getDate());
+        System.out.println("3. Current start time: " + getStartTime());
+        System.out.println("4. Current end time: " + getEndTime());
+        System.out.println("5. Current original cost: $" + getOriginalCost());
+        System.out.println("6. Current categories: " + getCategories());
+        System.out.println("7. Current platform: " + getPlatform());
+        System.out.println("8. Current meeting ID: " + getMeetingID());
+        System.out.println("9. Current password: " + getPassword());
 
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
 
@@ -519,35 +497,37 @@ if (event != null && event instanceof Indoor) {
         switch (choice) {
             case 1:
                 System.out.println("Enter new title: ");
-                event.setTitle(sc.nextLine());
-                System.out.println("Change successful!");
+                setTitle(sc.nextLine());
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
-                event.setDate(localuserdate);
-                System.out.println("Change successful!");
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
-                event.setStartTime(localusertime);
-                System.out.println("Change successful!");
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
-                event.setEndTime(endlocalusertime);
-                System.out.println("Change successful!");
+                int enduserhour = Integer.parseInt(endusertime.substring(0,2));
+                int endusermin = Integer.parseInt(endusertime.substring(3));
+                LocalTime endlocalusertime = LocalTime.of(enduserhour, endusermin);
+                setEndTime(endlocalusertime);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
+                setOriginalCost(sc.nextDouble());
                 sc.nextLine(); 
-                System.out.println("Change successful!");
                 break;
             case 6:
                 System.out.println("Enter new applicable categories (space-separated, lowercase): ");
@@ -587,24 +567,20 @@ if (event != null && event instanceof Indoor) {
                     }    
                 }
                 Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
-                event.setCategories(newtags);
-                System.out.println("Change successful!");
+                setCategories(newtags);
                 break;
             case 7:
                 System.out.println("Enter new platform: ");
-                ((Virtual)event).setPlatform(sc.nextLine());
-                System.out.println("Change successful!");
+                setPlatform(sc.nextLine());
                 break;
             case 8:
                 System.out.println("Enter new meeting ID: ");
-                ((Virtual)event).setMeetingID(sc.nextInt());
-                System.out.println("Change successful!");
+                setMeetingID(sc.nextInt());
                 sc.nextLine(); 
                 break;
             case 9:
                 System.out.println("Enter new password: ");
-                ((Virtual)event).setPassword(sc.nextInt());
-                System.out.println("Change successful!");
+                setPassword(sc.nextInt());
                 sc.nextLine(); 
                 break;
             case 0:
@@ -612,60 +588,60 @@ if (event != null && event instanceof Indoor) {
                 break;
             default:
                 System.out.println("Invalid choice. No changes made.");
+                return false;
         }
+        return true;
     }
-}
 
-    public void changeIndoorEventDetails(String eventname) {
-Event event = evda.searchApprovedEventByTitle(eventname);
-        if (event != null && event instanceof Indoor) {
-
-        System.out.println("Changing event details for indoor event: " + event.getTitle());
-        System.out.println("1. Current title: " + event.getTitle());
-        System.out.println("2. Current date: " + event.getDate());
-        System.out.println("3. Current start time: " + event.getStartTime());
-        System.out.println("4. Current end time:" + event.getEndTime());
-        System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
-        System.out.println("7. Current location: " + ((Indoor) event).getLocation());
-        System.out.println("8. Current floor number: " + ((Indoor) event).getFloorNumber());
-        System.out.println("9. Current room: " + ((Indoor) event).getRoom());
+    public boolean changePendingEventDetails() {
+        System.out.println("Changing event details for indoor event: " + getTitle());
+        System.out.println("1. Current title: " + getTitle());
+        System.out.println("2. Current date: " + getDate());
+        System.out.println("3. Current start time: " + getStartTime());
+        System.out.println("4. Current end time:" + getEndTime());
+        System.out.println("5. Current original cost: $" + getOriginalCost());
+        System.out.println("6. Current categories: " + getCategories());
+        System.out.println("7. Current location: " + getLocation());
+        System.out.println("8. Current floor number: " + getFloorNumber());
+        System.out.println("9. Current room: " + getRoom());
 
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
         int choice = sc.nextInt();
         sc.nextLine(); 
         switch (choice) {
-             case 1:
+            case 1:
                 System.out.println("Enter new title: ");
-                event.setTitle(sc.nextLine());
-                System.out.println("Change successful!");
+                setTitle(sc.nextLine());
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
-                event.setDate(localuserdate);
-                System.out.println("Change successful!");
+                int useryear = Integer.parseInt(userdate.substring(0,4));
+                int usermonth = Integer.parseInt(userdate.substring(5,7));
+                int userday = Integer.parseInt(userdate.substring(8));
+                LocalDate localuserdate = LocalDate.of(useryear, usermonth, userday);
+                setDate(localuserdate);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
-                event.setStartTime(localusertime);
-                System.out.println("Change successful!");
+                int userhour = Integer.parseInt(usertime.substring(0,2));
+                int usermin = Integer.parseInt(usertime.substring(3));
+                LocalTime localusertime = LocalTime.of(userhour, usermin);
+                setStartTime(localusertime);
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
-                event.setEndTime(endlocalusertime);
-                System.out.println("Change successful!");
+                int enduserhour = Integer.parseInt(endusertime.substring(0,2));
+                int endusermin = Integer.parseInt(endusertime.substring(3));
+                LocalTime endlocalusertime = LocalTime.of(enduserhour, endusermin);
+                setEndTime(endlocalusertime);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
+                setOriginalCost(sc.nextDouble());
                 sc.nextLine(); 
-                System.out.println("Change successful!");
                 break;
             case 6:
                 System.out.println("Enter new applicable categories (space-separated, lowercase): ");
@@ -705,220 +681,35 @@ Event event = evda.searchApprovedEventByTitle(eventname);
                     }    
                 }
                 Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
-                event.setCategories(newtags);
-                System.out.println("Change successful!");
+                setCategories(newtags);
                 break;
             case 7:
                 System.out.println("Enter new location: ");
-                ((Indoor) event).setLocation(sc.nextLine());
-                System.out.println("Change successful!");
+                setLocation(sc.nextLine());
                 break;
             case 8:
                 System.out.println("Enter new floor number: ");
-                ((Indoor) event).setFloorNumber(sc.nextInt());
-                System.out.println("Change successful!");
+                setFloorNumber(sc.nextInt());
                 sc.nextLine(); 
                 break;
             case 9:
                 System.out.println("Enter new room: ");
-                ((Indoor) event).setRoom(sc.nextLine());
-                System.out.println("Change successful!");
+                setRoom(sc.nextLine());
                 break;
             case 0:
                 System.out.println("No changes made to the event.");
                 break;
             default:
                 System.out.println("Invalid choice. No changes made.");
-
+                return false;
         }
-
-    }
-}
-
-    public LocalTime stringToLocalTime(String time) {
-        int hour = Integer.parseInt(time.substring(0,2));
-        int min = Integer.parseInt(time.substring(3));
-        LocalTime lt = LocalTime.of(hour, min);
-
-        return lt;
-    }
-
-    public LocalDate stringToLocalDate(String date) {
-        int year = Integer.parseInt(date.substring(0,4));
-        int month = Integer.parseInt(date.substring(5,7));
-        int day = Integer.parseInt(date.substring(8));
-        LocalDate ld = LocalDate.of(year, month, day);
-        return ld;
-    }
-
-    public void createVirtualEvent() {
-        System.out.print("Enter title: ");
-        String title = sc.nextLine();
-        System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
-        System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
-        System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
-        System.out.print("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
-        System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
-        System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
-        System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
-        System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
-        System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
-        System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
-        System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
-        System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
-        System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
-        System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
-        System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Platform: ");
-        String platform = sc.nextLine();
-        System.out.print("Meeting ID: ");
-        int meetingid = sc.nextInt();
-        System.out.print("Password: ");
-        int password = sc.nextInt();
-
-        Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, platform, meetingid, password);
-        boolean added = evda.addPendingEvent(vir);
-
-        if (added) {
-            System.out.print("Event was successfully added. To be approved by admin.");
-        } else {
-            System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-        }
-    }
-
-    public void createOutdoorEvent() {
-        System.out.println("Enter title: ");
-        String title = sc.nextLine();
-       System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
-        System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
-        System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
-        System.out.println("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
-        System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
-        System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
-        System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
-        System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
-        System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
-        System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
-        System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
-        System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
-        System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
-        System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
-        System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Location: (postal code): ");
-        String location = sc.nextLine();
-
-        System.out.print("Temperature (celsius): ");
-        int temp = sc.nextInt();
-
-        System.out.print("Chance of precipitation %: ");
-        int precip = sc.nextInt();
-        Outdoor out = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, location, temp, precip);
-        boolean added = evda.addPendingEvent(out);
-
-        if (added) {
-            System.out.print("Event was successfully added. To be approved by admin.");
-        } else {
-            System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-        }
-    }
-
-    public void createIndoorEvent() {
-        System.out.println("Enter title: ");
-        String title = sc.nextLine();
-        System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
-        System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
-        System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
-        System.out.println("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
-        System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
-        System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
-        System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
-        System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
-        System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
-        System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
-        System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
-        System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
-        System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
-        System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
-        System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Location (postal code): ");
-        String loca = sc.nextLine();
-        System.out.print("Floor number: ");
-        int floornum = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Room (name or number): ");
-        String room = sc.nextLine();
-
-        Indoor in = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, loca, floornum, room);
-
-        boolean added = evda.addPendingEvent(in);
-
-        if (added) {
-            System.out.print("Event was successfully added. To be approved by admin.");
-        } else {
-            System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-        }
+        return true;
     }
     
     public void getEventScreen() {
-        System.out.println("=================================");
         System.out.println("EVENT OPTIONS:");
         System.out.println("1. Create Event");
         System.out.println("2. Choose Pre-existing Event");
-        System.out.println("=================================");
         int choice = sc.nextInt();
 
         while (choice != 1 && choice != 2) {
@@ -945,12 +736,42 @@ Event event = evda.searchApprovedEventByTitle(eventname);
             }
 
             sc.nextLine();
+            System.out.println("Enter title: ");
+            String title = sc.nextLine();
+            System.out.println("Enter starting time (HH:MM): ");
+            String startTime = sc.nextLine();
+            System.out.println("Enter duration (in hours): ");
+            double duration = sc.nextDouble();
+            System.out.println("Enter base cost $: ");
+            double originalCost = sc.nextDouble();
+            System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
+            System.out.print("Religion (0/1): ");
+            int r = sc.nextInt();
+            System.out.print("Sports (0/1): ");
+            int s = sc.nextInt();
+            System.out.print("Music (0/1): ");
+            int m = sc.nextInt();
+            System.out.print("Art (0/1): ");
+            int a = sc.nextInt();
+            System.out.print("Traveling (0/1): ");
+            int t = sc.nextInt();
+            System.out.print("Fitness (0/1): ");
+            int f = sc.nextInt();
+            System.out.print("Gaming (0/1): ");
+            int g = sc.nextInt();
+            System.out.print("Cooking (0/1): ");
+            int c = sc.nextInt();
+            System.out.print("Animal (0/1): ");
+            int an = sc.nextInt();
+            System.out.print("Reading (0/1): ");
+            int re = sc.nextInt();
+                
             if (choice == 1) {
-                createVirtualEvent();
+
             } else if (choice == 2) {
-                createOutdoorEvent();
+
             } else {
-                createIndoorEvent();
+
             }
             
         } else {

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class AccountsDatabase {
@@ -15,6 +16,9 @@ public class AccountsDatabase {
         }else{
             return false;
         }
+    }
+    public void addAccount(Account a){
+        accounts.add(a);
     }
     public User[] getUsers(){
         User[] userArray = new User[accounts.size()];
@@ -40,6 +44,13 @@ public class AccountsDatabase {
         }
         return foundUser;
     }
+
+    public boolean usernameExists(String u){
+        if(searchByUsername(u) == null){
+            return false;
+        }
+        return true;
+    }
     // add user from file
     public void loadFromFile(String file, Matchmaker mm){
         try{
@@ -50,23 +61,19 @@ public class AccountsDatabase {
                 if (in.readLine().equals("Admin")){
                     accounts.add(new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine())));
                 } 
-                if(in.readLine().equals("Parent")){
-                    // add/create parent account
-                }
                 if(in.readLine().equals("Teen")){
-                    // add/create teen account
+                    accounts.add(new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                 }
                 if(in.readLine().equals("Adult")){
-                    // add/create adult account
+                    accounts.add(new Adult(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                 }
                 if(in.readLine().equals("Senior")){
-                    // add/create senior account
+                    accounts.add(new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                 }
             }
-            System.out.println("Accounts created successfully."); 
             in.close(); 
         } catch (IOException e){
-            System.out.println("Error accessing file");
+            System.out.println("Error accessing file " + file);
         }
     }
 
