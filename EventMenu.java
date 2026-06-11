@@ -5,8 +5,30 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
 
-    public void payForEvent() {
-
+    public void payForEvent(Event event) {
+        double amount;
+        System.out.println("The event is starting...");
+        System.out.println("Please make the following payments: ");
+        if (event instanceof Virtual) {
+            amount = applyVirtualCost((Virtual) event);
+        } else if (event instanceof Outdoor) {
+            amount = applyOutdoorCost((Outdoor) event);
+        } else {
+            amount = applyIndoorCost((Indoor) event);
+        }
+        System.out.println("Please pay $" + amount);
+        double response = sc.nextDouble();
+        
+        while (response < amount) {
+           
+                System.out.println("Payment declined. You are still missing $" + (amount-response));
+                amount = sc.nextDouble();
+        }
+        if (amount > response) {
+            System.out.println("Successfully paid! Heres your change: $" + (amount-response));
+        } else {
+            System.out.println("Successfully paid! Enjoy the event");
+        }
     }
 
     public double applyVirtualCost(Virtual event) {
@@ -932,7 +954,49 @@ Event event = evda.searchApprovedEventByTitle(eventname);
             }
             
         } else {
+            System.out.println("OPTIONS");
+            System.out.println("1. Search for an event by title");
+            System.out.println("2. Show all events");
+            choice = sc.nextInt();
+            while (choice != 1 && choice != 2) {
+                System.out.println("Invalid choice");
+                System.out.println("OPTIONS");
+                System.out.println("1. Search for an event by title");
+                System.out.println("2. Show all events");
+                choice = sc.nextInt();
+            }
 
+            if (choice == 1) {
+                sc.nextLine();
+                System.out.println("Enter event title name (lowercase): ");
+                String name = sc.nextLine();
+                Event ev = evda.searchApprovedEventByTitle(name);
+                while (ev == null) {
+                    System.out.print("Event not found. Enter a different name: "); 
+                    name = sc.nextLine();
+                    ev = evda.searchApprovedEventByTitle(name);
+                }
+                System.out.println("Event details: ");
+                System.out.println(ev);
+            } else {
+                System.out.println("Sort Event Options:");
+                System.out.println("1. Sort by Title");
+                System.out.println("2. Sort by Date and Time");
+                choice = sc.nextInt();
+                while (choice != 1 && choice != 2) {
+                    System.out.println("That is not a valid option");
+                    System.out.println("Sort Event Options:");
+                    System.out.println("1. Sort by Title");
+                    System.out.println("2. Sort by Date and Time");
+                    choice = sc.nextInt();
+                }
+                System.out.println("List of all events:");
+                if (choice == 1) {
+                    evda.printEventByAlphaTitle();
+                } else {
+                    evda.printEventByTime();
+                }
+            }
         }
     }
 }

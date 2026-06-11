@@ -41,6 +41,8 @@ public abstract class Event {
         this.attended = false;
         this.eventAdminFeedback = null;
         this.booked = false;
+        this.currentUser1 = null;
+        this.currentUser2 = null;
     }
 
     public User getCurrentUser1() {
@@ -269,10 +271,9 @@ public abstract class Event {
 
     public void attendEvent(User user, int rate) {
         if (determineDatePassed() && getBooked() == true) {
-            setAttended(true);
             attendanceHistory.add(user);
+            user.updateTags(this);
             avgRating = ((attendanceHistory.size()-1)*avgRating+rate)/attendanceHistory.size();
-
         } else {
             System.out.println("Event has not occurred yet.");
         }
