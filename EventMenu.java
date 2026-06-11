@@ -5,6 +5,42 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
 
+    public void payForEvent() {
+
+    }
+
+    public double applyVirtualCost(Virtual event) {
+        
+        System.out.println("Discount code? (Y/N): ");
+        String response = sc.nextLine();
+        if (response.equalsIgnoreCase("N")) {
+            return event.getOriginalCost();
+        } else {
+            System.out.println("Enter discount code: ");
+            event.setUsedDiscountCode(sc.nextLine());  
+            return event.calculateCost();
+        }
+    }
+
+    public double applyOutdoorCost(Outdoor event) {
+        System.out.println("The expected precipitation of the day is: " + event.getPrecipitation() + "%");
+        if (event.getPrecipitation() > 70) {
+            System.out.println("You get a 50% discount due to the precipitation > 70% chance!");
+        } else if (event.getPrecipitation() < 20) {
+            System.out.println("You need to pay 20% extra due to good weather conditions of < 20% precipitation chance!");
+        }
+        return event.calculateCost(); 
+    }
+
+    public double applyIndoorCost(Indoor event) {
+        if (event.getUser3() == null) {
+            System.out.println("This is a single date, so your cost is the same as the original.");
+        } else {
+            System.out.println("This is a double date, so you get a 30% discount!");
+        }
+        return event.calculateCost();
+    }
+
     public void adminEventReview(Event event) {
         if (evda.searchForPendingEvent(event)) {
             if (event.autoApproveEvent()) {
@@ -25,8 +61,6 @@ public class EventMenu {
             System.out.println("Event does not exist!");
         }
     }
-    
-    //admin approval of pending events
 
     //virtual
      public void manualApproveVirtualEvent(Event event) {
@@ -897,6 +931,8 @@ Event event = evda.searchApprovedEventByTitle(eventname);
                 createIndoorEvent();
             }
             
+        } else {
+
         }
     }
 }

@@ -2,17 +2,17 @@ import java.time.*;
 import java.util.*;
 
 public class Virtual extends Event {
-    private Scanner sc = new Scanner(System.in);
     private String platform;
     private int meetingID;
     private int password;
-    private String[] discountCodes = {"DISCOUNT10", "DISCOUNT20", "DISCOUNT30"};
-
+    private String usedDiscountCode;
+    
     public Virtual(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String platform, int meetingID, int password) {
         super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.platform = platform;
         this.meetingID = meetingID;
         this.password = password;
+        usedDiscountCode = null;
     }
 
     public String getPlatform() {
@@ -60,27 +60,25 @@ public class Virtual extends Event {
 
         return 0;
     }
+    public String getUsedDiscountCode() {
+        return usedDiscountCode;
+    }
+    public void setUsedDiscountCode(String usedDiscountCode) {
+        this.usedDiscountCode = usedDiscountCode;
+    }
 
     public double calculateCost() {
-        System.out.println("Discount code? (Y/N): ");
-        String response = sc.nextLine();
-        if (response.equalsIgnoreCase("N")) {
-            return getOriginalCost();
-        } else {
-            System.out.println("Enter discount code: ");
-            String code = sc.nextLine();     
-                switch (code.toUpperCase()) {
-                    case "DISCOUNT10":
-                        return getOriginalCost() * 0.9; // 10% discount
-                    case "DISCOUNT20":
-                        return getOriginalCost() * 0.8; // 20% discount
-                    case "DISCOUNT30":
-                        return getOriginalCost() * 0.7; // 30% discount
-                    default:
-                        System.out.println("Invalid discount code. No discount applied.");
-                        return getOriginalCost();
-                }       
-        }
+        switch (usedDiscountCode) {
+            case "DISCOUNT10":
+                return getOriginalCost() * 0.9; // 10% discount
+            case "DISCOUNT20":
+                return getOriginalCost() * 0.8; // 20% discount
+            case "DISCOUNT30":
+                return getOriginalCost() * 0.7; // 30% discount
+            default:
+                System.out.println("Invalid discount code. No discount applied.");
+                return getOriginalCost();
+        }       
     }
 
     public boolean autoApproveEvent() {
