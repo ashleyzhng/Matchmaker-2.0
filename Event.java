@@ -28,6 +28,7 @@ public abstract class Event {
     LocalTime todayTime = LocalTime.now();
     LocalDate todayDate = LocalDate.now();
 
+    public abstract double cancelEvent();
 
     public Event(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
         this.title = title;
@@ -129,6 +130,8 @@ public abstract class Event {
     public boolean getBooked() {
         return booked;
     }
+
+    
 
     public void setBooked(boolean booked) {
         this.booked = booked;
@@ -263,7 +266,7 @@ public abstract class Event {
 
     public abstract boolean addUser(User user);
 
-    public abstract boolean changePendingEventDetails();
+    public abstract boolean autoApproveEvent();
 
     public abstract String approveEvent();
 
