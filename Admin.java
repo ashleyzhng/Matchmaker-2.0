@@ -5,10 +5,16 @@ public class Admin extends Account {
     private AccountsDatabase userDB;
 
     //constructs, accessors mutators
-    public Admin(String u, String p, String e, int v, AccountsDatabase adb){
-        super(u, p, e, v);
+    public Admin(String u, String p, String e, boolean ev, AccountsDatabase adb){
+        super(u, p, e, ev);
         appeals = new ArrayList<Appeal>();
         userDB = adb;
+    }
+
+    public Admin(String u, String p, String e, boolean ev){
+        super(u, p, e, ev);
+        appeals = new ArrayList<Appeal>();
+        userDB = null;
     }
 
     public ArrayList<Appeal> getAppeals(){
@@ -27,7 +33,7 @@ public class Admin extends Account {
     public void viewAllUsers(){
         User[] users = userDB.getUsers();
         for(int i = 0; i<users.length; i++){
-            System.out.println(users[i].getUsername() + " - " + users[i].isAccountStatus());
+            System.out.println(users[i].getUsername() + " - " + users[i].getName());
         }
     }
     public void viewUserInfo(User u){
@@ -51,7 +57,7 @@ public class Admin extends Account {
             System.out.println("User not found.");
             return null;
         }else{
-            Admin newAdmin = new Admin(u.getUsername(), u.getPassword(), u.getEmail(), u.getVerifyCode(), userDB);
+            Admin newAdmin = new Admin(u.getUsername(), u.getPassword(), u.getEmail(), true, userDB); // change boolean to proper
             if(userDB.deleteAccount(u, u.getPassword())){
                 System.out.println("User promoted to admin.");
                 return newAdmin;

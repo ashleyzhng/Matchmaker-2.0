@@ -13,7 +13,7 @@ public class MatchmakerRunner{
         while(running){
             switch (currentMenu){
                 case "main":
-                    currentMenu = menu.getMainMenu(sc);
+                    currentMenu = menu.getMainMenu(sc, system);
                     break;
                 case "login":
                     LoginResults loginResults = menu.login(sc, system);
@@ -21,7 +21,7 @@ public class MatchmakerRunner{
                     currentAccount = loginResults.getUser();
                     break;
                 case "user":
-                    menu.getUserMenu(currentAccount, sc);
+                    menu.getUserMenu(currentAccount, sc); //change return type
                     break;
                 case "admin":
                     // do later  
@@ -32,14 +32,11 @@ public class MatchmakerRunner{
                 case "accountSettings":
                     // do later
                     break;
-                case "resetPassword":
-                    // do later
-                    break;
                 case "createAccount":
-                    // do later
+                    currentMenu = menu.getCreateAccountMenu(sc, system);
                     break;
                 case "matchMenu":
-                    currentMenu = menu.matchMenu();
+                    currentMenu = menu.matchMenu(sc);
                     break;
                 case "logout":
                     currentAccount = null;
