@@ -39,7 +39,7 @@ public class EventMenu {
             return event.getOriginalCost();
         } else {
             System.out.println("Enter discount code: ");
-            event.setUsedDiscountCode(sc.nextLine());  
+            ((Virtual)event).setUsedDiscountCode(sc.nextLine());  
             return event.calculateCost();
         }
     }

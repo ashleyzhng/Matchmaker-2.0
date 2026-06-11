@@ -1,8 +1,8 @@
 import java.time.*;
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class Event {
-    Scanner sc = new Scanner(System.in);
+
     private String title;
     private LocalDate date;
     private LocalTime startTime;
@@ -21,9 +21,8 @@ public abstract class Event {
     private User currentUser2;
 
     private boolean attended;
-    private User[] attendanceHistory;
-    private int numPastAttendees;
-    public static int maxPast = 100;
+
+    private ArrayList<User> attendanceHistory;
 
     LocalTime todayTime = LocalTime.now();
     LocalDate todayDate = LocalDate.now();
@@ -40,7 +39,6 @@ public abstract class Event {
         this.categories = new Tag(r, s, m, a, t, f, g, c, an, re);
         this.approved = false;
         this.attended = false;
-        this.attendanceHistory = new User[maxPast];
         this.eventAdminFeedback = null;
         this.booked = false;
         this.currentUser1 = null;
@@ -69,6 +67,43 @@ public abstract class Event {
 
     public void setCategories(Tag categories) {
         this.categories = categories;
+    }
+
+    public String getListCategories() {
+        String s = "";
+        if (categories.getReligion() == 1) {
+
+            s += "religion, ";
+
+        }
+        if (categories.getSports() == 1) {
+            s+="sports, ";
+        }
+        if (categories.getMusic() == 1) {
+            s+="music, ";
+        }
+        if (categories.getArt() == 1) {
+            s+="art, ";
+        }
+        if (categories.getTraveling() == 1) {
+            s+="traveling, ";
+        }
+        if (categories.getFitness() == 1) {
+            s+="fitness, ";
+        }
+        if (categories.getGaming() == 1) {
+            s+="gaming, ";
+        }
+        if (categories.getCooking() == 1) {
+            s+="cooking, ";
+        }
+        if (categories.getAnimal() == 1) {
+            s+="animal, ";
+        }
+        if (categories.getReading() == 1) {
+            s+="reading";
+        }
+        return s;
     }
     public LocalTime getStartTime(){
         return startTime;
@@ -130,9 +165,7 @@ public abstract class Event {
     
     public boolean getBooked() {
         return booked;
-    }
-
-    
+    }   
 
     public void setBooked(boolean booked) {
         this.booked = booked;
@@ -236,24 +269,7 @@ public abstract class Event {
         }
     }
 
-    public boolean addPastAttendee(User user)   {
-        if (numPastAttendees < maxPast) {
-            attendanceHistory[numPastAttendees] = user;
-            numPastAttendees++;
-            return true;
-        } else {
-            for (int i = 0; i < numPastAttendees-1; i ++) {
-                attendanceHistory[i] = attendanceHistory[i+1];
-            }
-            attendanceHistory[numPastAttendees-1] = null;
-
-            numPastAttendees --;
-        }
-        
-        return false;
-    }
-
-    public void attendEvent(User user) {
+    public void attendEvent(User user, int rate) {
         if (determineDatePassed() && getBooked() == true) {
             attendanceHistory.add(user);
             user.updateTags(this);
@@ -261,25 +277,24 @@ public abstract class Event {
         } else {
             System.out.println("Event has not occurred yet.");
         }
+
+        user.getEventHistory().add(this);
     }
 
     public abstract boolean addUser(User user);
 
     public abstract boolean autoApproveEvent();
 
-    public abstract String approveEvent();
-
     public abstract double calculateCost();
 
     public String toString() {
-        return "Event{" +
-                "title='" + title + '\'' +
-                ", date='" + date + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", duration=" + duration +
-                ", originalCost=" + originalCost +
-                ", categories=" + getCategories() +
-                ", approved=" + approved +
-                '}';
+        return "Event Details:" + "\n" + 
+                "Title: " + title + "\n" +
+                "Date: " + date + "\n" +
+                "Start Time: " + startTime + "\n" +
+                "End Time: " + endTime + "\n" +
+                "Base cost: $" + originalCost + "\n" +
+                "Categories: " + getListCategories() + "\n" +
+                "Approved: " + approved + "\n";
     }
 }
