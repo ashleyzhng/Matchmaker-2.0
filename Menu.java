@@ -1,42 +1,43 @@
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Scanner;
 
 public class Menu {
     // all menu/ui methods go here
     public LoginResults login(Scanner sc, Matchmaker mm){
-        System.out.println("Enter the following information to login('b' to go back):");
-        System.out.print("Username: ");
-        String username = sc.next();
-        if(username.equals("b")){
-            return new LoginResults("main", null);
-        }
-        while(mm.searchByUsername(username) == null){
-            System.out.flush();
-            System.out.println("Username not found. Please try again.");
+        System.out.flush();
+        System.out.println("Enter the following information to login('0' to exit):");
+
+        User user = null;
+        String username, password;
+        while(user == null){
             System.out.print("Username: ");
             username = sc.next();
-            if(username.equals("b")){
+            if(username.equals("0")){
                 return new LoginResults("main", null);
             }
+            user = mm.searchByUsername(username);
+            if(user == null){
+                System.out.println("Username not found. Please try again.");
+            }
         }
-        System.out.print("Password: ");
-        String password = sc.next();
-        if(password.equals("b")){
-            return new LoginResults("main", null);
-        }
-        while(!mm.searchByUsername(username).correctPass(password)){
-            System.out.flush();
-            System.out.println("Incorrect password. Please try again.");
+        
+        while(true){
             System.out.print("Password: ");
             password = sc.next();
-            if(password.equals("b")){
+            if(password.equals("0")){
                 return new LoginResults("main", null);
             }
+            if(user.correctPass(password)){
+                return new LoginResults("login", user);
+            }
+
+            System.out.println("Incorrect password. Please try again.");
         }
-        LoginResults results = new LoginResults("login", mm.searchByUsername(username));
-        return results;
     }
 
-    public String getMainMenu(Scanner sc){
+    public String getMainMenu(Scanner sc, Matchmaker mm){
+        System.out.flush();
         System.out.println("Welcome to Matchmaker!");
         System.out.println("=======================");
         System.out.println("1. Login");
@@ -44,12 +45,12 @@ public class Menu {
         System.out.println("3. Create Account");
         System.out.println("4. Exit Program");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
-        int choice = sc.nextInt();
+        int choice = input(1,4, sc);
         if(choice == 1){
             return "login";
         }else if(choice == 2){
-            return "resetPassword";
+            resetPassword(sc, mm);
+            return "main";
         }else if(choice == 3){
             return "createAccount";
         }else if(choice == 4){
@@ -57,92 +58,29 @@ public class Menu {
         }
         return "";
     }
-
-    public void getAccountCreationMenu(){
-        System.out.println("=======================");
-        System.out.println("Pick Account Creation Method: ");
-        System.out.println("1. Load From File");
-        System.out.println("2. User Account");
-        System.out.println("3. Parent Account");
-        System.out.println("=======================");
-        System.out.print("OPTION: ");
-    }
-
     public String getUserMenu(User u, Scanner sc){
+        System.out.flush();
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
-        System.out.println("1. Match!");
-        System.out.println("2. View current Matches (" + u.getMatches().length + " matches)");
-        System.out.println("3. View Match History");
-        System.out.println("4. Host Event");
-        System.out.println("5. View Event History");
-        System.out.println("6. View Hosted Events");
-        System.out.println("7. View Profile");
-        System.out.println("8. Account Settings");
-        System.out.println("9. Logout");
+        System.out.println("1. Match!"); 
+        System.out.println("2. Host Event"); // KATHY - add in the sub options/menu for vewiing event history, and events the user hosted
+        System.out.println("3. View Profile");
+        System.out.println("4. Account Settings");
+        System.out.println("5. Logout");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
-        int choice = sc.nextInt();
-            while(choice < 1 || choice > 9){
-                System.out.println("Invalid option. Please try again.");
-                System.out.print("OPTION: ");
-                choice = sc.nextInt();
-            }
+        int choice = input(1,5, sc);
         if(choice == 1){
-            System.out.flush();
             return "match";
         }else if(choice == 2){
-            // ASHLEY - views current matches and approves/denies matches
+            // KATHY - hosting event
         }else if(choice == 3){
-            System.out.flush();
-            u.printMatchHistory();
-            System.out.print("Enter 'b' to go back: ");
-            String input = sc.next();
-            while(!input.equals("b")){
-                System.out.print("Invalid input. Please try again: ");
-                input = sc.next();
-            }
+            u.printProfile();
             return "user";
         }else if(choice == 4){
-            // KATHY - hosting event
-        }else if(choice == 5){
-            System.out.flush();
-            u.printEventHistory();
-            System.out.print("Enter 'b' to go back: ");
-            String input = sc.next();
-            while(!input.equals("b")){
-                System.out.print("Invalid input. Please try again: ");
-                input = sc.next();
-            }
-            return "user";
-        }else if(choice == 6){
-             System.out.flush();
-            u.printHostedEvents();
-            System.out.print("Enter 'b' to go back: ");
-            String input = sc.next();
-            while(!input.equals("b")){
-                System.out.print("Invalid input. Please try again: ");
-                input = sc.next();
-            }
-            return "user";
-        }else if(choice == 7){
-            System.out.flush();
-            u.printProfile();
-            System.out.print("Enter 'b' to go back: ");
-            String input = sc.next();
-            while(!input.equals("b")){
-                System.out.print("Invalid input. Please try again: ");
-                input = sc.next();
-            }
-            return "user";
-        }else if(choice == 8){
-            // account settings
-            System.out.flush();
-            return "accountSettings";                   
-        }else if(choice == 9){
-            System.out.flush();
+            return "accountSettings";  
+        }else{
             System.out.println("Logout successful.");
-            return "logout";
+            return "logout"; 
         }
         return "";
     }
@@ -185,7 +123,8 @@ public class Menu {
         return "";
     }
 
-    public String getResetPasswordMenu(Scanner sc, Matchmaker mm){
+    public String resetPassword(Scanner sc, Matchmaker mm){
+        System.out.flush();
         System.out.println("=======================");
         System.out.println("ENTER: ");
         System.out.print("Username: ");
@@ -206,6 +145,61 @@ public class Menu {
             }
         }
         return "";
+    }
+
+    public String getCreateAccountMenu(Scanner sc, Matchmaker mm){
+        System.out.println("=======================");
+        System.out.println("Pick Account Creation Method");
+        System.out.println("1. Load from File");
+        System.out.println("2. User Account");
+        System.out.println("3. Parent Account");
+        System.out.println("4. EXIT");
+        System.out.println("=======================");
+        int choice = input(1,4,sc);
+        if(choice == 1){
+            System.out.print("Enter file name: ");
+            mm.getAccounts().loadFromFile(sc.next(), mm);
+            return "createAccount";
+        }else if(choice == 2){
+            // call create user account menu method
+            return "main";
+        }
+
+        return "";
+    }
+
+    public void createUserMenu(Scanner sc){ // change name to createAccountmenu
+        // add method to check for ANY invalid input
+        System.out.println("ENTER THE FOLLOWING INFORMATION");
+        System.out.print("Username: ");
+        String username = sc.next();
+        // checks if username exsits and prompts to continue to write it untill it doenst exists
+        System.out.print("Password: ");
+        String password = sc.next();
+        System.out.print("Email: ");
+        String email = sc.next();
+        sc.nextLine();
+        System.out.print("Name: ");
+        String name = sc.nextLine();
+        System.out.print("Birthday (YYYY-MM-DD): ");
+        LocalDate birthday = LocalDate.parse(sc.next());
+        System.out.print("Postal Code: ");
+        String postalCode = sc.next();
+        System.out.print("City: ");
+        String city = sc.next();
+        sc.nextLine(); 
+        System.out.print("Bio: ");
+        String bio = sc.nextLine();
+        System.out.print("Gender (M/F/etc.): ");
+        char gender = sc.next().charAt(0);
+        System.out.print("Preferred Gender (M/F/etc.): ");
+        char preferredGender = sc.next().charAt(0);
+        int age = Period.between(birthday, LocalDate.now()).getYears();
+        if(age > Senior.MIN_AGE){
+            // ask senior questions
+            // create senior obeject and add to database
+        } 
+        // other ages
     }
 
     public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
@@ -234,7 +228,7 @@ public class Menu {
     public String matchMenu(Scanner sc){
         System.out.println("=======================");
         System.out.println("Match Menu: ");
-        System.out.println("1. View Current Matches");
+        System.out.println("1. View Current Matches"); // ASHLEY - can u add this option in ur thing: View Match History (there should be a user method for it)
         System.out.println("2. Create New Match");
         System.out.println("3. Exit");
         System.out.println("=======================");

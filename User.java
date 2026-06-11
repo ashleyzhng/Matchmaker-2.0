@@ -19,8 +19,8 @@ public class User extends Account {
     private ArrayList<Event> eventHosted;
     private Tag interestTag;
 
-    public User(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg){
-        super(u, p, e, v);
+    public User(String u, String p, String e, String n, String b, String pc, String c, char g, char pg){
+        super(u, p, e);
         name = n;
         birthday = LocalDate.parse(b);
         postalCode = pc;

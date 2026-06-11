@@ -6,8 +6,8 @@ public class Parent extends Account {
     private int numTeens;
     private int numMatches;
 
-    public Parent(String u, String p, String e, int v){
-        super(u, p, e, v);
+    public Parent(String u, String p, String e){
+        super(u, p, e);
         teens = new Teen[MAX_TEEN];
         approveMatches = new Match[User.MAX_MATCHES*MAX_TEEN];
         teenEvents = new Event[User.MAX_MATCHES];

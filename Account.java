@@ -3,27 +3,21 @@ public abstract class Account{
     private String password;
     private String email;
     private boolean emailVerified;
-    private int verifyCode;
-    private boolean accountStatus;
 
-    public Account(String u, String p, String e, int v){
+    public Account(String u, String p, String e){
         username = u;
         password = p;
         email = e;
         emailVerified = false;
-        accountStatus = true;
     }
     
-    public Account(String u, String p, String e, boolean ev, int v){
+    public Account(String u, String p, String e, boolean ev){
         username = u;
         password = p;
         email = e;
         emailVerified = ev;
-        accountStatus = true;
-        if(emailVerified){
-            verifyCode = (int)(Math.random() * 1000000);
-        }
     }
+
     public String getUsername(){
         return username;
     }
@@ -56,22 +50,6 @@ public abstract class Account{
         emailVerified = ev;
     }
 
-    public int getVerifyCode(){
-        return verifyCode;
-    }
-
-    public void setVerifyCode(int vc){
-        verifyCode = vc;
-    }
-
-    public boolean isAccountStatus(){
-        return accountStatus;
-    }
-
-    public void setAccountStatus(boolean as){
-        accountStatus = as;
-    }
-
     public boolean correctPass(String pass){
         if(pass == this.password){
             return true;
@@ -81,6 +59,6 @@ public abstract class Account{
     }
 
     public String toString(){
-        return "Username: " + username + "\nEmail: " + email + "\nEmail Verified: " + emailVerified + "\nAccount Status: " + accountStatus;
+        return "Username: " + username + "\nEmail: " + email + "\nEmail Verified: " + emailVerified;
     }
 }

@@ -9,6 +9,10 @@ public class Matchmaker {
         events = new EventDatabase();
         accounts = new AccountsDatabase();
     }
+
+    public AccountsDatabase getAccounts(){
+        return accounts;
+    }
     public ArrayList <User> eligibleUserPool(User user){
         User[] all = accounts.getUsers();
         ArrayList <Match> matchHistory = user.getMatchHistory();
