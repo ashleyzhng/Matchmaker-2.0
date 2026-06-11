@@ -8,8 +8,8 @@ public class Virtual extends Event {
     private int password;
     private String[] discountCodes = {"DISCOUNT10", "DISCOUNT20", "DISCOUNT30"};
 
-    public Virtual(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String platform, int meetingID, int password) {
-        super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
+    public Virtual(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String platform, int meetingID, int password) {
+        super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.platform = platform;
         this.meetingID = meetingID;
         this.password = password;
@@ -61,7 +61,7 @@ public class Virtual extends Event {
         System.out.println("1. Current title: " + getTitle());
         System.out.println("2. Current date: " + getDate());
         System.out.println("3. Current start time: " + getStartTime());
-        System.out.println("4. Current duration: " + getDuration() + " hours");
+        System.out.println("4. Current end time: " + getEndTime());
         System.out.println("5. Current original cost: $" + getOriginalCost());
         System.out.println("6. Current categories: " + getCategories());
         System.out.println("7. Current platform: " + getPlatform());
@@ -87,6 +87,7 @@ public class Virtual extends Event {
                 setDate(localuserdate);
                 break;
             case 3:
+                System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
                 int userhour = Integer.parseInt(usertime.substring(0,2));
                 int usermin = Integer.parseInt(usertime.substring(3));
@@ -94,9 +95,12 @@ public class Virtual extends Event {
                 setStartTime(localusertime);
                 break;
             case 4:
-                System.out.println("Enter new duration (in hours): ");
-                setDuration(sc.nextDouble());
-                sc.nextLine(); 
+                System.out.println("Enter new end time (HH:MM): ");
+                String endusertime = sc.nextLine();
+                int enduserhour = Integer.parseInt(endusertime.substring(0,2));
+                int endusermin = Integer.parseInt(endusertime.substring(3));
+                LocalTime endlocalusertime = LocalTime.of(enduserhour, endusermin);
+                setEndTime(endlocalusertime);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
@@ -104,8 +108,44 @@ public class Virtual extends Event {
                 sc.nextLine(); 
                 break;
             case 6:
-                System.out.println("Enter new categories (comma-separated): ");
-                setCategories(new Tag(sc.nextLine().split(",")));
+                System.out.println("Enter new applicable categories (space-separated, lowercase): ");
+                String usertags = sc.nextLine();
+                String[] taglist = usertags.split(" ");
+                int r = 0, s = 0, m = 0, a = 0, t = 0, f = 0, g = 0, c = 0, an = 0, re = 0;
+                for (int i = 0; i < taglist.length; i ++) {
+                    if (taglist[i].equals("religion")) {
+                        r = 1;
+                    }
+                    if (taglist[i].equals("sports")) {
+                        s = 1;
+                    } 
+                    if (taglist[i].equals("music")) {
+                        m = 1;
+                    } 
+                    if (taglist[i].equals("art")) {
+                        a = 1;
+                    }
+                    if (taglist[i].equals("traveling")) {
+                        t = 1;
+                    } 
+                    if (taglist[i].equals("fitness")) {
+                        f = 1;
+                    } 
+                    if (taglist[i].equals("gaming")) {
+                        g = 1;
+                    } 
+                    if (taglist[i].equals("cooking")) {
+                        c = 1;
+                    } 
+                    if (taglist[i].equals("animal")) {
+                        an = 1;
+                    } 
+                    if (taglist[i].equals("reading")) {
+                        re = 1;
+                    }    
+                }
+                Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
+                setCategories(newtags);
                 break;
             case 7:
                 System.out.println("Enter new platform: ");
@@ -159,7 +199,7 @@ public class Virtual extends Event {
             return getEventAdminFeedback();
         }
 
-        System.out.println(("Duration: " + getDuration() + " hours"));
+        System.out.println("End Time: " + getEndTime());
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {

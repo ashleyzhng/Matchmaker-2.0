@@ -8,8 +8,8 @@ public class Indoor extends Event {
     private User user3;
     private User user4;
 
-    public Indoor(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int floorNumber, String room) {
-        super(title, date, startTime, duration, originalCost, r, s, m, a, t, f, g, c, an, re);
+    public Indoor(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int floorNumber, String room) {
+        super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re);
         this.location = location;
         this.floorNumber = floorNumber;
         this.room = room;
@@ -84,7 +84,7 @@ public class Indoor extends Event {
         System.out.println("1. Current title: " + getTitle());
         System.out.println("2. Current date: " + getDate());
         System.out.println("3. Current start time: " + getStartTime());
-        System.out.println("4. Current duration: " + getDuration() + " hours");
+        System.out.println("4. Current end time:" + getEndTime());
         System.out.println("5. Current original cost: $" + getOriginalCost());
         System.out.println("6. Current categories: " + getCategories());
         System.out.println("7. Current location: " + getLocation());
@@ -117,9 +117,12 @@ public class Indoor extends Event {
                 setStartTime(localusertime);
                 break;
             case 4:
-                System.out.println("Enter new duration (in hours): ");
-                setDuration(sc.nextDouble());
-                sc.nextLine(); 
+                System.out.println("Enter new end time (HH:MM): ");
+                String endusertime = sc.nextLine();
+                int enduserhour = Integer.parseInt(endusertime.substring(0,2));
+                int endusermin = Integer.parseInt(endusertime.substring(3));
+                LocalTime endlocalusertime = LocalTime.of(enduserhour, endusermin);
+                setEndTime(endlocalusertime);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
@@ -161,8 +164,7 @@ public class Indoor extends Event {
                     } 
                     if (taglist[i].equals("reading")) {
                         re = 1;
-                    } 
-                    
+                    }    
                 }
                 Tag newtags = new Tag(r, s, m, a, t, f, g, c, an, re);
                 setCategories(newtags);
@@ -216,7 +218,7 @@ public class Indoor extends Event {
             setEventAdminFeedback(sc.nextLine());
             return getEventAdminFeedback();
         }
-        System.out.println(("Duration: " + getDuration() + " hours"));
+        System.out.println(("End Time: " + getEndTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {

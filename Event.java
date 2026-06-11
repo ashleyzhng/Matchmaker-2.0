@@ -6,7 +6,8 @@ public abstract class Event {
     private String title;
     private LocalDate date;
     private LocalTime startTime;
-    private double duration;
+    private LocalTime endTime;
+    private Duration duration;
     private double originalCost;
     private double avgRating;
 
@@ -28,11 +29,12 @@ public abstract class Event {
     LocalDate todayDate = LocalDate.now();
 
 
-    public Event(String title, LocalDate date, LocalTime startTime, double duration, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
+    public Event(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
-        this.duration = duration;
+        this.endTime = endTime;
+        this.duration = Duration.between(startTime, endTime);
         this.originalCost = originalCost;
         this.categories = new Tag(r, s, m, a, t, f, g, c, an, re);
         this.approved = false;
@@ -74,12 +76,14 @@ public abstract class Event {
         this.startTime = startTime;
     }
 
-    public double getDuration(){
-        return duration;
+    public LocalTime getEndTime() {
+
+        return endTime;
     }
 
-    public void setDuration(double duration) {
-        this.duration = duration;
+    public void setEndTime(LocalTime endTime) {
+
+        this.endTime = endTime;
     }
 
     public LocalDate getDate(){
