@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -507,16 +508,11 @@ public class Menu {
         System.out.println("2. Distance Match");
         System.out.println("3. Single Date Match");
         System.out.println("4. Double Date Match");
-        System.out.println("Please note: Double dates have a much lower success rate!");
+        System.out.println("Please note: Single Date & Double Dates has a lower success rate!");
         System.out.println("5. Exit");
         System.out.println("=======================");
         System.out.print("OPTION: ");
-        int choice = sc.nextInt();
-        while(choice < 1 || choice > 4){
-            System.out.println("Invalid option. Please try again.");
-                System.out.print("OPTION: ");
-                choice = sc.nextInt();
-        }
+        int choice = input(1, 5, sc);
         if (choice >= 1 && choice <= 3){
            System.out.println(mm.generateMatch(user, choice));
 
@@ -531,12 +527,7 @@ public class Menu {
         System.out.println("3. Exit");
         System.out.println("=======================");
         System.out.print("OPTION: ");
-        int choice = sc.nextInt();
-        while (choice < 1 || choice > 3){
-            System.out.println("Invalid option. Please try again.");
-            System.out.print("OPTION: ");
-            choice = sc.nextInt();
-        }
+        int choice = input(1, 3, sc);
         if(choice == 1){
             return "currentMatchMenu";
         }else if (choice == 2){
@@ -565,13 +556,7 @@ public class Menu {
             }
         }
         System.out.println((match.length + 1) + " Exit");
-        System.out.print("OPTION: ");
-        int choice = sc.nextInt();
-        while(choice < 1 && choice > match.length){
-            System.out.println("Invalid option. Please try again.");
-            System.out.print("OPTION: ");
-            choice = sc.nextInt();
-        }
+        int choice = input(1, match.length + 1, sc);
         if(choice == match.length + 1){
             return singleMatchMenu(match[choice-1], sc, user);
         }
@@ -590,17 +575,12 @@ public class Menu {
         System.out.println("3. Exit");
         System.out.println("=======================");
         System.out.print("OPTION: ");
-        int choice = sc.nextInt();
-        while(choice <1 || choice > 3){
-            System.out.println("Invalid option. Please try again.");
-            System.out.print("OPTION: ");
-            choice = sc.nextInt();
-        }
+        int choice = input(1, 3, sc);
         if (choice == 1){
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
             }else if (match instanceof SingleEventMatch){
-                ((SingleEventMatch)match).updateUserDecision(PersonMatch.ACCEPT);
+                ((SingleEventMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
             }else{
                 ((DoubleEventMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
             }
@@ -609,7 +589,7 @@ public class Menu {
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).updateUserDecision(user, PersonMatch.REJECT);
             }else if (match instanceof SingleEventMatch){
-                ((SingleEventMatch)match).updateUserDecision(PersonMatch.REJECT);
+                ((SingleEventMatch)match).updateUserDecision(user, PersonMatch.REJECT);
             }else{
                 ((DoubleEventMatch)match).updateUserDecision(user, PersonMatch.REJECT);
             }
@@ -618,20 +598,39 @@ public class Menu {
         return "matchMenu";
     }
 
+    
     public int input(int firstChoice, int lastChoice, Scanner sc){ // change to menu input
-    int choice;
-    while(true){
-        System.out.print("OPTION: ");
-        if(!sc.hasNextInt()){
-            System.out.println("Invalid Input. Please try again.");
-            sc.next();
-        }else{
-            choice = sc.nextInt();
-            if(choice >= firstChoice && choice <= lastChoice){
-                return choice;
+        while(true){
+            try {
+                System.out.println("OPTION: ");
+                int choice = sc.nextInt();
+                if(choice < firstChoice || choice > lastChoice){
+                    System.out.println("Invalid option. Please try again.");
+                }else{
+                    return choice;
+                }
+                
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid Input. Please try again.");
+                sc.next();
             }
         }
-    }
+        
+        /* 
+        int choice;
+        while(true){
+            System.out.print("OPTION: ");
+            if(!sc.hasNextInt()){
+                System.out.println("Invalid Input. Please try again.");
+                sc.next();
+            }else{
+                choice = sc.nextInt();
+                if(choice >= firstChoice && choice <= lastChoice){
+                    return choice;
+                }
+            }
+        }
+        */
     }
     public LocalDate validLocalDate(Scanner sc){
         LocalDate birthday = null;
