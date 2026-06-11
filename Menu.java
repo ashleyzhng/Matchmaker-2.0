@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Menu {
@@ -148,12 +149,13 @@ public class Menu {
     }
 
     public String getCreateAccountMenu(Scanner sc, Matchmaker mm){
+        System.out.flush();
         System.out.println("=======================");
         System.out.println("Pick Account Creation Method");
         System.out.println("1. Load from File");
         System.out.println("2. User Account");
         System.out.println("3. Parent Account");
-        System.out.println("4. EXIT");
+        System.out.println("4. GO BACK");
         System.out.println("=======================");
         int choice = input(1,4,sc);
         if(choice == 1){
@@ -161,45 +163,147 @@ public class Menu {
             mm.getAccounts().loadFromFile(sc.next(), mm);
             return "createAccount";
         }else if(choice == 2){
-            // call create user account menu method
+            createUser(sc, mm);
+            System.out.println("Account Created Succesfully. Please Login to start Matching!");
             return "main";
+        }else if(choice == 3){
+            //parent acc
         }
-
-        return "";
+        return "main";
     }
 
-    public void createUserMenu(Scanner sc){ // change name to createAccountmenu
-        // add method to check for ANY invalid input
-        System.out.println("ENTER THE FOLLOWING INFORMATION");
+    public void createUser(Scanner sc, Matchmaker mm){ 
+        System.out.flush();
+        System.out.println("ENTER THE FOLLOWING INFORMATION (must complete to return to main menu)" );
         System.out.print("Username: ");
         String username = sc.next();
-        // checks if username exsits and prompts to continue to write it untill it doenst exists
+            boolean userExists = mm.getAccounts().usernameExists(username);
+            while(userExists){
+                System.out.println("Username already exsits. Please input another username");
+                System.out.print("Username: ");
+                username = sc.next();
+                userExists = mm.getAccounts().usernameExists(username);
+            }
         System.out.print("Password: ");
         String password = sc.next();
         System.out.print("Email: ");
-        String email = sc.next();
-        sc.nextLine();
+        String email = sc.nextLine();
         System.out.print("Name: ");
         String name = sc.nextLine();
-        System.out.print("Birthday (YYYY-MM-DD): ");
-        LocalDate birthday = LocalDate.parse(sc.next());
+        LocalDate birthday = validLocalDate(sc);
         System.out.print("Postal Code: ");
         String postalCode = sc.next();
         System.out.print("City: ");
-        String city = sc.next();
-        sc.nextLine(); 
+        String city = sc.nextLine();
         System.out.print("Bio: ");
         String bio = sc.nextLine();
-        System.out.print("Gender (M/F/etc.): ");
-        char gender = sc.next().charAt(0);
-        System.out.print("Preferred Gender (M/F/etc.): ");
-        char preferredGender = sc.next().charAt(0);
+        System.out.print("Gender: (Male - 1 Female - 2 Other - 3) ");
+        int choice = input(1,3,sc);
+            char gender; 
+            if(choice == 1){
+                gender = 'M';
+            }else if(choice ==2){
+                gender = 'F';
+            }else{
+                gender = 'O';
+            }
+        System.out.print("Preferred Gender: (Male - 1 Female - 2 Other - 3) ");
+        choice = input(1,3,sc);
+            char preferredGender;
+            if(choice == 1){
+                preferredGender = 'M';
+            }else if(choice ==2){
+                preferredGender = 'F';
+            }else{
+                preferredGender = 'O';
+            }
         int age = Period.between(birthday, LocalDate.now()).getYears();
         if(age > Senior.MIN_AGE){
-            // ask senior questions
-            // create senior obeject and add to database
-        } 
-        // other ages
+            System.out.println("Occupation: ");
+            String occupation = sc.nextLine(); 
+            System.out.print("Marital status: ");
+            String maritalStatus = sc.nextLine();
+            System.out.print("maximum preferred age (max: 100");
+            int maxAge = input(Adult.MIN_AGE, 100, sc);
+            System.out.print("minimum preferred age (min: " + Adult.MIN_AGE);
+            int minAge = input(Adult.MIN_AGE, 100, sc);
+            System.out.print("mobility status, invalid input will be treated as false (true/false): ");
+            boolean mobilityStatus = Boolean.parseBoolean(sc.nextLine()); 
+            Tag interestTag = tagMenu(sc);
+            mm.getAccounts().addUser(new Senior(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, mobilityStatus, interestTag));
+        }else if(age > Adult.MIN_AGE){
+            System.out.println("Occupation: ");
+            String occupation = sc.nextLine(); 
+            System.out.print("Marital status: ");
+            String maritalStatus = sc.nextLine();
+            System.out.print("maximum preferred age (max: 100");
+            int maxAge = input(Adult.MIN_AGE, 100, sc);
+            System.out.print("minimum preferred age (min: " + Adult.MIN_AGE);
+            int minAge = input(Adult.MIN_AGE, 100, sc);
+            Tag interestTag = tagMenu(sc);
+            mm.getAccounts().addUser(new Adult(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, interestTag));
+        }else if(age > Teen.MIN_AGE){
+            Tag interestTag = tagMenu(sc);
+            mm.getAccounts().addUser(new Teen(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
+        }else{
+            System.out.println("You are too young to use the service. Minmium age is 13");
+        }
+    }
+
+    public Tag tagMenu(Scanner sc){
+        int religion = 0, sports = 0, music = 0, art = 0, traveling = 0, fitness = 0, gaming = 0, cooking = 0, animal = 0, reading = 0;
+        // prompts
+        System.out.print("Are you interested in religion? Enter Yes - 1, No - 2): ");
+        int choice = input(1,2,sc);
+        if(choice == 1){ 
+            religion++;
+        }
+        System.out.print("Are you interested in sports? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            sports++;
+        }
+        System.out.print("Are you interested in music? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            music++;
+        }
+        System.out.print("Are you interested in art? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            art++;
+        }
+        System.out.print("Are you interested in traveling? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            traveling++;
+        }
+        System.out.print("Are you interested in fitness? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            fitness++;
+        }
+        System.out.print("Are you interested in gaming? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            gaming++;
+        }
+        System.out.print("Are you interested in cooking? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            cooking++;
+        }
+        System.out.print("Are you interested in animals? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            animal++;
+        }
+        System.out.print("Are you interested in reading? Enter Yes - 1, No - 2: ");
+        choice = input(1,2,sc);
+        if(choice == 1){
+            reading++;
+        }
+        return new Tag(religion, sports, music, art, traveling, fitness, gaming, cooking, animal, reading);
     }
 
     public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
@@ -320,7 +424,7 @@ public class Menu {
         return "matchMenu";
     }
 
-    public int input(int firstChoice, int lastChoice, Scanner sc){
+    public int input(int firstChoice, int lastChoice, Scanner sc){ // change to menu input
     int choice;
     while(true){
         System.out.print("OPTION: ");
@@ -335,5 +439,23 @@ public class Menu {
         }
     }
     }
+    public LocalDate validLocalDate(Scanner sc){
+        LocalDate birthday = null;
+        while (birthday == null) {
+            System.out.print("Birthday (YYYY-MM-DD): ");
+            try {
+                LocalDate temp = LocalDate.parse(sc.next());
+                if(temp.isAfter(LocalDate.now())) {
+                    System.out.println("Birthday cannot be in the future.");
+                }else{
+                    birthday = temp;
+                }
+            }catch(DateTimeParseException e){
+                System.out.println("Invalid date. Please use the format YYYY-MM-DD.");
+            }
+        }
+        return birthday;
+    }
+
     
 }

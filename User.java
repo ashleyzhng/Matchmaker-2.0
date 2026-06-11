@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class User extends Account {
     public static final int MAX_MATCHES = 5;
     private String name;
-    private LocalDate birthday; // I CHANGED THIS -ASHLEY
+    private LocalDate birthday; 
     private String postalCode;
     private String city;
     private String bio;
@@ -19,15 +19,15 @@ public class User extends Account {
     private ArrayList<Event> eventHosted;
     private Tag interestTag;
 
-    public User(String u, String p, String e, String n, String b, String pc, String c, char g, char pg){
+    public User(String u, String p, String e, String n, LocalDate b, String pc, String c, String bi, char g, char pg, Tag t){
         super(u, p, e);
         name = n;
-        birthday = LocalDate.parse(b);
+        birthday = b;
         postalCode = pc;
         city = c;
         gender = g;
         preferredGender = pg;
-        interestTag = new Tag(0,0,0,0,0,0,0,0,0,0);
+        interestTag = t;
         matches = new Match[MAX_MATCHES];
         numMatches = matches.length;
         eventHistory = new ArrayList<>();

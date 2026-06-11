@@ -21,6 +21,8 @@ public class MatchmakerRunner{
                     currentAccount = loginResults.getUser();
                     break;
                 case "user":
+                    // remove expired/rejected matches
+                    // (User)currentAccount.updateMatches();
                     menu.getUserMenu(currentAccount, sc); //change return type
                     break;
                 case "admin":

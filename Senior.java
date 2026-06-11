@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Senior extends User{
     public static final int MIN_AGE = 13;
     private String occupation;
@@ -6,8 +8,9 @@ public class Senior extends User{
     private int preferredMinAge;
     private boolean hasMobilityLimitations;
     
-    public Senior(String u, String p, String e, int v, String n, String b, String pc, String c, char g, char pg, String m, int max, int min, boolean h){
-        super(u, p, e, v, n, b, pc, c, g, pg);
+    public Senior(String u, String p, String e, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, boolean h, Tag t){
+        super(u, p, e, n, b, pc, c, bi, g, pg, t);
+        occupation = o;
         maritalStatus = m;
         preferredMaxAge = max;
         preferredMinAge = min;
