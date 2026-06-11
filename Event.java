@@ -143,6 +143,9 @@ public abstract class Event {
 
         this.attended = attended;
     }
+    public Duration getDuration(){
+        return duration;
+    }
 
     public boolean determineDatePassed() {
         int yearthis = date.getYear();
