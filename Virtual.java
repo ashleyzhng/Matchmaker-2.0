@@ -56,7 +56,7 @@ public class Virtual extends Event {
 
 
 
-    public void changeEventDetails() {
+    public boolean changePendingEventDetails() {
         System.out.println("Changing event details for virtual event: " + getTitle());
         System.out.println("1. Current title: " + getTitle());
         System.out.println("2. Current date: " + getDate());
@@ -166,7 +166,9 @@ public class Virtual extends Event {
                 break;
             default:
                 System.out.println("Invalid choice. No changes made.");
+                return false;
         }
+        return true;
     }
 
     public String approveEvent() {

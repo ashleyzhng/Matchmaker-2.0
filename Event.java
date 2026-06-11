@@ -260,7 +260,7 @@ public abstract class Event {
 
     public abstract boolean addUser(User user);
 
-    public abstract void changeEventDetails();
+    public abstract boolean changePendingEventDetails();
 
     public abstract String approveEvent();
 
