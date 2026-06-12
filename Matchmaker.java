@@ -74,7 +74,8 @@ public class Matchmaker {
                 User cur1 = all[i].getCurrentUser1();
                 User cur2 = all[i].getCurrentUser2();
                 
-                if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)) {
+                if ((cur1 != user && cur2 != user) && (cur1 == null || cur2 == null)
+                    && (cur1 == null || eligibleUsers.contains(cur1)) && (cur2 == null || eligibleUsers.contains(cur2))){
                     pool.add(curEvent);
                 }
             }

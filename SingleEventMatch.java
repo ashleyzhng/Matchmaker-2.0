@@ -86,8 +86,8 @@ public class SingleEventMatch extends EventMatch{
                 setEventType("Outdoor");
             }
             pair[1]= event.getCurrentUser1();
-            if (pair[1] == null){
-                status[1] = pair[1].getEventMatch(getEvent().getTitle()).getStatus(pair[1]);
+            if (pair[1] != null){
+                EventMatch old = pair[1].getEventMatch(event.getTitle());
             }
             setEventTitle(event.getTitle());
             storeMatch();

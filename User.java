@@ -164,16 +164,16 @@ public class User extends Account {
             }
         }
     }
-    public Event getEventMatch(String name){
+    public EventMatch getEventMatch(String name){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] instanceof EventMatch){ 
                 if (((EventMatch)matches[i]).getEventTitle().equals(name)){
-                    return ((EventMatch)matches[i]).getEvent();
+                    return ((EventMatch)matches[i]);
                 }
             }
         }   
         return null;
-    }  
+    } 
 
     public boolean maxMatches(){
         if(numMatches == MAX_MATCHES){
