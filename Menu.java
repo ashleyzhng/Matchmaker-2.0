@@ -323,11 +323,12 @@ public class Menu {
         System.out.println("1. View All Users");
         System.out.println("2. View User Info");
         System.out.println("3. View All Appeals");
-        System.out.println("4. Promote User to Admin");
+        System.out.println("4. View All Events");
         System.out.println("5. Approve pending events");
-        System.out.println("6. Logout");
+        System.out.println("6. Promote User to Admin");
+        System.out.println("7. Logout");
         System.out.println("=======================");
-        int choice = input(1,6,sc);
+        int choice = input(1,7,sc);
         if(choice == 1){
             ad.viewAllUsers(mm.getAccounts().sortByUserType(mm.getAccounts().getAccounts()));
             return "admin";
@@ -337,7 +338,7 @@ public class Menu {
             String username = sc.nextLine(); 
             ad.viewUserInfo(mm.getAccounts().searchByUsername(username));
             return "admin";
-        }else if(choice == 3){
+        }else if(choice == 3) {
             ad.viewAllAppeals(mm.getAppeals());
             System.out.println("(Delete User)Resolve Appeal #: ");
             int idx = input(1,mm.getAppeals().getAppeals().size(),sc);
@@ -346,8 +347,12 @@ public class Menu {
             mm.getAccounts().deleteAccount(d, d.getPassword());
             mm.saveAccountsToFile("Test.txt");
             return "admin";
+        } else if (choice == 4) {
+            em.adminViewEvents();
+            return "admin";
         } else if (choice == 5) {
             em.adminEventReview();
+            return "admin";
         }
         return "logout";
     }

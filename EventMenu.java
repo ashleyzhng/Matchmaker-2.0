@@ -14,6 +14,49 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
 
+    public void adminViewEvents() {
+        System.out.println("View Event Titles:");
+        System.out.println("1. Approved Events");
+        System.out.println("2. Pending Events");
+        String choice = sc.nextLine();
+        while (choice != "1" && choice != "2") {
+            System.out.println("Invalid input. Enter 1 or 2: ");
+            choice = sc.nextLine();
+        }
+        if (choice.equals("1")) {
+            evda.printEventByAlphaTitle();
+            System.out.print("Want to view details? (Y/N): ");
+            choice = sc.nextLine();
+
+            if (choice == "Y") {
+                System.out.println("Enter title: ");
+                choice = sc.nextLine();
+                Event ev = evda.searchApprovedEventByTitle(choice);
+                while (ev == null) {
+                    System.out.println("Event does not exist. enter correct name: ");
+                    choice = sc.nextLine();
+                    ev = evda.searchApprovedEventByTitle(choice);
+                } 
+                System.out.println(ev);
+            } 
+        } else  {
+            evda.printPendingByAlphaTitle();
+            System.out.print("Want to view details? (Y/N): ");
+            choice = sc.nextLine();
+
+            if (choice == "Y") {
+                System.out.println("Enter title: ");
+                choice = sc.nextLine();
+                Event ev = evda.searchPendingEventByTitle(choice);
+                while (ev == null) {
+                    System.out.println("Event does not exist. enter correct name: ");
+                    choice = sc.nextLine();
+                    ev = evda.searchPendingEventByTitle(choice);
+                } 
+                System.out.println(ev);
+            } 
+        } 
+    }
     public void rateEvent (Event event, User user) {
         System.out.println("Rate the event out of 5: ");
         int rate = sc.nextInt();
@@ -37,7 +80,7 @@ public class EventMenu {
         
         while (response < amount) {
            
-                System.out.println("Payment declined. You are still missing $" + (amount-response));
+                System.out.println("Payment declined. You are still missing $" + (amount-response) +". Reenter full payment: ");
                 amount = sc.nextDouble();
         }
         if (amount > response) {

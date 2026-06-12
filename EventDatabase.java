@@ -589,6 +589,13 @@ public class EventDatabase {
         }
     }
 
+    public void printPendingByAlphaTitle() {
+        sortPendingByAlphaTitle();
+        for (int i = 0; i < numPendingEvents; i ++) {
+            System.out.println(pendingEventList[i].getTitle());
+        }
+    }
+
     public void printEventByTime() {
         sortEventsByTime();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -704,6 +711,7 @@ public class EventDatabase {
             allEventList.set(maxIndex, temp);
         }
     }
+
 
     public Event searchEventByTitle(String title) {
         sortAllEventsByTitle();
