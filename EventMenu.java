@@ -79,8 +79,30 @@ public class EventMenu {
         return event.calculateCost();
     }
 
-    public void adminEventReview(Event event) {
-        if (evda.searchForPendingEvent(event)) {
+    public void adminEventReview() {
+        boolean cont = true;
+        int index = 0;
+        while(cont && evda.getNumPendingEvents() > 0 && index < evda.getNumPendingEvents()) {
+            event = evda.getNumPendingEvent
+            if (evda.getNumPendingEvents() > 0 && event.autoApproveEvent()) {
+                System.out.println("Passed system checks. Admin review available.");
+                if (event instanceof Virtual) {
+                    manualApproveVirtualEvent(event);
+                } else if (event instanceof Outdoor) {
+                    manualApproveOutdoorEvent(event);
+                } else {
+                    manualApproveIndoorEvent(event);
+                }
+            } else {
+                System.out.println("Event rejected automatically. No admin override allowed.");
+            }
+            System.out.println("Want to approve next event (Y/N): ");   
+            String response = sc.nextLine();
+            if (response.equalsIgnoreCase("N"))  {
+                cont = false;
+            }   
+        }
+        System.out.println("Finished approving events.");
             if (event.autoApproveEvent()) {
                 System.out.println("Passed system checks. Admin review available.");
                 if (event instanceof Virtual) {
@@ -99,9 +121,10 @@ public class EventMenu {
             System.out.println("Event does not exist!");
         }
     }
+}
 
     //virtual
-     public void manualApproveVirtualEvent(Event event) {
+     public boolean manualApproveVirtualEvent(Event event) {
   
         if (event != null && event instanceof Virtual) {
             String response;
@@ -111,7 +134,7 @@ public class EventMenu {
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
-
+            
         }
 
         System.out.println(("Date: " + event.getDate()));
@@ -195,7 +218,7 @@ public class EventMenu {
             } else {
                 System.out.println("Reached max capacity of events. Remove old events.");
             }
-        } 
+        }
   
         } else {
             System.out.println("This event does not exist.");

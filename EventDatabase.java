@@ -17,8 +17,9 @@ public class EventDatabase {
     ArrayList<Event> expiredEventList = new ArrayList<Event>();
     ArrayList<Event> allEventList = new ArrayList<Event>();
     private Event[] eventList;
-    private int numApprovedEvents;
-    private int numPendingEvents;
+    private int numApprovedEvents = 0;
+    private int numPendingEvents = 0;
+    private int numEvents = 0;
     public static int maxApprovedEvents = 50;
     public static int maxPendingEvents = 50;
     AccountsDatabase ad = new AccountsDatabase();
@@ -32,9 +33,11 @@ public class EventDatabase {
     }
     
 
-    public boolean loadEvent(String filename) {
+    public boolean loadAllEvents(String filename) {
         try {
             BufferedReader in = new BufferedReader(new FileReader(filename));
+            numEvents = Integer.parseInt(in.readLine());
+            for (int i = 0; i < numEvents; i ++) {
             String type = in.readLine();
             if (type.equals("virtual")) {
                 String title = in.readLine();
@@ -278,6 +281,7 @@ public class EventDatabase {
                     } 
                 }
             }
+        }
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
             return false;

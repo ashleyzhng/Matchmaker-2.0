@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Menu {
     // all menu/ui methods go here
     EventMenu em = new EventMenu();
+    
     public LoginResults login(Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("Enter the following information to login('0' to exit):");
@@ -328,9 +329,10 @@ public class Menu {
         System.out.println("2. View User Info");
         System.out.println("3. View All Appeals");
         System.out.println("4. Promote User to Admin");
-        System.out.println("5. Logout");
+        System.out.println("5. Approve pending events");
+        System.out.println("6. Logout");
         System.out.println("=======================");
-        int choice = input(1,5,sc);
+        int choice = input(1,6,sc);
         if(choice == 1){
             ad.viewAllUsers(mm.getAccounts());
             return "admin";
@@ -342,6 +344,8 @@ public class Menu {
         }else if(choice == 3){
             ad.viewAllAppeals(mm.getAppeals());
             return "admin";
+        } else if (choice == 5) {
+            em.adminEventReview();
         }
         return "Logout";
     }
