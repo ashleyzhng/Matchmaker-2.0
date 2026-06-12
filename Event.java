@@ -297,6 +297,7 @@ public abstract class Event {
                 user.updateTags(this);
             }
             user.getEventHistory().add(this);
+            attended = true;
         } 
     }
 
