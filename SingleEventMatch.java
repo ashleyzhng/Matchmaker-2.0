@@ -88,6 +88,11 @@ public class SingleEventMatch extends EventMatch{
             pair[1]= event.getCurrentUser1();
             if (pair[1] != null){
                 EventMatch old = pair[1].getEventMatch(event.getTitle());
+                if (old instanceof SingleEventMatch){
+                    status[1] = ((SingleEventMatch)old).status[1];
+                }else{
+                    status[1] = 'P';
+                }
             }
             setEventTitle(event.getTitle());
             storeMatch();

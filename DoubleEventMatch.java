@@ -97,13 +97,13 @@ public class DoubleEventMatch extends EventMatch {
                  setEventTitle(event.getTitle());
                  
                  if (pair1[1] != null) {
-                     status[1] = pair1[1].getEventMatch(getEvent().getTitle()).getStatus(pair1[1]);
+                     status[1] = ((DoubleEventMatch)(pair1[1].getEventMatch(getEvent().getTitle()))).getStatus(pair1[1]);
                  }
                  if (pair2[0] != null) {
-                     status[2] = pair2[0].getEventMatch(getEvent().getTitle()).getStatus(pair2[0]);
+                     status[2] = ((DoubleEventMatch)(pair2[0].getEventMatch(getEvent().getTitle()))).getStatus(pair2[0]);
                  }
                  if (pair2[1] != null) {
-                     status[3] = pair2[1].getEventMatch(getEvent().getTitle()).getStatus(pair2[1]);
+                     status[3] = ((DoubleEventMatch)(pair2[1].getEventMatch(getEvent().getTitle()))).getStatus(pair2[1]);
                  }
 
                  storeMatch();
@@ -505,8 +505,21 @@ public class DoubleEventMatch extends EventMatch {
                age1 >= tgtUser.getPreferredMinAge() && age1 <= tgtUser.getPreferredMaxAge();
     }
 
+    public char getStatus(User u) {
+        if (u == pair1[0]) {
+            return status[0];
+        } else if (u == pair1[1]) {
+            return status[1];
+        } else if (u == pair2[0]) {
+            return status[2];
+        } else if (u == pair2[1]) {
+            return status[3];
+        }
+        return 'X';
+    }
+
     /*
-     * THe string representation of the match
+     * The string representation of the match
      * Returns: a string containing the match details
      */
     @Override
