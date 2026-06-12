@@ -240,6 +240,7 @@ public class Matchmaker {
         } catch (IOException e){
             System.out.println("Error Accessing File"); 
         }
+        accounts.saveMatches(this);
     }
 
     public void loadAccountsFromFile(String file){
