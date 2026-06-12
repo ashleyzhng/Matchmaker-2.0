@@ -9,7 +9,6 @@ public abstract class Event {
     private LocalTime endTime;
     private Duration duration;
     private double originalCost;
-    private double avgRating;
 
     private Tag categories;
     private boolean approved;
@@ -22,14 +21,12 @@ public abstract class Event {
 
     private boolean attended;
 
-    private ArrayList<User> attendanceHistory;
-
     LocalTime todayTime = LocalTime.now();
     LocalDate todayDate = LocalDate.now();
 
     public abstract double cancelEvent();
 
-    public Event(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re) {
+    public Event(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser) {
         this.title = title;
         this.date = date;
         this.startTime = startTime;
@@ -41,7 +38,7 @@ public abstract class Event {
         this.attended = false;
         this.eventAdminFeedback = null;
         this.booked = false;
-        this.currentUser1 = null;
+        this.currentUser1 = initialUser;
         this.currentUser2 = null;
     }
 
@@ -184,6 +181,31 @@ public abstract class Event {
         return duration;
     }
 
+    public boolean isExpired() {
+        if (determineDatePassed() && determineTimePassed()) {
+            return true;
+        }
+        return false;
+    }
+    public boolean determineTimePassed() {
+        int hourthis = endTime.getHour();
+        int minthis = endTime.getMinute();
+        int hournow = todayTime.getHour();
+        int minnow = todayTime.getMinute();
+        
+        if (hourthis < hournow) {
+            return true;
+        } else if (hourthis > hournow) {
+            return false;
+        } else {
+            if (minthis < minnow) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     public boolean determineDatePassed() {
         int yearthis = date.getYear();
         int monththis = date.getMonthValue();
@@ -271,14 +293,9 @@ public abstract class Event {
 
     public void attendEvent(User user, int rate) {
         if (determineDatePassed() && getBooked() == true) {
-            attendanceHistory.add(user);
             user.updateTags(this);
-            avgRating = ((attendanceHistory.size()-1)*avgRating+rate)/attendanceHistory.size();
-        } else {
-            System.out.println("Event has not occurred yet.");
+            user.getEventHistory().add(this);
         }
-
-        user.getEventHistory().add(this);
     }
 
     public abstract boolean addUser(User user);

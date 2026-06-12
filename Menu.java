@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Menu {
     // all menu/ui methods go here
+    EventMenu em = new EventMenu();
     public LoginResults login(Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("Enter the following information to login('0' to exit):");
@@ -77,7 +78,7 @@ public class Menu {
         int choice = input(1,5, sc);
         if(choice == 1){
             return "match";
-        }else if(choice == 2){
+        }else if (choice == 2){
             // KATHY - hosting event
         }else if(choice == 3){
             u.printProfile();

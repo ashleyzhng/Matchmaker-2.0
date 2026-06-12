@@ -1,9 +1,10 @@
 import java.time.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
+
 
     public void payForEvent(Event event) {
         double amount;
@@ -407,21 +408,21 @@ if (event != null && event instanceof Indoor) {
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
+                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
+                LocalTime localusertime = evda.stringToLocalTime(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -525,21 +526,21 @@ if (event != null && event instanceof Indoor) {
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
+                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
+                LocalTime localusertime = evda.stringToLocalTime(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -643,21 +644,21 @@ Event event = evda.searchApprovedEventByTitle(eventname);
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = stringToLocalDate(userdate);                
+                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = stringToLocalTime(usertime);
+                LocalTime localusertime = evda.stringToLocalTime(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -735,34 +736,18 @@ Event event = evda.searchApprovedEventByTitle(eventname);
     }
 }
 
-    public LocalTime stringToLocalTime(String time) {
-        int hour = Integer.parseInt(time.substring(0,2));
-        int min = Integer.parseInt(time.substring(3));
-        LocalTime lt = LocalTime.of(hour, min);
-
-        return lt;
-    }
-
-    public LocalDate stringToLocalDate(String date) {
-        int year = Integer.parseInt(date.substring(0,4));
-        int month = Integer.parseInt(date.substring(5,7));
-        int day = Integer.parseInt(date.substring(8));
-        LocalDate ld = LocalDate.of(year, month, day);
-        return ld;
-    }
-
-    public void createVirtualEvent() {
+    public void createVirtualEvent(User u) {
         System.out.print("Enter title: ");
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
+        LocalDate ld = evda.stringToLocalDate(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
+        LocalTime lst = evda.stringToLocalTime(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
+        LocalTime ldt = evda.stringToLocalTime(endTime);
         System.out.print("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
@@ -794,7 +779,7 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         System.out.print("Password: ");
         int password = sc.nextInt();
 
-        Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, platform, meetingid, password);
+        Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, u, platform, meetingid, password);
         boolean added = evda.addPendingEvent(vir);
 
         if (added) {
@@ -804,18 +789,18 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         }
     }
 
-    public void createOutdoorEvent() {
+    public void createOutdoorEvent(User u) {
         System.out.println("Enter title: ");
         String title = sc.nextLine();
        System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
+        LocalDate ld = evda.stringToLocalDate(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
+        LocalTime lst = evda.stringToLocalTime(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
+        LocalTime ldt = evda.stringToLocalTime(endTime);
         System.out.println("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
@@ -848,7 +833,7 @@ Event event = evda.searchApprovedEventByTitle(eventname);
 
         System.out.print("Chance of precipitation %: ");
         int precip = sc.nextInt();
-        Outdoor out = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, location, temp, precip);
+        Outdoor out = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, u, location, temp, precip);
         boolean added = evda.addPendingEvent(out);
 
         if (added) {
@@ -858,18 +843,18 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         }
     }
 
-    public void createIndoorEvent() {
+    public void createIndoorEvent(User u) {
         System.out.println("Enter title: ");
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = stringToLocalDate(date);
+        LocalDate ld = evda.stringToLocalDate(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = stringToLocalTime(startTime);
+        LocalTime lst = evda.stringToLocalTime(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = stringToLocalTime(endTime);
+        LocalTime ldt = evda.stringToLocalTime(endTime);
         System.out.println("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
@@ -902,7 +887,7 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         System.out.print("Room (name or number): ");
         String room = sc.nextLine();
 
-        Indoor in = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, loca, floornum, room);
+        Indoor in = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, u, loca, floornum, room);
 
         boolean added = evda.addPendingEvent(in);
 
@@ -913,18 +898,22 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         }
     }
     
-    public void getEventScreen() {
+    public void getEventScreen(User user) {
         System.out.println("=================================");
         System.out.println("EVENT OPTIONS:");
         System.out.println("1. Create Event");
         System.out.println("2. Choose Pre-existing Event");
+        System.out.println("3. Alter pending event");
+        System.out.println("4. View event history");
         System.out.println("=================================");
         int choice = sc.nextInt();
 
-        while (choice != 1 && choice != 2) {
+        while (choice < 1 && choice > 4) {
             System.out.println("That is not a valid choice");
             System.out.println("1. Create Event");
             System.out.println("2. Choose Pre-existing Event");
+            System.out.println("3. Alter pending event");
+            System.out.println("4. View event history");
             choice = sc.nextInt();
         }
 
@@ -946,14 +935,14 @@ Event event = evda.searchApprovedEventByTitle(eventname);
 
             sc.nextLine();
             if (choice == 1) {
-                createVirtualEvent();
+                createVirtualEvent(user);
             } else if (choice == 2) {
-                createOutdoorEvent();
+                createOutdoorEvent(user);
             } else {
-                createIndoorEvent();
+                createIndoorEvent(user);
             }
             
-        } else {
+        } else if (choice == 2){
             System.out.println("OPTIONS");
             System.out.println("1. Search for an event by title");
             System.out.println("2. Show all events");
@@ -998,5 +987,23 @@ Event event = evda.searchApprovedEventByTitle(eventname);
                 }
             }
         }
+        else if (choice == 3) {
+            
+        } else {
+            System.out.println("Your Event History:");
+            System.out.println("-----------------------------");
+            viewEventHistory(user);
+        }
+    }
+
+    public void viewEventHistory(User u) {
+        ArrayList<Event> eh = u.getEventHistory();
+        for (int i = 0; i < eh.size(); i ++) {
+            System.out.println(eh.get(i).getTitle());
+        }
+    }
+
+    public void viewUsersPendingEvents(User u) {
+        
     }
 }

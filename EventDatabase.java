@@ -1,13 +1,17 @@
 import java.io.*;
 import java.time.*;
+import java.util.*;
 public class EventDatabase {
     private Event[] approvedEventList;
     private Event[] pendingEventList;
+    ArrayList<Event> expiredEventList;
+    ArrayList<Event> allEventList;
+    private Event[] eventList;
     private int numApprovedEvents;
     private int numPendingEvents;
     public static int maxApprovedEvents = 50;
     public static int maxPendingEvents = 50;
-    EventMenu em = new EventMenu();
+    AccountsDatabase ad = new AccountsDatabase();
 
     public EventDatabase() {
         approvedEventList = new Event[maxApprovedEvents];
@@ -16,6 +20,20 @@ public class EventDatabase {
         numPendingEvents = 0;
     }
 
+    public LocalDate stringToLocalDate(String date) {
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(5,7));
+        int day = Integer.parseInt(date.substring(8));
+        LocalDate ld = LocalDate.of(year, month, day);
+        return ld;
+    }
+    public LocalTime stringToLocalTime(String time) {
+        int hour = Integer.parseInt(time.substring(0,2));
+        int min = Integer.parseInt(time.substring(3));
+        LocalTime lt = LocalTime.of(hour, min);
+
+        return lt;
+    }
 
     public boolean loadEvent(String filename) {
         try {
@@ -24,11 +42,11 @@ public class EventDatabase {
             if (type.equals("virtual")) {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = em.stringToLocalDate(date);
+                LocalDate ld = stringToLocalDate(date);
                 String startTime = in.readLine();
-                LocalTime lst = em.stringToLocalTime(startTime);
+                LocalTime lst = stringToLocalTime(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = em.stringToLocalTime(endTime);
+                LocalTime ldt = stringToLocalTime(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -68,8 +86,16 @@ public class EventDatabase {
                 String platform = in.readLine();
                 int meetingid = Integer.parseInt(in.readLine());
                 int password = Integer.parseInt(in.readLine());
-                Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, platform, meetingid, password);
+                
                 String approved = in.readLine();
+                String strInitialUser = in.readLine();
+                User initialUser;
+                if (strInitialUser.equals("null")) {
+                    initialUser = null;
+                } else {
+                    initialUser = ad.searchByUsername(strInitialUser);
+                }
+                Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, platform, meetingid, password);
                 in.close();
                 boolean added;
                 if (approved.equals("true")) {
@@ -95,11 +121,11 @@ public class EventDatabase {
             } else if (type.equals("outdoor")) {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = em.stringToLocalDate(date);
+                LocalDate ld = stringToLocalDate(date);
                 String startTime = in.readLine();
-                LocalTime lst = em.stringToLocalTime(startTime);
+                LocalTime lst = stringToLocalTime(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = em.stringToLocalTime(endTime);
+                LocalTime ldt = stringToLocalTime(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -139,10 +165,20 @@ public class EventDatabase {
                 String location = in.readLine();
                 int temp = Integer.parseInt(in.readLine());
                 int precip = Integer.parseInt(in.readLine());
-                Outdoor outdoor = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, location, temp, precip);
+                
                 String approved = in.readLine();
-                boolean added;
+
+                String strInitialUser = in.readLine();
+                User initialUser;
+                if (strInitialUser.equals("null")) {
+                    initialUser = null;
+                } else {
+                    initialUser = ad.searchByUsername(strInitialUser);
+                }
+
+                Outdoor outdoor = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, location, temp, precip);
                 in.close();
+                boolean added;
                 if (approved.equals("true")) {
                     added = addApprovedEvent(outdoor);
                     if (added) {
@@ -166,11 +202,11 @@ public class EventDatabase {
             } else {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = em.stringToLocalDate(date);
+                LocalDate ld = stringToLocalDate(date);
                 String startTime = in.readLine();
-                LocalTime lst = em.stringToLocalTime(startTime);
+                LocalTime lst = stringToLocalTime(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = em.stringToLocalTime(endTime);
+                LocalTime ldt = stringToLocalTime(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -210,10 +246,19 @@ public class EventDatabase {
                 String loca = in.readLine();
                 int floornum = Integer.parseInt(in.readLine());
                 String room = in.readLine();
-                Indoor indoor = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, loca, floornum, room);
+                
                 String approved = in.readLine();
-                boolean added;
+               
+                String strInitialUser = in.readLine();
+                User initialUser;
+                if (strInitialUser.equals("null")) {
+                    initialUser = null;
+                } else {
+                    initialUser = ad.searchByUsername(strInitialUser);
+                }
+                Indoor indoor = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, loca, floornum, room);
                 in.close();
+                boolean added;
                 if (approved.equals("true")) {
                     added = addApprovedEvent(indoor);
                     if (added) {
@@ -288,8 +333,14 @@ public class EventDatabase {
                 }
                 out.newLine();
                 out.write(((Virtual)event).getPlatform());
-                out.write(((Virtual)event).getMeetingID());
-                out.write(((Virtual)event).getPassword());
+                out.newLine();
+                out.write(((Virtual)event).getMeetingID() + "");
+                out.newLine();
+                out.write(((Virtual)event).getPassword() + "");
+                out.newLine();
+                out.write(event.getApproved() + "");
+                out.newLine();
+                out.write(event.getCurrentUser1().getUsername());
                 out.close();
                 return true;
             } else if (event instanceof Outdoor) {
@@ -336,8 +387,14 @@ public class EventDatabase {
                 }
                 out.newLine();
                 out.write(((Outdoor)event).getLocation());
+                out.newLine();
                 out.write(((Outdoor)event).getTemperature());
+                out.newLine();
                 out.write(((Outdoor)event).getPrecipitation());
+                out.newLine();
+                out.write(event.getApproved() + "");
+                out.newLine();
+                out.write(event.getCurrentUser1().getUsername());
                 out.close();
                 return true;
             } else {
@@ -384,8 +441,14 @@ public class EventDatabase {
                 }
                 out.newLine();
                 out.write(((Indoor)event).getLocation());
+                out.newLine();
                 out.write(((Indoor)event).getFloorNumber());
+                out.newLine();
                 out.write(((Indoor)event).getRoom());
+                out.newLine();
+                out.write(event.getApproved() + "");
+                out.newLine();
+                out.write(event.getCurrentUser1().getUsername());
                 out.close();
                 return true;
             }
@@ -398,6 +461,10 @@ public class EventDatabase {
 
     public Event[] getApprovedEventList() {
         return approvedEventList;
+    }
+
+    public Event[] getEventList() {
+        return eventList;
     }
 
     public void setApprovedEventList(Event[] approvedEventList) {
@@ -448,6 +515,7 @@ public class EventDatabase {
         if (numPendingEvents < maxPendingEvents) {
             pendingEventList[numPendingEvents] = event;
             numPendingEvents++;
+            allEventList.add(event);
             return true;
         }
         return false; 
@@ -457,6 +525,7 @@ public class EventDatabase {
         if (numApprovedEvents < maxApprovedEvents) {
             approvedEventList[numApprovedEvents] = event;
             numApprovedEvents++;
+            allEventList.add(event);
             return true;
         }
         return false; 
@@ -471,6 +540,7 @@ public class EventDatabase {
                 }
                 pendingEventList[numPendingEvents - 1] = null; 
                 numPendingEvents--;
+                allEventList.remove(event);
                 return true;
             }
         }
@@ -486,7 +556,9 @@ public class EventDatabase {
                 }
                 approvedEventList[numApprovedEvents - 1] = null; 
                 numApprovedEvents--;
+                allEventList.remove(event);
                 return true;
+                
             }
         }
         return false;
@@ -592,6 +664,43 @@ public class EventDatabase {
         }
         return pendingEventList[index];
     }
+    public void sortAllEventsByTitle() {
+        int maxIndex;
+        Event temp;
+        for (int upper = allEventList.size() - 1; upper > 0; upper--) {
+            maxIndex = 0;
+            for (int i = 0; i < upper; i++) {
+                if (allEventList.get(i).compareToTitle(allEventList.get(maxIndex)).equals(allEventList.get(i))) {
+                    maxIndex = i;
+                }
+            }
+            temp = allEventList.get(upper);
+            allEventList.set(upper, allEventList.get(maxIndex));
+            allEventList.set(maxIndex, temp);
+        }
+    }
+
+    public Event searchEventByTitle(String title) {
+        sortAllEventsByTitle();
+        int bottom = 0;
+        int top = allEventList.size() - 1;
+        boolean found = false;
+        int index = -1;
+        int middle;
+        while (bottom <= top && !found) {
+            middle = (bottom + top) / 2;
+            if (allEventList.get(middle).getTitle().equalsIgnoreCase(title)) {
+                found = true;
+                index = middle;
+            } else if (allEventList.get(middle).getTitle().compareToIgnoreCase(title) > 0) {
+                top = middle - 1;
+            } else {
+                bottom = middle + 1;
+            }
+        }
+        return allEventList.get(index);
+    }
+    
 
     public boolean searchForApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {

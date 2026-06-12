@@ -6,8 +6,8 @@ public class Outdoor extends Event {
     private int temperature;
     private int precipitation;
 
-    public Outdoor(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, String location, int temperature, int precipitation) {
-        super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re);
+    public Outdoor(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser, String location, int temperature, int precipitation) {
+        super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser);
         this.location = location;
         this.temperature = temperature;
         this.precipitation = precipitation;
