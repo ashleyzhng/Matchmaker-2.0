@@ -55,6 +55,13 @@ public class Senior extends User{
         hasMobilityLimitations = h;
     }
 
+    public void printProfile(){ 
+        super.printProfile();
+        System.out.println("Occupation: " + occupation);
+        System.out.println("Marital Status: " + maritalStatus);
+        System.out.println("Has Mobility Limitations: " + hasMobilityLimitations);
+    }
+
     public String toString(){
         return super.toString() + "\nOccupation: " + occupation + "\nMarital Status: " + maritalStatus + "\nPreferred Max Age: " + preferredMaxAge + "\nPreferred Min Age: " + preferredMinAge + "\nHas Mobility Limitations: " + hasMobilityLimitations;
     }

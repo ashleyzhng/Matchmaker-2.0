@@ -255,7 +255,8 @@ public class Matchmaker {
                     out.write("" + ((Senior)(a.get(i))).getPreferredMinAge());
                     out.newLine();
                     out.write("" + ((Senior) (a.get(i))).hasMobilityLimitations());
-                }    
+                } 
+                out.newLine();   
             }
             out.close();
         } catch (IOException e){

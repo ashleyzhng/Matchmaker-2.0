@@ -133,5 +133,64 @@ public class AccountsDatabase {
         }
         return null;
     }
-    
+
+    public User searchByFirstName(String firstName) {
+        for (int i = 0; i<accounts.size(); i++) {
+            if (accounts != null && ((User)accounts.get(i)).getName() != null) {
+                String[] parts = ((User)accounts.get(i)).getName().split(" ");
+                if (parts.length > 0 && parts[0].equalsIgnoreCase(firstName)) {
+                    return (User)accounts.get(i);
+                }
+            }
+        }
+        return null;
+    }
+    public User searchByLastName(String lastName) {
+        for (int i = 0; i<accounts.size(); i++)  {
+            if (accounts != null && ((User)accounts.get(i)).getName() != null) {
+                String[] parts = ((User)accounts.get(i)).getName().split(" ");           
+                if (parts.length > 1 && parts[parts.length - 1].equalsIgnoreCase(lastName)) {
+                    return (User)accounts.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void sortByFirstName(ArrayList<User> accounts) {
+        for (int i = 0; i < accounts.size() - 1; i++) {
+            for (int j = i + 1; j < accounts.size(); j++) {
+                String firstI = accounts.get(i).getName().split(" ")[0];
+                String firstJ = accounts.get(j).getName().split(" ")[0];
+                if (firstI.compareToIgnoreCase(firstJ) > 0) {
+                    User temp = accounts.get(i);
+                    accounts.set(i, accounts.get(j));
+                    accounts.set(j, temp);
+                }
+            }
+        }
+    }
+    public User[] sortByUserType(ArrayList<Account> accounts) {
+        User[] sorted = new User[accounts.size()];
+            int index = 0;
+            for (int i = 0; i < accounts.size(); i++) {
+                if (accounts.get(i) instanceof Teen) {
+                    sorted[index] = (User)accounts.get(i);
+                    index++;
+                }
+            }
+            for (int i = 0; i < accounts.size(); i++) {
+                if (accounts.get(i) instanceof Adult) {
+                    sorted[index] = (User)accounts.get(i);
+                    index++;
+                }
+            }
+            for (int i = 0; i < accounts.size(); i++) {
+                if (accounts.get(i) instanceof Senior) {
+                    sorted[index] = (User)accounts.get(i);
+                    index++;
+                }
+            }
+            return sorted;
+        }
 }

@@ -5,10 +5,12 @@ public class Admin extends Account {
         super(u, p, e, ev);
     }
 
-    public void viewAllUsers(AccountsDatabase userDB){
-        User[] users = userDB.getUsers();
+    public void viewAllUsers(User[] users){
+        //User[] users = userDB.getUsers();
         for(int i = 0; i<users.length; i++){
-            System.out.println(users[i].getUsername() + " - " + users[i].getName());
+            if(users[i] != null){
+                System.out.println(users[i].getUsername() + " - " + users[i].getName());
+            }
         }
     }
     public void viewUserInfo(User u){

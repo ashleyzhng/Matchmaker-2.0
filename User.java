@@ -274,7 +274,7 @@ public class User extends Account {
         }
     }
 
-    public void printProfile(){ // method needs to be overrided/overloaded in subclassses
+    public void printProfile(){ 
         System.out.println("Name: " + name);
         System.out.println("Birthday: " + birthday);
         System.out.println("City: " + city);

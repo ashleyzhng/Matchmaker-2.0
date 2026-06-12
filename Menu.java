@@ -67,7 +67,6 @@ public class Menu {
         return "";
     }
     public String getUserMenu(User u, Scanner sc, Matchmaker mm){
-        flush();
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
         System.out.println("1. Match Menu"); 
@@ -330,11 +329,12 @@ public class Menu {
         System.out.println("=======================");
         int choice = input(1,6,sc);
         if(choice == 1){
-            ad.viewAllUsers(mm.getAccounts());
+            ad.viewAllUsers(mm.getAccounts().sortByUserType(mm.getAccounts().getAccounts()));
             return "admin";
         }else if(choice == 2){
-            System.out.println("Enter username: ");
-            String username = sc.nextLine();
+            System.out.print("Enter username: ");
+            sc.nextLine();
+            String username = sc.nextLine(); 
             ad.viewUserInfo(mm.getAccounts().searchByUsername(username));
             return "admin";
         }else if(choice == 3){
@@ -349,7 +349,7 @@ public class Menu {
         } else if (choice == 5) {
             em.adminEventReview();
         }
-        return "Logout";
+        return "logout";
     }
 
     public String resetPassword(Scanner sc, Matchmaker mm){

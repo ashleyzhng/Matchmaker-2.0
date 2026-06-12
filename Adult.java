@@ -45,6 +45,12 @@ public class Adult extends User {
         preferredMinAge = min;
     }
 
+    public void printProfile(){ 
+        super.printProfile();
+        System.out.println("Occupation: " + occupation);
+        System.out.println("Marital Status: " + maritalStatus);
+    }
+
     public String toString(){
         return super.toString() + "\nOccupation: " + occupation + "\nMarital Status: " + maritalStatus + "\nPreferred Max Age: " + preferredMaxAge + "\nPreferred Min Age: " + preferredMinAge;
     }
