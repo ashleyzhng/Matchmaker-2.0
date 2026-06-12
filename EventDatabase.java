@@ -663,7 +663,12 @@ public class EventDatabase {
                 bottom = middle + 1;
             }
         }
-        return pendingEventList[index];
+        if (found) {
+            return pendingEventList[index];
+        } else {
+            return null;
+        }
+        
     }
     public void sortAllEventsByTitle() {
         int maxIndex;
@@ -699,7 +704,11 @@ public class EventDatabase {
                 bottom = middle + 1;
             }
         }
+        if (found) {
         return allEventList.get(index);
+        } else {
+            return null;
+        }
     }
     
 
