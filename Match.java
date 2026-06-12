@@ -11,30 +11,6 @@
    and store matches.
 */
 
-/* public void deleteMatch(String name){
-for(int i = 0; i < matches.length; i++){
-            if(matches[i] instanceof DoubleEventMatch && (EventMatch)matches[i].getEventTitle().equals(name)){
-                matches[i] = null;
-                numMatches--;
-                storeMatchHistory(m);
-                for(int j = i; j < matches.length - 1; j++){
-                    matches[j] = matches[j+1];
-                    matches[j+1] = null;
-                }
-            }
-        }
-}
-        public Event getEventMatch(String name){
-        for(int i = 0; i < matches.length; i++){
-            if(matches[i] instanceof  EventMatch && (EventMatch)matches[i].getEventTitle().equals(name)){
-                return ((EventMatch)matches[i]).getEvent();
-            }
-        }   
-        return null;
-    }   
-
-*/
-
 public abstract class Match{
     //stores the compatibility percentage
     private double score;

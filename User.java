@@ -207,9 +207,13 @@ public class User extends Account {
         e.getCategories().getFitness(), e.getCategories().getGaming(), e.getCategories().getCooking(),
         e.getCategories().getAnimal(), e.getCategories().getReading());
     }
+    
     public void updateMatches(){
         for(int i = 0; i<numMatches; i++){
-           // if(matches[1].)
+           if(matches[i].isExpire()){
+                deleteMatch(matches[i]);
+
+           }
         }
     }
 
