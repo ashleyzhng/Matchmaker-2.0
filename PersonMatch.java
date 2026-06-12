@@ -67,6 +67,7 @@ public abstract class PersonMatch extends Match{
     public void completed(){
         status[0] = 'C';
         status[1] = 'C';
+        deleteMatch();
     }
 
     //---accessors and mutators---

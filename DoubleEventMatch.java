@@ -82,6 +82,10 @@ public class DoubleEventMatch extends EventMatch {
         status[1]='C';
         status[2]='C';
         status[3]='C';
+        pair1[0].deleteMatch(this);
+        pair1[1].deleteMatch(this);
+        pair2[0].deleteMatch(this);
+        pair2[1].deleteMatch(this);
     }
     public boolean isCompleted(){
         return status[0] =='C' && status[1] == 'C' && status[2] == 'C' && status[3] == 'C';
@@ -304,28 +308,36 @@ public class DoubleEventMatch extends EventMatch {
             if (x == 'R'){
                 deleteMatch(pair1[0]);
                 pair1[0] = null;
-                getEvent().setCurrentUser1(null);
+                if (getEvent() != null){
+                    getEvent().setCurrentUser1(null);
+                }
             }
         } else if (u == pair1[1]) {
             status[1] = x;
             if (x == 'R'){
                 deleteMatch(pair1[1]);
                 pair1[1] = null;
-                getEvent().setCurrentUser2(null);
-            } 
+                if (getEvent() != null){
+                    getEvent().setCurrentUser2(null);
+                }
+            }
         } else if (u == pair2[0]) {
             status[2] = x;
             if (x == 'R'){
                 deleteMatch(pair2[0]);
                 pair2[0] = null;
-                ((Indoor)getEvent()).setUser3(null);
+                if (getEvent() != null){
+                    ((Indoor)getEvent()).setUser3(null);
+                }
             }
         } else if (u == pair2[1]) {
             status[3] = x;
             if (x == 'R'){
                 deleteMatch(pair2[1]);
                 pair2[1] = null;
-                ((Indoor)getEvent()).setUser4(null);
+                if (getEvent() != null){
+                    ((Indoor)getEvent()).setUser4(null);
+                }
             }
         }
     }
@@ -598,7 +610,7 @@ public class DoubleEventMatch extends EventMatch {
                 s += "Still Searching...\n";
             }
         } else {
-            s += "Event Name: No Comptiable Event\n";
+            s += "Event Name: No Event Compatible\n";
         }
 
         s += "=======================\n";

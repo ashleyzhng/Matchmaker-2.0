@@ -94,6 +94,7 @@ public class SingleEventMatch extends EventMatch{
                     status[1] = 'P';
                 }
             }
+            
             setEventTitle(event.getTitle());
             storeMatch();
             event.addUser(pair[0]);
@@ -163,6 +164,8 @@ public class SingleEventMatch extends EventMatch{
     public void completed(){
         status[0] = 'C';
         status[1] = 'C';
+        pair[0].deleteMatch(this);
+        pair[1].deleteMatch(this);
     }
     public boolean isCompleted(){
         return status[0]=='C' && status[1]=='C';
@@ -178,14 +181,14 @@ public class SingleEventMatch extends EventMatch{
         if (u == pair[0]) {
             status[0] = x;
             if (x == 'R'){
-            pair[0] = null;
-            getEvent().setCurrentUser1(null);
+                pair[0] = null;
+                getEvent().setCurrentUser1(null);
             }
         } else if (u == pair[1]) {
             status[1] = x;
             if (x == 'R'){
-            pair[1] = null;
-            getEvent().setCurrentUser2(null);
+                pair[1] = null;
+                getEvent().setCurrentUser2(null);
             }   
         }
     }
@@ -209,8 +212,9 @@ public class SingleEventMatch extends EventMatch{
         if (pair[1] != null){
             pair[1].deleteMatch(getEventTitle());
             pair[1].storeMatch(this);
+        }else if (getEvent() != null){
+            getEvent().addUser(pair[0]);
         }
-        getEvent().addUser(pair[0]);
     }
     /*
      * Deletes the match from the users' profiles and also the event database
@@ -359,7 +363,7 @@ public class SingleEventMatch extends EventMatch{
                 s += "Still Searching...\n";
             }
         } else {
-            s += "Event Name: No Compatiable Event\n";
+            s += "Event Name: No Event Compatible\n";
         }
 
         s += "=======================\n";

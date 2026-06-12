@@ -578,6 +578,19 @@ public class Menu {
                     validMatch = ((PersonMatch)m).getSoulmate() != null;
                 }
                 if(validMatch){
+                    boolean alreadyStored = false;
+                    Match[] existingMatches = user.getMatches();
+                    alreadyStored = false;
+                    for (int i = 0; i < existingMatches.length; i++) {
+                        if (existingMatches[i] == m) {
+                            alreadyStored = true;
+                        }
+                    }
+
+                    if (!alreadyStored) {
+                        m.storeMatch();
+                    }
+
                     System.out.println(m);
                 } else {
                     System.out.println("No match could be generated.");
@@ -654,9 +667,13 @@ public class Menu {
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).setRating(rating, user);
             }else if (match instanceof SingleEventMatch){
+                em.payForEvent( ((EventMatch)match).getEvent());
                 ((SingleEventMatch)match).setRating(user, rating);
+                em.rateEvent(((EventMatch)match).getEvent(), user);
             }else{
+                em.payForEvent( ((EventMatch)match).getEvent());
                 ((DoubleEventMatch)match).setRating(user, rating);
+                em.rateEvent(((EventMatch)match).getEvent(), user);
             }
             System.out.println("Rating Updated");
         }else{
