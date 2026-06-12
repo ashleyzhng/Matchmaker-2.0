@@ -541,6 +541,7 @@ public class EventDatabase {
                 pendingEventList[numPendingEvents - 1] = null; 
                 numPendingEvents--;
                 allEventList.remove(event);
+                expiredEventList.add(event);
                 return true;
             }
         }
@@ -557,6 +558,7 @@ public class EventDatabase {
                 approvedEventList[numApprovedEvents - 1] = null; 
                 numApprovedEvents--;
                 allEventList.remove(event);
+                expiredEventList.add(event);
                 return true;
                 
             }
@@ -734,5 +736,20 @@ public class EventDatabase {
             event.setBooked(false);
             event.setDate(null);
             System.out.println("Refunded amount: $" + event.calculateCost());
+    }
+
+    public void viewEventHistory(User u) {
+        ArrayList<Event> eh = u.getEventHistory();
+        for (int i = 0; i < eh.size(); i ++) {
+            System.out.println(eh.get(i).getTitle());
+        }
+    }
+
+    public void viewPendingEventByUser(User u) {
+        for (int i = 0; i < numPendingEvents; i ++) {
+            if (pendingEventList[i].getCurrentUser1().equals(u)) {
+                System.out.print(pendingEventList[i]);
+            }
+        }
     }
 }

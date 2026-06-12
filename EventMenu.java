@@ -988,22 +988,12 @@ Event event = evda.searchApprovedEventByTitle(eventname);
             }
         }
         else if (choice == 3) {
-            
+            System.out.println("Your pending events:");
+            evda.viewPendingEventByUser(user);
         } else {
             System.out.println("Your Event History:");
             System.out.println("-----------------------------");
-            viewEventHistory(user);
+            evda.viewEventHistory(user);
         }
-    }
-
-    public void viewEventHistory(User u) {
-        ArrayList<Event> eh = u.getEventHistory();
-        for (int i = 0; i < eh.size(); i ++) {
-            System.out.println(eh.get(i).getTitle());
-        }
-    }
-
-    public void viewUsersPendingEvents(User u) {
-        
     }
 }

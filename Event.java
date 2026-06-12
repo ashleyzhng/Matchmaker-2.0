@@ -292,10 +292,12 @@ public abstract class Event {
     }
 
     public void attendEvent(User user, int rate) {
-        if (determineDatePassed() && getBooked() == true) {
-            user.updateTags(this);
+        if (isExpired() && getBooked() == true) {
+            if (rate > 2) {
+                user.updateTags(this);
+            }
             user.getEventHistory().add(this);
-        }
+        } 
     }
 
     public abstract boolean addUser(User user);
