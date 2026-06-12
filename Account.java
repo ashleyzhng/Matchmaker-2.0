@@ -51,11 +51,10 @@ public abstract class Account{
     }
 
     public boolean correctPass(String pass){
-        if(pass == this.password){
-            return true;
-        }else{
+        if(pass == null){
             return false;
         }
+        return pass.equals(this.password);
     }
 
     public String toString(){

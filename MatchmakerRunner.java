@@ -22,7 +22,7 @@ public class MatchmakerRunner{
                     currentAccount = loginResults.getAccount();
                     break;
                 case "user":
-                    ((User)currentAccount).updateMatches();
+                    //((User)currentAccount).updateMatches();
                     menu.getUserMenu((User)currentAccount, sc, system); //change return type
                     break;
                 case "admin":

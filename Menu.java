@@ -19,7 +19,7 @@ public class Menu {
             if(username.equals("0")){
                 return new LoginResults("main", null);
             }
-            a = mm.searchByUsername(username);
+            a = mm.searchAccountByUsername(username);
             if(a == null){
                 System.out.println("Username not found. Please try again.");
             }
@@ -365,7 +365,7 @@ public class Menu {
         String username = sc.next();
         System.out.print("Email: ");
         String email = sc.next();
-        User u = mm.searchByUsername(username);
+        Account u = mm.searchAccountByUsername(username);
         if(u != null && u.getEmail().equals(email)){ // use editProfile  method
             if(u.isEmailVerified()){
                 System.out.println("Enter new password: ");
@@ -392,7 +392,7 @@ public class Menu {
         int choice = input(1,4,sc);
         if(choice == 1){
             System.out.print("Enter file name: ");
-            mm.getAccounts().loadFromFile(sc.next(), mm);
+            mm.loadAccountsFromFile(sc.next());
             return "createAccount";
         }else if(choice == 2){
             createUser(sc, mm);
@@ -474,7 +474,7 @@ public class Menu {
             mm.getAccounts().addAccount(new Adult(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, interestTag));
         }else if(age > Teen.MIN_AGE){
             Tag interestTag = tagMenu(sc);
-            mm.getAccounts().addAccount(new Teen(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
+            mm.getAccounts().addAccount(new Teen(username, password, email, false, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
         }else{
             System.out.println("You are too young to use the service. Minmium age is 13");
         }

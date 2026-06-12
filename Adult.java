@@ -12,6 +12,13 @@ public class Adult extends User {
         preferredMaxAge = max;
         preferredMinAge = min;
     }
+
+    public Adult(String u, String p, String e, boolean ev, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, Tag t){
+        super(u, p, e, ev, n, b, pc, c, bi, g, pg, t);
+        maritalStatus = m;
+        preferredMaxAge = max;
+        preferredMinAge = min;
+    }
     
     public String getOccupation(){
         return occupation;

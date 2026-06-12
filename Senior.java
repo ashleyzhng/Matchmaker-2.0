@@ -16,6 +16,14 @@ public class Senior extends User{
         preferredMinAge = min;
         hasMobilityLimitations = h;
     }
+    public Senior(String u, String p, String e, boolean ev, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, boolean h, Tag t){
+        super(u, p, e, ev, n, b, pc, c, bi, g, pg, t);
+        occupation = o;
+        maritalStatus = m;
+        preferredMaxAge = max;
+        preferredMinAge = min;
+        hasMobilityLimitations = h;
+    }
     public String getOccupation(){
         return occupation;
     }

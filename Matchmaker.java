@@ -278,4 +278,8 @@ public class Matchmaker {
         return accounts.searchByUsername(targetUsername);
     }
 
+    public Account searchAccountByUsername(String targetUsername){
+        return accounts.searchAccountByUsername(targetUsername);
+    }
+
 }

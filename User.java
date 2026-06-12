@@ -33,6 +33,22 @@ public class User extends Account {
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
+
+    public User(String u, String p, String e, boolean ev, String n, LocalDate b, String pc, String c, String bi, char g, char pg, Tag t){
+        super(u, p, e, ev);
+        name = n;
+        birthday = b;
+        postalCode = pc;
+        city = c;
+        bio = bi;
+        gender = g;
+        preferredGender = pg;
+        interestTag = t;
+        matches = new Match[MAX_MATCHES];
+        numMatches = matches.length;
+        eventHistory = new ArrayList<>();
+        eventHosted = new ArrayList<>();
+    }
     // accesors mutators
     public String getName(){
         return name;
@@ -215,11 +231,13 @@ public class User extends Account {
     }
     
     public void updateMatches(){
-        for(int i = 0; i<numMatches; i++){
-           if(matches[i].isExpire()){
-                deleteMatch(matches[i]);
+        if(numMatches > 0){
+            for(int i = 0; i<numMatches; i++){
+                if(matches[i].isExpire() && matches[1] != null){
+                        deleteMatch(matches[i]);
 
-           }
+                }
+            }
         }
     }
 

@@ -54,63 +54,73 @@ public class AccountsDatabase {
         }
         return true;
     }
+
+    public Account searchAccountByUsername(String targetUsername){
+        for (int i = 0; i < accounts.size(); i++){
+            if(accounts.get(i).getUsername().equals(targetUsername)){
+                return accounts.get(i);
+            }
+        }
+        return null;
+    }
     // add user from file
     public void loadFromFile(String file, Matchmaker mm){
+        MatchFileManager matchFileManager = new MatchFileManager(mm);
         try{
             BufferedReader in = new BufferedReader(new FileReader(file));
             // take in first line for number of accounts
             int numAccounts = Integer.parseInt(in.readLine());
+            int count = 0;
             Account user = null;
-            for(int i = numAccounts; i > 0; i--){
+            for(int i = 0; i < numAccounts; i++){
                 String accountType = in.readLine();
-                if (accountType.equals("Admin")){
+                if (accountType.equalsIgnoreCase("Admin")){
                     Admin admin = new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()));
                     user = admin;
                     accounts.add(admin);
-                } 
-                if(accountType.equals("Teen")){
-                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
+                } else if (accountType.equalsIgnoreCase("Teen")){
+                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
                     user = teen;
                     accounts.add(teen);
-                }
-                if(accountType.equals("Adult")){
-                    Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                }else if(accountType.equalsIgnoreCase("Adult")){
+                    Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                     accounts.add(adult);
                     user = adult;
-                }
-                if(accountType.equals("Senior")){
-                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
+                }else if(accountType.equalsIgnoreCase("Senior")){
+                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
                     user = senior;
                     accounts.add(senior);
                 }
                 in.readLine();
+                count++;
+                /* 
                 if (!(user instanceof Admin)){
                     User u = (User)user;
-                    MatchFileManager matchFileManager = new MatchFileManager(mm);
                     matchFileManager.loadMatches(u.getUsername());
                     u.setMatches(matchFileManager.getMatches());
                     u.setMatchHistory(matchFileManager.getMatchHistory());
                 }
+                    */
             }
+            System.out.println(count + " account(s) created.");
             in.close(); 
         } catch (IOException e){
             System.out.println("Error accessing file " + file);
+        } catch (NullPointerException e) {
+            System.out.println("File format error or missing data");
         }
     }
 
     public User searchByUsername(String targetUsername){
-        boolean found = false;
-        User foundUser = null;
-        
-        for (int i = 0; i < accounts.size() && !found; i++){
-            User u = (User)accounts.get(i);
-
-            if(u.getUsername().equals(targetUsername)){
-                foundUser = u;
-                found = true;
+        for (int i = 0; i < accounts.size(); i++){
+            if(accounts.get(i) instanceof User){
+                User u = (User)accounts.get(i);
+                if(u.getUsername().equals(targetUsername)){
+                    return u;
+                }
             }
         }
-        return foundUser;
+        return null;
     }
     
 }
