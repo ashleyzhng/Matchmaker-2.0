@@ -76,9 +76,10 @@ public class Menu {
         System.out.println("5. Report User");
         System.out.println("6. Logout");
         System.out.println("=======================");
+        sc.nextLine();
         int choice = input(1,6, sc);
         if(choice == 1){
-            return "matchMenu";
+            return matchMenu(sc, u, mm);
         }else if (choice == 2){
             em.getEventScreen(u);
             return "event";
@@ -103,9 +104,11 @@ public class Menu {
             String reason = sc.nextLine();
             mm.getAppeals().addAppeal(reportUser, reason);
             return "user";
+        }else if (choice == 6){
+            System.out.println("Logout successful.");
+            return "logout"; 
         }
-        System.out.println("Logout successful.");
-        return "logout"; 
+        return "user";
     }
 
     public String getAccountSettingsMenu(Scanner sc, Account a, Matchmaker mm){
@@ -537,6 +540,25 @@ public class Menu {
         return new Tag(religion, sports, music, art, traveling, fitness, gaming, cooking, animal, reading);
     }
 
+    public String matchMenu(Scanner sc, User u, Matchmaker mm){
+        System.out.println("=======================");
+        System.out.println("Match Menu: ");
+        System.out.println("1. View Current Matches (" + u.getNumMatches() + " pending matches!)"); 
+        System.out.println("2. Create New Match");
+        System.out.println("3. Exit");
+        System.out.println("=======================");
+        int choice = input(1, 3, sc);
+        if(choice == 1){
+            currentMatchMenu(sc, u, mm);
+            return "currentMatchMenu";
+        }else if (choice == 2){
+            newMatchMenu(sc, u, mm);
+            return "newMatchMenu";
+        }else if (choice == 3){
+            return "user";
+        }
+        return "user";
+    }
     public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("New Match Menu: ");
@@ -547,33 +569,20 @@ public class Menu {
         System.out.println("Please note: Single Date & Double Dates has a lower success rate!");
         System.out.println("5. Exit");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
         int choice = input(1, 5, sc);
-        if (choice >= 1 && choice <= 3){
-           System.out.println(mm.generateMatch(user, choice));
-
-        } 
-        return "matchMenu";
-    }
-    public String matchMenu(Scanner sc, User u){
-        System.out.println("=======================");
-        System.out.println("Match Menu: ");
-        System.out.println("1. View Current Matches (" + u.getNumMatches() + " pending matches!"); 
-        System.out.println("2. Create New Match");
-        System.out.println("3. Exit");
-        System.out.println("=======================");
-        System.out.print("OPTION: ");
-        int choice = input(1, 3, sc);
-        if(choice == 1){
-            return "currentMatchMenu";
-        }else if (choice == 2){
-            return "mainMatchMenu";
-        }else{
-            return "user";
+            if(choice >= 1 && choice <= 4){
+            Match m = mm.generateMatch(user, choice);
+            if(m != null){
+                System.out.println(m);
+            } else {
+                System.out.println("No match could be generated.");
+            }
         }
+        return matchMenu(sc, user, mm);
+
     }
-    public String currentMatchMenu(Scanner sc, User user){
-         System.out.println("=======================");
+    public String currentMatchMenu(Scanner sc, User user, Matchmaker mm){
+        System.out.println("=======================");
         System.out.println("Current Matches Menu: ");
         int matchNum = user.getMatches().length;
         Match[] match = user.getMatches();
@@ -586,23 +595,23 @@ public class Menu {
             }else if (match[i] instanceof SingleEventMatch){
                 EventMatch eMatch = (SingleEventMatch)match[i];
                 System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
-            }else{
+            }else if (match[i] instanceof DoubleEventMatch){
                EventMatch eMatch = (DoubleEventMatch)match[i];
                 System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
             }
         }
         System.out.println((match.length + 1) + " Exit");
         int choice = input(1, match.length + 1, sc);
-        if(choice == match.length + 1){
-            return singleMatchMenu(match[choice-1], sc, user);
+        if(choice < match.length + 1){
+            return singleMatchMenu(match[choice-1], sc, user, mm);
         }
-        return "matchMenu";
+        return matchMenu(sc, user, mm);
     }
 
-    public String singleMatchMenu(Match match, Scanner sc, User user){
+    public String singleMatchMenu(Match match, Scanner sc, User user, Matchmaker mm){
         if (match == null){
             System.out.println("Match not available anymore!");
-            return "matchMenu";
+            return matchMenu(sc, user, mm);
         }
         System.out.println("=======================");
         System.out.println(match);
@@ -646,7 +655,7 @@ public class Menu {
         }else{
             System.out.println("Exiting...");
         }
-        return "matchMenu";
+        return currentMatchMenu(sc, user, mm);
     }
 
     

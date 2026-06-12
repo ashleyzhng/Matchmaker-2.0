@@ -7,6 +7,10 @@ public class AccountsDatabase {
     public AccountsDatabase(){
         accounts = new ArrayList<Account>();
     }
+    public AccountsDatabase(Matchmaker mm){
+        accounts = new ArrayList<>();
+        loadFromFile("Accounts.txt", mm);
+    }
     public ArrayList<Account> getAccounts(){
         return accounts;
     }
@@ -93,14 +97,7 @@ public class AccountsDatabase {
                 }
                 in.readLine();
                 count++;
-                /* 
-                if (!(user instanceof Admin)){
-                    User u = (User)user;
-                    matchFileManager.loadMatches(u.getUsername());
-                    u.setMatches(matchFileManager.getMatches());
-                    u.setMatchHistory(matchFileManager.getMatchHistory());
-                }
-                    */
+                    
             }
             System.out.println(count + " account(s) created.");
             in.close(); 
@@ -108,6 +105,16 @@ public class AccountsDatabase {
             System.out.println("Error accessing file " + file);
         } catch (NullPointerException e) {
             System.out.println("File format error or missing data");
+        }
+    }
+
+    public void loadMatches(Matchmaker mm){
+        MatchFileManager loader = new MatchFileManager(mm);
+        for (int i = 0; i < accounts.size(); i ++){
+            if (!(accounts.get(i) instanceof Admin)){
+                User user = (User)(accounts.get(i));
+                loader.loadMatches(user.getUsername());
+            }
         }
     }
 

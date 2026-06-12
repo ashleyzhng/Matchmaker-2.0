@@ -12,8 +12,8 @@ public class Matchmaker {
 
     public Matchmaker(){
         events = new EventDatabase();
-        accounts = new AccountsDatabase();
-        loadAccountsFromFile("Accounts.txt");
+        accounts = new AccountsDatabase(this);
+        accounts.loadMatches(this);
     }
     public AccountsDatabase getAccounts(){
         return accounts;
@@ -29,7 +29,7 @@ public class Matchmaker {
         ArrayList <Match> matchHistory = user.getMatchHistory();
         
         if (user.getMatched() || user.maxMatches() || all == null || all.length == 0){
-            return null;
+            return new ArrayList<>();
         }
         
         ArrayList <User> pool = new ArrayList<User>();

@@ -26,6 +26,8 @@ public class MatchFileManager {
             );
 
             int numMatches = Integer.parseInt(in.readLine());
+            User user = matchmaker.searchByUsername(username);
+            user.setNumMatches(numMatches);
             matches = new Match[numMatches];
 
             for(int i = 0; i < numMatches; i++){
@@ -152,6 +154,9 @@ public class MatchFileManager {
             }
 
             in.close();
+            user.setMatches(matches);
+            user.setMatchHistory(matchHistory);
+            user.setNumMatches(matches.length);
             
 
         } catch(IOException e){

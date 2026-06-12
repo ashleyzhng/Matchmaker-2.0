@@ -32,14 +32,17 @@ public class MatchmakerRunner{
                     currentMenu = menu.getCreateAccountMenu(sc, system);
                     break;
                 case "matchMenu":
-                    currentMenu = menu.matchMenu(sc, (User)currentAccount);
+                    currentMenu = menu.matchMenu(sc, (User)currentAccount, system);
                     break;
                 case "logout":
                     currentAccount = null;
                     currentMenu = "main";
                     break;
                 case "currentMatchMenu":
-                    currentMenu = menu.currentMatchMenu(sc, (User)currentAccount);
+                    currentMenu = menu.currentMatchMenu(sc, (User)currentAccount, system);
+                    break;
+                case "newMatchMenu":
+                    currentMenu = menu.newMatchMenu(sc, (User)currentAccount, system);
                     break;
                 case "exit":
                     running = false;
