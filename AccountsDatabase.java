@@ -83,6 +83,7 @@ public class AccountsDatabase {
                     user = senior;
                     accounts.add(senior);
                 }
+                in.readLine();
                 if (!(user instanceof Admin)){
                     User u = (User)user;
                     MatchFileManager matchFileManager = new MatchFileManager(mm);
