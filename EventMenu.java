@@ -334,8 +334,8 @@ public class EventMenu {
   
         } else {
             System.out.println("This event does not exist.");
+            return false;
         }
-        return true;
     }
 
     //indoor
@@ -434,9 +434,8 @@ if (event != null && event instanceof Indoor) {
   
         } else {
             System.out.println("This event does not exist.");
+            return false;
         }
-        return true;
-
     }
 
 
