@@ -233,7 +233,6 @@ public class MatchFileManager {
             }
             
             ArrayList<Match> pastMatches = matchmaker.searchByUsername(username).getMatchHistory();
-            out.println();
             out.println(pastMatches.size());
             
             for(int k = 0; k < pastMatches.size(); k++){
