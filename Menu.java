@@ -540,8 +540,15 @@ public class Menu {
             currentMatchMenu(sc, u, mm);
             return "currentMatchMenu";
         }else if (choice == 2){
-            newMatchMenu(sc, u, mm);
-            return "newMatchMenu";
+            if(u.getNumMatches() != 5){
+                newMatchMenu(sc, u, mm);
+                return "newMatchMenu";
+            }else{
+                System.out.println("You cannot generate New Matches! You already have 5! Finish your existing matches before continuing!");
+                matchMenu(sc, u, mm);
+                return "matchMenu";
+            }
+            
         }else if (choice == 3){
             return "user";
         }
