@@ -625,7 +625,7 @@ public class EventDatabase {
     public void sortEventByAlphaTitle() {
         int maxIndex;
         Event temp;
-        for (int upper = numApprovedEvents - 1; upper > 0; upper--) {
+        for (int upper = numApprovedEvents - 1; upper >= 1; upper--) {
             maxIndex = 0;
             for (int i = 0; i <= upper; i++) {
                 if (approvedEventList[i].compareToTitle(approvedEventList[maxIndex]).equals(approvedEventList[i])) {
@@ -641,7 +641,7 @@ public class EventDatabase {
     public void sortPendingByAlphaTitle() {
         int maxIndex;
         Event temp;
-        for (int upper = numPendingEvents - 1; upper > 0; upper--) {
+        for (int upper = numPendingEvents - 1; upper >= 1; upper--) {
             maxIndex = 0;
             for (int i = 0; i <= upper; i++) {
                 if (pendingEventList[i].compareToTitle(pendingEventList[maxIndex]).equals(pendingEventList[i])) {
@@ -718,7 +718,7 @@ public class EventDatabase {
     public void sortAllEventsByTitle() {
         int maxIndex;
         Event temp;
-        for (int upper = allEventList.size() - 1; upper > 0; upper--) {
+        for (int upper = allEventList.size() - 1; upper >= 1; upper--) {
             maxIndex = 0;
             for (int i = 0; i <= upper; i++) {
                 if (allEventList.get(i).compareToTitle(allEventList.get(maxIndex)).equals(allEventList.get(i))) {

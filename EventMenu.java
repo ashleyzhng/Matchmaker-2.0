@@ -70,6 +70,7 @@ public class EventMenu {
         Preconditions: event and user must exist
         Purpose: give an event a rating after its over
     */
+
     public void rateEvent (Event event, User user) {
         System.out.println("Rate the event out of 5: ");
         int rate = sc.nextInt();
