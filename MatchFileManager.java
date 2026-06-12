@@ -22,7 +22,7 @@ public class MatchFileManager {
     public void loadMatches(String username) {
         try {
             BufferedReader in = new BufferedReader(
-                new FileReader("matches_" + username + ".txt")
+                new FileReader("matches/matches_" + username + ".txt")
             );
 
             int numMatches = Integer.parseInt(in.readLine());
@@ -164,7 +164,7 @@ public class MatchFileManager {
     public void saveMatches(String username){
         try {
             PrintWriter out = new PrintWriter(
-                new FileWriter("matches_" + username + ".txt")
+                new FileWriter("matches/matches_" + username + ".txt")
             );
             Match[] curMatches = matchmaker.searchByUsername(username).getMatches();
             out.println(curMatches.length);
