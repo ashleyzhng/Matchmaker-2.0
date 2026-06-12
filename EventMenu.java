@@ -150,7 +150,7 @@ public class EventMenu {
 
         }
 
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Categories: " + event.getListCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
@@ -248,7 +248,7 @@ public class EventMenu {
             event.setEventAdminFeedback(sc.nextLine());
 
         }
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Categories: " + event.getListCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
@@ -344,7 +344,7 @@ if (event != null && event instanceof Indoor) {
             event.setEventAdminFeedback(sc.nextLine());
 
         }
-        System.out.println(("Categories: " + event.getCategories()));
+        System.out.println(("Categories: " + event.getListCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
         response = sc.nextLine();
         if (response.equalsIgnoreCase("N")) {
@@ -406,7 +406,7 @@ if (event != null && event instanceof Indoor) {
         System.out.println("3. Current start time: " + event.getStartTime());
         System.out.println("4. Current end time: " + event.getEndTime());
         System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
+        System.out.println("6. Current categories: " + event.getListCategories());
         System.out.println("7. Current location: " + ((Outdoor)event).getLocation());
         System.out.println("8. Current temperature: " + ((Outdoor)event).getTemperature() + "°C");
         System.out.println("9. Current precipitation: " + ((Outdoor)event).getPrecipitation() + "%");
@@ -523,7 +523,7 @@ if (event != null && event instanceof Indoor) {
         System.out.println("3. Current start time: " + event.getStartTime());
         System.out.println("4. Current end time: " + event.getEndTime());
         System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
+        System.out.println("6. Current categories: " + event.getListCategories());
         System.out.println("7. Current platform: " + ((Virtual)event).getPlatform());
         System.out.println("8. Current meeting ID: " + ((Virtual)event).getMeetingID());
         System.out.println("9. Current password: " + ((Virtual)event).getPassword());
@@ -642,7 +642,7 @@ Event event = evda.searchPendingEventByTitle(eventname);
         System.out.println("3. Current start time: " + event.getStartTime());
         System.out.println("4. Current end time:" + event.getEndTime());
         System.out.println("5. Current original cost: $" + event.getOriginalCost());
-        System.out.println("6. Current categories: " + event.getCategories());
+        System.out.println("6. Current categories: " + event.getListCategories());
         System.out.println("7. Current location: " + ((Indoor) event).getLocation());
         System.out.println("8. Current floor number: " + ((Indoor) event).getFloorNumber());
         System.out.println("9. Current room: " + ((Indoor) event).getRoom());
