@@ -27,9 +27,6 @@ public class MatchmakerRunner{
                 case "admin":
                     currentMenu = menu.getAdminMenu(sc, system, (Admin)currentAccount); 
                     break;
-                case "parent":
-                    // do later
-                    break;
                 case "createAccount":
                     currentMenu = menu.getCreateAccountMenu(sc, system);
                     break;

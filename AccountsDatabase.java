@@ -60,6 +60,7 @@ public class AccountsDatabase {
             for(int i = numAccounts; i > 0; i--){
                 if (in.readLine().equals("Admin")){
                     accounts.add(new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine())));
+                
                 } 
                 if(in.readLine().equals("Teen")){
                     accounts.add(new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
