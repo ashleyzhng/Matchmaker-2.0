@@ -30,9 +30,15 @@ public class EventDatabase {
         pendingEventList = new Event[maxPendingEvents];
         numApprovedEvents = 0;
         numPendingEvents = 0;
+        loadAllEvents("event.txt");
     }
     
-
+    /*
+        Parameters: String
+        Return values: void
+        Preconditions: file must exist and contain events
+        Purpose: for the system to have a dataabase of events read in from a file
+    */
     public void loadAllEvents(String filename) {
         try {
             BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -287,6 +293,12 @@ public class EventDatabase {
         } 
     }
 
+    /*
+        Parameters: String, Event
+        Return values: boolean
+        Preconditions: file and event must exist
+        Purpose: for the user to archive events to a file
+    */
     public boolean saveEvent(String filename, Event event) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filename));
@@ -460,6 +472,7 @@ public class EventDatabase {
 
     }
 
+    //accessors and mutators
     public Event[] getApprovedEventList() {
         return approvedEventList;
     }
@@ -512,6 +525,12 @@ public class EventDatabase {
         EventDatabase.maxPendingEvents = maxPendingEvents;
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must exist
+        Purpose: for the user to create a new virtual event
+    */
     public boolean addPendingEvent(Event event) {
         if (numPendingEvents < maxPendingEvents) {
             pendingEventList[numPendingEvents] = event;

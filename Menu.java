@@ -81,7 +81,7 @@ public class Menu {
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
             em.getEventScreen(u);
-            return "event";
+            return "user";
         }else if(choice == 3){
             u.printProfile();
             return "user";

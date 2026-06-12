@@ -14,6 +14,12 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: events in both approved and pending must already exist
+        Purpose: ui for the admin specifically to veiw events
+    */
     public void adminViewEvents() {
         System.out.println("View Event Titles:");
         System.out.println("1. Approved Events");
@@ -28,7 +34,7 @@ public class EventMenu {
             System.out.print("Want to view details? (Y/N): ");
             choice = sc.nextLine();
 
-            if (choice == "Y") {
+            if (choice.equals("Y")) {
                 System.out.println("Enter title: ");
                 choice = sc.nextLine();
                 Event ev = evda.searchApprovedEventByTitle(choice);
@@ -44,7 +50,7 @@ public class EventMenu {
             System.out.print("Want to view details? (Y/N): ");
             choice = sc.nextLine();
 
-            if (choice == "Y") {
+            if (choice.equals("Y")) {
                 System.out.println("Enter title: ");
                 choice = sc.nextLine();
                 Event ev = evda.searchPendingEventByTitle(choice);
@@ -57,6 +63,13 @@ public class EventMenu {
             } 
         } 
     }
+
+    /*
+        Parameters: Event, User
+        Return values: none
+        Preconditions: event and user must exist
+        Purpose: give an event a rating after its over
+    */
     public void rateEvent (Event event, User user) {
         System.out.println("Rate the event out of 5: ");
         int rate = sc.nextInt();
@@ -64,6 +77,12 @@ public class EventMenu {
         evda.removeApprovedEvent(event);
     }
     
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: event must be of valid type
+        Purpose: ui for user to pay for event
+    */
     public void payForEvent(Event event) {
         double amount;
         System.out.println("The event is starting...");
@@ -90,6 +109,12 @@ public class EventMenu {
         }
     }
 
+    /*
+        Parameters: Virtual
+        Return values: vdouble
+        Preconditions: Event must be of virtual type
+        Purpose: alter virtual cost using disount code and returns cost
+    */
     public double applyVirtualCost(Virtual event) {
         
         System.out.println("Discount code? (Y/N): ");
@@ -103,6 +128,12 @@ public class EventMenu {
         }
     }
 
+    /*
+        Parameters: Outdoor
+        Return values: void
+        Preconditions: Event must be of Outdoor type
+        Purpose: Returns altered cost of event as double
+    */
     public double applyOutdoorCost(Outdoor event) {
         System.out.println("The expected precipitation of the day is: " + event.getPrecipitation() + "%");
         if (event.getPrecipitation() > 70) {
@@ -113,6 +144,12 @@ public class EventMenu {
         return event.calculateCost(); 
     }
 
+    /*
+        Parameters: Indoor
+        Return values: double
+        Preconditions: Indoor event must eb of Indoor type
+        Purpose: 
+    */
     public double applyIndoorCost(Indoor event) {
         if (event.getUser3() == null) {
             System.out.println("This is a single date, so your cost is the same as the original.");
@@ -122,6 +159,12 @@ public class EventMenu {
         return event.calculateCost();
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: admin reviews pending events
+    */
     public void adminEventReview() {
         boolean cont = true;
         int index = 0;
@@ -174,7 +217,12 @@ public class EventMenu {
 }
 
 
-    //virtual
+    /*
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event must exist and be of type Virtual
+        Purpose: admin manually approves each spec of event
+    */
      public boolean manualApproveVirtualEvent(Event event) {
   
         if (event != null && event instanceof Virtual) {
@@ -281,7 +329,12 @@ public class EventMenu {
         }
     }
 
-    //outdoor
+    /*
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event must be of tyoe Outdoor and not be null
+        Purpose: admin approves of each spec of event 
+    */
     public boolean manualApproveOutdoorEvent(Event event) {
 
         if (event != null && event instanceof Outdoor) {
@@ -381,7 +434,12 @@ public class EventMenu {
         }
     }
 
-    //indoor
+    /*
+        Parameters: boolean
+        Return values: Event
+        Preconditions: event must exist and be of type Indoor
+        Purpose: for admin to approve of each spec of event
+    */
     public boolean manualApproveIndoorEvent(Event event) {
 
 if (event != null && event instanceof Indoor) {
@@ -482,7 +540,12 @@ if (event != null && event instanceof Indoor) {
     }
 
 
-    //change pending details things
+    /*
+        Parameters: String
+        Return values: void
+        Preconditions: event of eventname must exist and be type Outdoor
+        Purpose: for the user to change details of currently pending events
+    */
     public void changeOutdoorPendingEventDetails(String eventname) {
         Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Outdoor) {
@@ -601,6 +664,12 @@ if (event != null && event instanceof Indoor) {
     }
     }
 
+    /*
+        Parameters: String
+        Return values: void
+        Preconditions: event of eventname must exist and be type Virtual
+        Purpose: for the user to change details of currently pending Virtual events
+    */
     public void changeVirtualPendingEventDetails(String eventname) {
         Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Virtual) {
@@ -719,6 +788,12 @@ if (event != null && event instanceof Indoor) {
     }
 }
 
+    /*
+        Parameters: String
+        Return values: void
+        Preconditions: event of eventname must exist and be type indoor
+        Purpose: for the user to change details of currently pending events
+    */
     public void changeIndoorPendingEventDetails(String eventname) {
 Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Indoor) {
@@ -837,7 +912,12 @@ Event event = evda.searchPendingEventByTitle(eventname);
 
     }
 }
-
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must exist
+        Purpose: for the user to create a new virtual event
+    */
     public void createVirtualEvent(User u) {
         System.out.print("Enter title: ");
         String title = sc.nextLine();
@@ -891,6 +971,12 @@ Event event = evda.searchPendingEventByTitle(eventname);
         }
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must exist
+        Purpose: for the user to create a new outdoor event
+    */
     public void createOutdoorEvent(User u) {
         System.out.println("Enter title: ");
         String title = sc.nextLine();
@@ -945,6 +1031,12 @@ Event event = evda.searchPendingEventByTitle(eventname);
         }
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must exist
+        Purpose: for the user to create a new indoor event
+    */
     public void createIndoorEvent(User u) {
         System.out.println("Enter title: ");
         String title = sc.nextLine();
@@ -1000,6 +1092,12 @@ Event event = evda.searchPendingEventByTitle(eventname);
         }
     }
     
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must exist
+        Purpose: The primary event menu screen.
+    */
     public void getEventScreen(User user) {
         System.out.println("=================================");
         System.out.println("EVENT OPTIONS:");
