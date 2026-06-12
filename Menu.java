@@ -252,14 +252,12 @@ public class Menu {
                 break;
 
             case 9:
-                System.out.print("Enter new Gender: (Male - 1 Female - 2 Other - 3) ");
-                int choice2 = input(1,3,sc);
+                System.out.print("Enter new Gender: (Male - 1 Female - 2)");
+                int choice2 = input(1,2,sc);
                     if(choice2 == 1){
                         u.setGender('M');
-                    }else if(choice2 ==2){
-                        u.setGender('F');
                     }else{
-                        u.setGender('O');
+                        u.setGender('F');
                     }
                 break;
 
@@ -268,10 +266,8 @@ public class Menu {
                 choice2 = input(1,3,sc);
                     if(choice2 == 1){
                         u.setPreferredGender('M');
-                    }else if(choice2 ==2){
-                        u.setPreferredGender('F');
                     }else{
-                        u.setPreferredGender('O');
+                        u.setPreferredGender('F');
                     }
                 break;
 
@@ -343,6 +339,12 @@ public class Menu {
             return "admin";
         }else if(choice == 3){
             ad.viewAllAppeals(mm.getAppeals());
+            System.out.println("(Delete User)Resolve Appeal #: ");
+            int idx = input(1,mm.getAppeals().getAppeals().size(),sc);
+            idx--;
+            User d = mm.getAppeals().getAppeals().get(idx).getUser();
+            mm.getAccounts().deleteAccount(d, d.getPassword());
+            mm.saveAccountsToFile("Test.txt");
             return "admin";
         } else if (choice == 5) {
             em.adminEventReview();
@@ -351,7 +353,6 @@ public class Menu {
     }
 
     public String resetPassword(Scanner sc, Matchmaker mm){
-        System.out.flush();
         System.out.println("=======================");
         System.out.println("ENTER the following information");
         System.out.print("Username: ");
@@ -361,7 +362,7 @@ public class Menu {
         Account u = mm.searchAccountByUsername(username);
         if(u != null && u.getEmail().equals(email)){ // use editProfile  method
             if(u.isEmailVerified()){
-                System.out.println("Enter new password: ");
+                System.out.print("Enter new password: ");
                 String newPass = sc.next();
                 u.setPassword(newPass);
                 System.out.println("Password reset successful. Your new password is '" + newPass + "'. Please try logging in.");
@@ -371,6 +372,7 @@ public class Menu {
                 return "main";
             }
         }
+        System.out.println("Email entered is Incorrect");
         return "main";
     }
 
@@ -420,25 +422,21 @@ public class Menu {
         String city = sc.nextLine();
         System.out.print("Bio: ");
         String bio = sc.nextLine();
-        System.out.print("Gender: (Male - 1 Female - 2 Other - 3) ");
-        int choice = input(1,3,sc);
+        System.out.print("Gender: (Male - 1 Female - 2) ");
+        int choice = input(1,2,sc);
             char gender; 
             if(choice == 1){
                 gender = 'M';
-            }else if(choice ==2){
-                gender = 'F';
             }else{
-                gender = 'O';
+                gender = 'F';
             }
-        System.out.print("Preferred Gender: (Male - 1 Female - 2 Other - 3) ");
-        choice = input(1,3,sc);
+        System.out.print("Preferred Gender: (Male - 1 Female - 2)");
+        choice = input(1,2,sc);
             char preferredGender;
             if(choice == 1){
                 preferredGender = 'M';
-            }else if(choice ==2){
+            }else {
                 preferredGender = 'F';
-            }else{
-                preferredGender = 'O';
             }
         int age = Period.between(birthday, LocalDate.now()).getYears();
         if(age > Senior.MIN_AGE){

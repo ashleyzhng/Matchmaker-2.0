@@ -21,7 +21,7 @@ public class Appeal {
     }
 
     public String toString(){
-        return "User: " + "\nReason: " + reason;
+        return "User: " + user.getUsername() + "\nReason: " + reason;
         // print basic user info from admin command
     }
 }

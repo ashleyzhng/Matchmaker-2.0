@@ -207,32 +207,53 @@ public class Matchmaker {
                 if(a.get(i) instanceof Senior){
                     out.write("senior");
                 }
+                out.newLine();
                 out.write(a.get(i).getUsername());
+                out.newLine();
                 out.write(a.get(i).getPassword());
+                out.newLine();
                 out.write(a.get(i).getEmail());
+                out.newLine();
                 out.write("" + a.get(i).isEmailVerified());
+                out.newLine();
                 if(a.get(i) instanceof User){
                     out.write("" + ((User) (a.get(i))).getName());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getBirthday());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getPostalCode());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getCity());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getBio());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getGender());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getPreferredGender());
+                    out.newLine();
                     out.write("" + ((User) (a.get(i))).getMatched());
+                    out.newLine();
                     //out.write("" + ((User) (a.get(i))).InterestTagInt());
                 }
                 if(a.get(i) instanceof Adult){
                     out.write("" + ((Adult) (a.get(i))).getOccupation());
+                    out.newLine();
                     out.write("" + ((Adult) (a.get(i))).getMaritalStatus());
+                    out.newLine();
                     out.write("" + ((Adult) (a.get(i))).getPreferredMaxAge());
+                    out.newLine();
                     out.write("" + ((Adult) (a.get(i))).getPreferredMinAge());
+                    out.newLine();
                 }   
                 if(a.get(i) instanceof Senior){
-                    out.write("" + ((Adult) (a.get(i))).getOccupation());
-                    out.write("" + ((Adult) (a.get(i))).getMaritalStatus());
-                    out.write("" + ((Adult) (a.get(i))).getPreferredMaxAge());
-                    out.write("" + ((Adult) (a.get(i))).getPreferredMinAge());
+                    out.write("" + ((Senior) (a.get(i))).getOccupation());
+                    out.newLine();
+                    out.write("" + ((Senior) (a.get(i))).getMaritalStatus());
+                    out.newLine();
+                    out.write("" + ((Senior) (a.get(i))).getPreferredMaxAge());
+                    out.newLine();
+                    out.write("" + ((Senior)(a.get(i))).getPreferredMinAge());
+                    out.newLine();
                     out.write("" + ((Senior) (a.get(i))).hasMobilityLimitations());
                 }    
             }

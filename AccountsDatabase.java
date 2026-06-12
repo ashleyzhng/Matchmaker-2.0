@@ -69,30 +69,24 @@ public class AccountsDatabase {
     }
     // add user from file
     public void loadFromFile(String file, Matchmaker mm){
-        MatchFileManager matchFileManager = new MatchFileManager(mm);
         try{
             BufferedReader in = new BufferedReader(new FileReader(file));
             // take in first line for number of accounts
             int numAccounts = Integer.parseInt(in.readLine());
             int count = 0;
-            Account user = null;
             for(int i = 0; i < numAccounts; i++){
                 String accountType = in.readLine();
                 if (accountType.equalsIgnoreCase("Admin")){
                     Admin admin = new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()));
-                    user = admin;
                     accounts.add(admin);
                 } else if (accountType.equalsIgnoreCase("Teen")){
                     Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
-                    user = teen;
                     accounts.add(teen);
                 }else if(accountType.equalsIgnoreCase("Adult")){
                     Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                     accounts.add(adult);
-                    user = adult;
                 }else if(accountType.equalsIgnoreCase("Senior")){
                     Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
-                    user = senior;
                     accounts.add(senior);
                 }
                 in.readLine();

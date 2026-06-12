@@ -21,6 +21,7 @@ public class Admin extends Account {
 
     public void viewAllAppeals(AppealDatabase ap){
         for(int i = 0; i<ap.getAppeals().size(); i++){
+            System.out.println("#" + (i+1));
             System.out.println(ap.getAppeals().get(i));
         }
     }

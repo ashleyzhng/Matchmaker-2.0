@@ -1,0 +1,422 @@
+admin
+admin1
+adminpass1
+admin1@example.com
+true
+admin
+admin2
+adminpass2
+admin2@example.com
+true
+admin
+superadmin
+rootpass
+superadmin@example.com
+true
+teen
+skatergirl16
+pass123
+sarah16@example.com
+true
+Sarah Lee
+2009-04-15
+M5V2T6
+Toronto
+Love skateboarding and music.
+F
+M
+false
+teen
+bookworm15
+read456
+olivia15@example.com
+true
+Olivia Martin
+2010-02-28
+K2P1L4
+Ottawa
+Reading fantasy novels and drawing.
+F
+M
+false
+teen
+soccerstar16
+goal789
+ethan16@example.com
+true
+Ethan Taylor
+2009-07-12
+M5V2T8
+Toronto
+Soccer player who loves the outdoors.
+M
+F
+false
+teen
+artist17
+paint321
+mia17@example.com
+false
+Mia Johnson
+2008-09-21
+L1T3W5
+Ajax
+Digital artist and movie fan.
+F
+O
+false
+teen
+musicfan18
+song888
+noah18@example.com
+true
+Noah Davis
+2010-01-05
+R3C2A8
+Winnipeg
+Guitar player and concert lover.
+M
+F
+false
+teen
+runner16
+track11
+ava16@example.com
+true
+Ava Brown
+2009-05-23
+L5N7B8
+Brampton
+Track athlete and coffee lover.
+F
+M
+false
+teen
+techkid17
+robot77
+liam17@example.com
+true
+Liam Chen
+2008-08-30
+T3J4K2
+Calgary
+Interested in coding and robotics.
+M
+F
+false
+teen
+moviebuff16
+films55
+zoe16@example.com
+false
+Zoe Walker
+2009-11-10
+B2Y1P4
+Dartmouth
+Movie lover and aspiring director.
+F
+O
+false
+teen
+hiker17
+mount22
+jack17@example.com
+true
+Jack Green
+2008-06-14
+P1A2B3
+North Bay
+Enjoys hiking and camping.
+M
+F
+false
+adult
+teacheremma
+emma123
+emma@example.com
+true
+Emma Carter
+1995-08-20
+K1A0B1
+Ottawa
+Elementary school teacher who enjoys hiking.
+F
+M
+false
+null
+Single
+40
+25
+adult
+chefmike
+cookpass
+mike@example.com
+true
+Michael Brown
+1988-02-14
+T2P1J9
+Calgary
+Professional chef and food enthusiast.
+M
+F
+false
+null
+Divorced
+50
+30
+adult
+nursekate
+health22
+kate@example.com
+true
+Kate Wilson
+1992-06-11
+V5K0A1
+Vancouver
+Registered nurse who enjoys fitness.
+F
+M
+false
+null
+Single
+45
+28
+adult
+devalex
+code999
+alex@example.com
+true
+Alex Nguyen
+1990-03-18
+M4B1B3
+Toronto
+Software developer and gamer.
+O
+F
+false
+null
+Single
+42
+24
+adult
+lawyerchris
+legal77
+chris@example.com
+true
+Chris Patel
+1985-10-02
+L8P2N4
+Hamilton
+Lawyer who enjoys traveling.
+M
+F
+false
+null
+Married
+55
+30
+adult
+designeramy
+style55
+amy@example.com
+false
+Amy Cooper
+1997-12-14
+N6A3K7
+London
+Graphic designer and photographer.
+F
+M
+false
+null
+Single
+38
+22
+adult
+accountantben
+tax123
+ben@example.com
+true
+Benjamin Scott
+1993-05-07
+L4W5N6
+Mississauga
+Accountant who enjoys board games.
+M
+F
+false
+null
+Single
+40
+25
+adult
+pilotjess
+fly88
+jess@example.com
+true
+Jessica White
+1989-04-09
+R2C4T5
+Winnipeg
+Commercial airline pilot.
+F
+M
+false
+null
+Single
+50
+28
+adult
+mechanicryan
+tools44
+ryan@example.com
+true
+Ryan Hall
+1991-07-17
+E2L3M4
+Fredericton
+Car enthusiast and mechanic.
+M
+F
+false
+null
+Single
+45
+24
+adult
+scientistmaya
+lab101
+maya@example.com
+true
+Maya Singh
+1987-09-25
+H3A1B2
+Montreal
+Research scientist and reader.
+F
+M
+false
+null
+Married
+52
+30
+adult
+artistlucas
+canvas7
+lucas@example.com
+false
+Lucas King
+1996-03-12
+B3J2A4
+Halifax
+Painter and art instructor.
+M
+F
+false
+null
+Single
+40
+22
+senior
+retiredbob
+bobpass
+bob@example.com
+true
+Robert Wilson
+1955-07-10
+V6B1A1
+Vancouver
+Retired engineer who enjoys gardening.
+M
+F
+false
+Retired Engineer
+Widowed
+75
+60
+truesenior
+travellinda
+linda123
+linda@example.com
+true
+Linda Thompson
+1952-12-05
+B3H2Y5
+Halifax
+Love traveling and meeting new people.
+F
+M
+false
+Retired Nurse
+Widowed
+80
+62
+falsesenior
+golfergeorge
+teeoff9
+george@example.com
+true
+George Harris
+1950-05-22
+N1G3A1
+Guelph
+Golf enthusiast and community volunteer.
+M
+F
+false
+Retired Teacher
+Married
+78
+60
+falsesenior
+gardensusan
+flowers8
+susan@example.com
+true
+Susan Clark
+1953-08-14
+K7L2V1
+Kingston
+Passionate about gardening and baking.
+F
+M
+false
+Retired Librarian
+Widowed
+80
+58
+truesenior
+fishingtom
+lake22
+tom@example.com
+true
+Thomas Baker
+1949-11-02
+P7B4M2
+Thunder Bay
+Enjoys fishing and nature walks.
+M
+F
+false
+Retired Contractor
+Divorced
+82
+60
+falsesenior
+readerhelen
+books66
+helen@example.com
+true
+Helen Moore
+1951-03-30
+S4P2N8
+Regina
+Avid reader and traveler.
+F
+M
+false
+Retired Professor
+Widowed
+79
+60
+false
