@@ -22,10 +22,12 @@ public class MatchFileManager {
     public void loadMatches(String username) {
         try {
             BufferedReader in = new BufferedReader(
-                new FileReader("matches_" + username + ".txt")
+                new FileReader("matches/matches_" + username + ".txt")
             );
 
             int numMatches = Integer.parseInt(in.readLine());
+            User user = matchmaker.searchByUsername(username);
+            user.setNumMatches(numMatches);
             matches = new Match[numMatches];
 
             for(int i = 0; i < numMatches; i++){
@@ -152,19 +154,24 @@ public class MatchFileManager {
             }
 
             in.close();
-            
-
+            user.setMatches(matches);
+            user.setMatchHistory(matchHistory);
+            user.setNumMatches(matches.length);
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
             matches = new Match[0];
             matchHistory = new ArrayList<Match>();
+            User user = matchmaker.searchByUsername(username);
+            user.setMatches(matches);
+            user.setMatchHistory(matchHistory);
+            user.setNumMatches(0);
         }
     }
 
     public void saveMatches(String username){
         try {
             PrintWriter out = new PrintWriter(
-                new FileWriter("matches_" + username + ".txt")
+                new FileWriter("matches/matches_" + username + ".txt")
             );
             Match[] curMatches = matchmaker.searchByUsername(username).getMatches();
             out.println(curMatches.length);

@@ -321,36 +321,46 @@ public class SingleEventMatch extends EventMatch{
      * The string representation of the match
      * Returns: a string containing the match details
      */
-   @Override
+    @Override
     public String toString() {
         String s = "=======================\n";
-        s += "Match Type: " + getEventType() + "\n";
-        s += "Event Name: " + getEvent().getTitle() + "\n";
-        s += "Date: " + getDate() + "\n";
-        s += "Start Time: " + getStart() + "\n";
-        s += "End Time: " + getEnd() + "\n";
-        s += "Compatibility Score: " + (getScore()) + "%\n";
-        s += "-----------------------\n";
-    
-        s += "User 1: ";
-        if (pair[0] != null) {
-            s += pair[0].getName() + "\n";
-            s += "User 1 Status: " + status + "\n";
+
+        s += "Match Type: Single Event\n";
+
+        Event e = getEvent();
+        if (e != null) {
+            s += "Event Name: " + e.getTitle() + "\n";
+
+            s += "Date: " + getDate() + "\n";
+            s += "Start Time: " + getStart() + "\n";
+            s += "End Time: " + getEnd() + "\n";
+            s += "Compatibility Score: " + getScore() + "%\n";
+
+            s += "-----------------------\n";
+
+            s += "User 1: ";
+            if (pair[0] != null) {
+                s += pair[0].getName() + "\n";
+                s += "User 1 Status: " + status[0] + "\n";
+            } else {
+                s += "None\n";
+            }
+
+            s += "-----------------------\n";
+
+            s += "User 2: ";
+            if (pair[1] != null) {
+                s += pair[1].getName() + "\n";
+                s += "User 2 Status: " + status[1] + "\n";
+            } else {
+                s += "Still Searching...\n";
+            }
         } else {
-            s += "None\n";
+            s += "Event Name: No Event Selected\n";
         }
-        
-        s += "-----------------------\n";
-    
-        s += "User 2: ";
-        if (pair[1] != null) {
-            s += pair[1].getName() + "\n";
-        } else {
-            s += "Still Searching...\n";
-        }
-        
+
         s += "=======================\n";
-        
+
         return s;
     }
 }

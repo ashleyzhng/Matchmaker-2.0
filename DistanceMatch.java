@@ -48,6 +48,8 @@ public class DistanceMatch extends PersonMatch{
                 setScore(distanceTier);
                 setSoulmate(other);
                 storeMatch();
+            }else{
+                setScore(0);
             }
             
         }   

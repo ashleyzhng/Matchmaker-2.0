@@ -42,6 +42,8 @@ public class InterestMatch extends PersonMatch{
                 setScore(tagsCount);
                 setSoulmate(other);
                 storeMatch();
+            }else{
+                setScore(0);
             }
         }
     }

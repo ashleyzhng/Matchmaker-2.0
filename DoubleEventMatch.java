@@ -78,9 +78,10 @@ public class DoubleEventMatch extends EventMatch {
     }
 
     public void completed(){
-        for (int i = 0; i < status.length; i++) {
-            status[i] = 'C';
-        }
+        status[0]='C';
+        status[1]='C';
+        status[2]='C';
+        status[3]='C';
     }
      /*
       * Executes the matchmaking process for a double event match
@@ -542,58 +543,65 @@ public class DoubleEventMatch extends EventMatch {
     @Override
     public String toString() {
         String s = "=======================\n";
-        s += "Match Type: " + getEventType() + " (Double Date)\n";
-        s += "Event Name: " + getEvent().getTitle() + "\n";
-        s += "Date: " + getDate() + "\n";
-        s += "Start Time: " + getStart() + "\n";
-        s += "End Time: " + getEnd() + "\n";
-        s += "Compatibility Score: " + (getScore()) + "%\n";
+        s += "Match Type: Double Date Event Match\n";
+
+        Event e = getEvent();
+        if (e != null) {
+            s += "Event Name: " + e.getTitle() + "\n";
+            s += "Date: " + getDate() + "\n";
+            s += "Start Time: " + getStart() + "\n";
+            s += "End Time: " + getEnd() + "\n";
+            s += "Compatibility Score: " + getScore() + "%\n";
+
+            s += "=======================\n";
+            s += "       PAIR 1\n";
+            s += "-----------------------\n";
+
+            s += "User 1 (Host): ";
+            if (pair1[0] != null) {
+                s += pair1[0].getName() + "\n";
+                s += "User 1 Status: " + status[0] + "\n";
+            } else {
+                s += "None\n";
+            }
+
+            s += "-----------------------\n";
+
+            s += "User 2 (Date): ";
+            if (pair1[1] != null) {
+                s += pair1[1].getName() + "\n";
+                s += "User 2 Status: " + status[1] + "\n";
+            } else {
+                s += "Still Searching...\n";
+            }
+
+            s += "=======================\n";
+            s += "       PAIR 2\n";
+            s += "-----------------------\n";
+
+            s += "User 3: ";
+            if (pair2[0] != null) {
+                s += pair2[0].getName() + "\n";
+                s += "User 3 Status: " + status[2] + "\n";
+            } else {
+                s += "Still Searching...\n";
+            }
+
+            s += "-----------------------\n";
+
+            s += "User 4: ";
+            if (pair2[1] != null) {
+                s += pair2[1].getName() + "\n";
+                s += "User 4 Status: " + status[3] + "\n";
+            } else {
+                s += "Still Searching...\n";
+            }
+        } else {
+            s += "Event Name: No Event Selected\n";
+        }
+
         s += "=======================\n";
-        s += "       PAIR 1\n";
-        s += "-----------------------\n";
-    
-        s += "User 1 (Host): ";
-        if (pair1[0] != null) {
-            s += pair1[0].getName() + "\n";
-            s += "User 1 Status: " + status[0] + "\n";
-        } else {
-            s += "None\n";
-        }
-        
-        s += "-----------------------\n";
-    
-        s += "User 2 (Date): ";
-        if (pair1[1] != null) {
-            s += pair1[1].getName() + "\n";
-            s += "User 2 Status: " + status[1] + "\n";
-        } else {
-            s += "Still Searching...\n";
-        }
-        
-        s += "=======================\n";
-        s += "       PAIR 2\n";
-        s += "-----------------------\n";
-    
-        s += "User 3: ";
-        if (pair2[0] != null) {
-            s += pair2[0].getName() + "\n";
-            s += "User 3 Status: " + status[2] + "\n";
-        } else {
-            s += "Still Searching...\n";
-        }
-        
-        s += "-----------------------\n";
-    
-        s += "User 4: ";
-        if (pair2[1] != null) {
-            s += pair2[1].getName() + "\n";
-            s += "User 4 Status: " + status[3] + "\n";
-        } else {
-            s += "Still Searching...\n";
-        }
-        
-        s += "=======================\n";
-        
+
         return s;
     }
 
