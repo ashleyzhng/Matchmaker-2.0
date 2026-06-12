@@ -97,7 +97,6 @@ public class EventDatabase {
                     initialUser = ad.searchByUsername(strInitialUser);
                 }
                 Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, platform, meetingid, password);
-                in.close();
                 boolean added;
                 if (approved.equals("true")) {
                     added = addApprovedEvent(vir);
@@ -178,7 +177,7 @@ public class EventDatabase {
                 }
 
                 Outdoor outdoor = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, location, temp, precip);
-                in.close();
+
                 boolean added;
                 if (approved.equals("true")) {
                     added = addApprovedEvent(outdoor);
@@ -258,7 +257,6 @@ public class EventDatabase {
                     initialUser = ad.searchByUsername(strInitialUser);
                 }
                 Indoor indoor = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, loca, floornum, room);
-                in.close();
                 boolean added;
                 if (approved.equals("true")) {
                     added = addApprovedEvent(indoor);
@@ -281,6 +279,7 @@ public class EventDatabase {
                     } 
                 }
             }
+            in.close();
         }
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
