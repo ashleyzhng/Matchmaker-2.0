@@ -70,6 +70,7 @@ public abstract class EventMatch extends Match{
     public String getEventType(){return eventType;}
     public String getEventTitle(){return eventTitle;}
     public void setEventTitle(String t){eventTitle = t;}
+    
     //---abstract methods that subclasses must implement, refer to subclasses for further details---
     public abstract boolean isAcceptance();
     public abstract String toString();

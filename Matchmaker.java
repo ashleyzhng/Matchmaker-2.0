@@ -9,7 +9,6 @@ public class Matchmaker {
         events = new EventDatabase();
         accounts = new AccountsDatabase();
     }
-
     public AccountsDatabase getAccounts(){
         return accounts;
     }

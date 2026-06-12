@@ -153,6 +153,12 @@ public class SingleEventMatch extends EventMatch{
         }
         return 'X';
     }
+    public User getOwner(){
+        return pair[0];
+    }
+    public User getSoulmate(){
+        return pair[1];
+    }
     
     /*
      * Updates the decision for the user in the match

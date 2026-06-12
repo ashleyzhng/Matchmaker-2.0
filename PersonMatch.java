@@ -84,6 +84,20 @@ public abstract class PersonMatch extends Match{
             rating[1]=r;
         }
     }
+    public char getStatus(User u){
+        if (u == pair[0]){
+            return status[0];
+        }else{
+            return status[1];
+        }
+    }
+    public int getRating(User u){
+        if (u == pair[0]){
+            return rating[0];
+        }else{
+            return rating[1];
+        }
+    }
 
     ///---abstract methods that subclasses must implement, refer to subclasses for further details---
     public abstract void execute(Object[] pool);

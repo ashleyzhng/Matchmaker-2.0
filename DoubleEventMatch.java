@@ -65,6 +65,17 @@ public class DoubleEventMatch extends EventMatch {
         rating[3] = r4;
     }
 
+    // accessors and mutators
+    public User getUser(int idx){
+        if (idx >= 0 && idx < 4) {
+            if (idx < 2) {
+                return pair1[idx];
+            } else {
+                return pair2[idx - 2];
+            }
+        }
+        return null;
+    }
      /*
       * Executes the matchmaking process for a double event match
       * Parameters: pool - an array of potential events to match against

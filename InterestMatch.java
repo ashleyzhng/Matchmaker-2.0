@@ -7,16 +7,18 @@
  * Description:
  * The InterestMatch class is a subclass of PersonMatch that implements interest-based matching logic.
  */
+
 public class InterestMatch extends PersonMatch{
-    //stores the number of matching tags between users, used in scoring calculations
-    private double tagsCount;
-    
     /*
      * Constructor for the InterestMatch class
      * Parameters: u - the user for whom to create the match
      */
     public InterestMatch(User u){
         super("interest", u);
+    }
+    public InterestMatch(double score, User u, User s, String exp, char ownerStatus, char soulmateStatus, int ownerRating, int soulmateRating){
+        super(score, "interest", u, s, exp, ownerStatus, soulmateStatus, ownerRating, soulmateRating);
+         
     }
     /*
      * Executes the interest-based matching algorithm
@@ -36,7 +38,7 @@ public class InterestMatch extends PersonMatch{
             }
             User other = execute(poolUser, 0, null, -1);
             if(other!= null){
-                tagsCount = evaluateTags(other);
+                double tagsCount = evaluateTags(other);
                 setScore(tagsCount);
                 setSoulmate(other);
                 storeMatch();

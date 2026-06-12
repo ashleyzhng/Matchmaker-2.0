@@ -101,6 +101,12 @@ public class User extends Account {
     public Match[] getMatches(){
         return matches;
     }
+    public void setMatches(Match[] m){
+        matches = m;
+    }
+    public void setMatchHistory(ArrayList<Match> mh){
+        matchHistory = mh;
+    }
 
     public int getNumMatches(){
         return numMatches;

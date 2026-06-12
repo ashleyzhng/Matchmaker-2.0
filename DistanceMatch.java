@@ -11,7 +11,7 @@ public class DistanceMatch extends PersonMatch{
     // weight constants used in scoring calculations
     public static final int MAX_DISTANCE_TIER = 6;
     //stores the distance tier between users, used in scoring calculations
-    private int distanceTier;
+    private double distanceTier;
 
     /*
      * Constructor for DistanceMatch
@@ -20,6 +20,11 @@ public class DistanceMatch extends PersonMatch{
      */
     public DistanceMatch(User u){
         super("distance", u);
+    }
+
+    public DistanceMatch(double score, User u, User s, String exp, char ownerStatus, char soulmateStatus, int ownerRating, int soulmateRating){
+        super(score, "distance", u, s, exp, ownerStatus, soulmateStatus, ownerRating, soulmateRating);
+        distanceTier = score;
     }
    
     /*

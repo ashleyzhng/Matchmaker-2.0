@@ -4,7 +4,6 @@ import java.util.*;
 
 public class AccountsDatabase {
     private ArrayList<Account> accounts;
-
     public AccountsDatabase(){
         accounts = new ArrayList<Account>();
     }
@@ -57,19 +56,34 @@ public class AccountsDatabase {
             BufferedReader in = new BufferedReader(new FileReader(file));
             // take in first line for number of accounts
             int numAccounts = Integer.parseInt(in.readLine());
+            Account user;
             for(int i = numAccounts; i > 0; i--){
                 if (in.readLine().equals("Admin")){
-                    accounts.add(new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine())));
-                
+                    Admin admin = new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()));
+                    user = admin;
+                    accounts.add(admin);
                 } 
                 if(in.readLine().equals("Teen")){
-                    accounts.add(new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline())));
+                    user = teen;
+                    accounts.add(teen);
                 }
                 if(in.readLine().equals("Adult")){
-                    accounts.add(new Adult(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    accounts.add(adult);
+                    user = adult;
                 }
                 if(in.readLine().equals("Senior")){
-                    accounts.add(new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    user = senior;
+                    accounts.add(senior);
+                }
+                if (!(user instanceof Admin)){
+                    User u = (User)user;
+                    MatchFileManager matchFileManager = new MatchFileManager(mm);
+                    matchFileManager.loadMatches(u.getUsername());
+                    u.setMatches(matchFileManager.getMatches());
+                    u.setMatchHistory(matchFileManager.getMatchHistory());
                 }
             }
             in.close(); 
@@ -78,11 +92,12 @@ public class AccountsDatabase {
         }
     }
 
+
     public User searchByUsername(String targetUsername){
         boolean found = false;
         User foundUser = null;
-
-        for(int i = 0; i<accounts.size() && !found; i++){
+        
+        for (int i = 0; i < accounts.size() && !found; i++){
             User u = (User)accounts.get(i);
 
             if(u.getUsername().equals(targetUsername)){
