@@ -34,25 +34,30 @@ public class DistanceMatch extends PersonMatch{
      */
     @Override
     public void execute(Object[] pool){
-        if (pool!= null){
+        if (pool != null){
+
             User[] poolUser = new User[pool.length];
-            if (pool.length > 0) {
-                for(int i = 0; i < pool.length; i ++){
-                    if(pool[i] != null && pool[i] instanceof User){
-                        poolUser[i]=(User)pool[i];
-                    }
+
+            for(int i = 0; i < pool.length; i++){
+                if(pool[i] instanceof User){
+                    poolUser[i] = (User) pool[i];
                 }
             }
+
             User other = execute(poolUser, 0, null, -1);
-            if (other!= null){
-                setScore(distanceTier);
+
+            if (other != null){
+
+                // FIX: compute score from FINAL chosen user
+                distanceTier = calculateDistanceTier(other);
+
+                setScore((distanceTier/6.0) * 100);
                 setSoulmate(other);
                 storeMatch();
-            }else{
+            } else {
                 setScore(0);
             }
-            
-        }   
+        }
     }
     /*
      * Executes the distance-based matching algorithm
@@ -62,27 +67,20 @@ public class DistanceMatch extends PersonMatch{
      *             maxTier - the maximum distance tier found so far
      * Returns: The best matching user or null if none found
      */
-    private User execute(User[] pool, int idx, User best, int maxTier){
-        if (pool == null || pool.length == 0){
-            return null;
-        }else if(idx == pool.length){
-            if (best != null){
-                distanceTier = calculateDistanceTier(best);;
-            }else{
-                distanceTier = -1;
-            }
+        private User execute(User[] pool, int idx, User best, int maxTier){
+
+        if (pool == null || pool.length == 0 || idx == pool.length){
             return best;
-        }else{
-            User current = pool[idx];
-            if(current != null && prelimCheck(current)){
-                int currentTier = calculateDistanceTier(current); // FIXED: Calculate once and reuse
-                
-                if (currentTier > maxTier) {
-                    return execute(pool, idx + 1, current, currentTier);
-                }
-            }
-            return execute(pool, idx + 1, best, maxTier);
         }
+        User current = pool[idx];
+        if(current != null && current != getOwner() && prelimCheck(current)){
+            int currentTier = calculateDistanceTier(current);
+            if(currentTier > maxTier){
+                best = current;
+                maxTier = currentTier;
+            }
+        }
+        return execute(pool, idx + 1, best, maxTier);
     }
  
     /*
@@ -109,8 +107,9 @@ public class DistanceMatch extends PersonMatch{
         }
         int count = 0;
         boolean exit = false;
-        for (int i = 0; i < ps1.length() && !exit; i ++){
-            if (ps1.charAt(i) == ps2.charAt(i) && !exit){
+        int minLength = Math.min(ps1.length(), ps2.length());
+        for (int i = 0; i < minLength && !exit; i ++){
+            if (ps1.charAt(i) == ps2.charAt(i)){
                 count ++;
             }else{
                 exit = true;

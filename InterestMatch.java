@@ -53,11 +53,23 @@ public class InterestMatch extends PersonMatch{
      * Returns: the best match found
      */
     private User execute(User[] pool, int idx, User best, double maxTags){
-        if(pool == null || pool.length == 0){
-            return null;
-        }else if (idx == pool.length){
+        if(pool == null || pool.length == 0 || idx == pool.length){
             return best;
-        }else{
+        }
+        User current = pool[idx];
+        if (current!= null && current!= getOwner() && prelimCheck(current)){
+            double score = evaluateTags(current);
+
+            if(best == null || score > maxTags){
+                best = current;
+                maxTags = score;
+            }
+            return execute(pool, idx+1, best, maxTags);
+        }
+        
+        
+        
+        else{
             if(pool[idx] != null && pool[idx]!= getOwner() &&  prelimCheck(pool[idx])){
                 double score = evaluateTags(pool[idx]);
                 if (score > maxTags){
@@ -80,6 +92,7 @@ public class InterestMatch extends PersonMatch{
         User owner = getOwner();
         return owner.getTag().compareTo(other.getTag());
     }
+
 
     
 }

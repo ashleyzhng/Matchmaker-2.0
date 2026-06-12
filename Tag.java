@@ -130,7 +130,7 @@ public class Tag {
     }
 
     public double compareTo(Tag other){
-        int total = 0;
+        double total = 0;
         total += compareCategory(religion, other.religion);
         total += compareCategory(sports, other.sports);
         total += compareCategory(music, other.music);
@@ -142,15 +142,15 @@ public class Tag {
         total += compareCategory(animal, other.animal);
         total += compareCategory(reading, other.reading);
 
-        return total/NUM_TAGS*100;
+        return (total/NUM_TAGS) * 100.0;
     }
 
     public double compareCategory(int tag1, int tag2){
-        int larger = Math.max(tag1, tag2);
-        if(larger == 0){
-            return 1;
-        }else{
-            return (double) Math.min(tag1, tag2)/larger;
+        if (tag1 == 0 && tag2 == 0){
+            return 1.0;
         }
+        double larger = Math.max(tag1, tag2);
+        double smaller = Math.min(tag1, tag2);
+        return smaller/larger;
     }
 }

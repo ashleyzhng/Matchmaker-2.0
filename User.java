@@ -29,7 +29,7 @@ public class User extends Account {
         preferredGender = pg;
         interestTag = t;
         matches = new Match[MAX_MATCHES];
-        numMatches = matches.length;
+        numMatches = 0;
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
@@ -45,7 +45,7 @@ public class User extends Account {
         preferredGender = pg;
         interestTag = t;
         matches = new Match[MAX_MATCHES];
-        numMatches = matches.length;
+        numMatches = 0;
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
@@ -153,8 +153,10 @@ public class User extends Account {
     }
     
     public void storeMatch(Match m){
-        matches[numMatches] = m;
-        numMatches ++;
+        if (numMatches < matches.length){
+            matches[numMatches] = m;
+            numMatches++;
+        }
     }
 
     public void storeMatchHistory(Match m){
