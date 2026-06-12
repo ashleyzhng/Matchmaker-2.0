@@ -49,8 +49,8 @@ public class DoubleEventMatch extends EventMatch {
      *             r1, r2, r3, r4 - the rating of each user (-1 if no rating)
      * Returns: None
      */
-    public DoubleEventMatch(double score, String e, String s, String en, String d, String dur, Event eve, User u1, User u2, User u3, User u4, char s1, char s2, char s3, char s4, int r1, int r2, int r3, int r4) {
-        super(score, e, s, en, d, dur, eve);
+    public DoubleEventMatch(double score, String e, String s, String en, String d, Event eve, User u1, User u2, User u3, User u4, char s1, char s2, char s3, char s4, int r1, int r2, int r3, int r4) {
+        super(score, e, s, en, d, eve);
         pair1[0] = u1;
         pair1[1] = u2;
         pair2[0] = u3;
@@ -100,13 +100,11 @@ public class DoubleEventMatch extends EventMatch {
              
              if (event != null) {
                  LocalTime start = event.getStartTime();
-                 Duration duration = event.getDuration();
-                 LocalTime end = start.plus(duration);
+                 LocalTime end = event.getEndTime();
                  LocalDate date = event.getDate();
                  
                  setStart(start);
                  setEnd(end);
-                 setDuration(duration);
                  setDate(date);
                  setEventType("Indoor");
                  setEvent(event); 

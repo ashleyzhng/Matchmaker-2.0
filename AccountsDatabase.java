@@ -112,6 +112,16 @@ public class AccountsDatabase {
         }
     }
 
+    public void saveMatches(Matchmaker mm){
+        MatchFileManager loader = new MatchFileManager(mm);
+        for (int i = 0; i < accounts.size(); i ++){
+            if(!(accounts.get(i) instanceof Admin)){
+                User user = (User) (accounts.get(i));
+                loader.saveMatches(user.getUsername());
+            }
+        }
+    }
+
     public User searchByUsername(String targetUsername){
         for (int i = 0; i < accounts.size(); i++){
             if(accounts.get(i) instanceof User){

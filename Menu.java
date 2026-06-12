@@ -561,7 +561,15 @@ public class Menu {
             if(choice >= 1 && choice <= 4){
             Match m = mm.generateMatch(user, choice);
             if(m != null){
-                System.out.println(m);
+                boolean validMatch = true;
+                if (m instanceof PersonMatch){
+                    validMatch = ((PersonMatch)m).getSoulmate() != null;
+                }
+                if(validMatch){
+                    System.out.println(m);
+                } else {
+                    System.out.println("No match could be generated.");
+                }
             } else {
                 System.out.println("No match could be generated.");
             }
@@ -572,7 +580,7 @@ public class Menu {
     public String currentMatchMenu(Scanner sc, User user, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Current Matches Menu: ");
-        int matchNum = user.getMatches().length;
+        int matchNum = user.getNumMatches();
         Match[] match = user.getMatches();
         System.out.println("You have " + matchNum + " active Matches!");
         for (int i = 0; i < matchNum ; i ++){
@@ -582,15 +590,15 @@ public class Menu {
                 System.out.println((i+1) + ". DistanceMatch: Expiry Date is " + ((DistanceMatch)match[i]).getExpiryDate());
             }else if (match[i] instanceof SingleEventMatch){
                 EventMatch eMatch = (SingleEventMatch)match[i];
-                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", End Time: " + eMatch.getEnd()); 
             }else if (match[i] instanceof DoubleEventMatch){
                EventMatch eMatch = (DoubleEventMatch)match[i];
-                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", End Time: " + eMatch.getEnd()); 
             }
         }
-        System.out.println((match.length + 1) + " Exit");
-        int choice = input(1, match.length + 1, sc);
-        if(choice < match.length + 1){
+        System.out.println((matchNum + 1) + " Exit");
+        int choice = input(1, matchNum + 1, sc);
+        if(choice < matchNum + 1){
             return singleMatchMenu(match[choice-1], sc, user, mm);
         }
         return matchMenu(sc, user, mm);
@@ -608,7 +616,6 @@ public class Menu {
         System.out.println("3. Complete Match");
         System.out.println("4. Exit");
         System.out.println("=======================");
-        System.out.print("OPTION: ");
         int choice = input(1, 4, sc);
         if (choice == 1){
             if (match instanceof  PersonMatch){
