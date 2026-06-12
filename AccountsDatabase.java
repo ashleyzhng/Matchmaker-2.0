@@ -92,7 +92,6 @@ public class AccountsDatabase {
         }
     }
 
-
     public User searchByUsername(String targetUsername){
         boolean found = false;
         User foundUser = null;

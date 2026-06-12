@@ -15,6 +15,9 @@ public class Matchmaker {
     public AppealDatabase getAppeals(){
         return appeals;
     }
+    public EventDatabase getEvents(){
+        return events;
+    }
     public ArrayList <User> eligibleUserPool(User user){
         User[] all = accounts.getUsers();
         ArrayList <Match> matchHistory = user.getMatchHistory();

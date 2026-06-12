@@ -62,7 +62,7 @@ public class MatchFileManager {
                     matches[i] = new SingleEventMatch(
                         Double.parseDouble(in.readLine()),
                         in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
-                        matchmaker.getEvents().searchByTitle(in.readLine()),
+                        matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         in.readLine().charAt(0),
@@ -74,7 +74,7 @@ public class MatchFileManager {
                     matches[i] = new DoubleEventMatch(
                         Double.parseDouble(in.readLine()),
                         in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
-                        matchmaker.getEvents().searchByTitle(in.readLine()),
+                        matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
@@ -122,7 +122,7 @@ public class MatchFileManager {
                     matchHistory.add(new SingleEventMatch(
                         Double.parseDouble(in.readLine()),
                         in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
-                        matchmaker.getEvents().searchByTitle(in.readLine()),
+                        matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         in.readLine().charAt(0),
@@ -134,7 +134,7 @@ public class MatchFileManager {
                     matchHistory.add(new DoubleEventMatch(
                         Double.parseDouble(in.readLine()),
                         in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
-                        matchmaker.getEvents().searchByTitle(in.readLine()),
+                        matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
