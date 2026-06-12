@@ -1,7 +1,6 @@
-import java.util.*;
+
 import java.time.*;
 public class Outdoor extends Event {
-    private Scanner sc = new Scanner(System.in);
     private String location; //note: This needs to be the postal code
     private int temperature;
     private int precipitation;

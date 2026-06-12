@@ -80,7 +80,8 @@ public class Menu {
         if(choice == 1){
             return "match";
         }else if (choice == 2){
-            // KATHY - hosting event
+            em.getEventScreen(u);
+            return "event";
         }else if(choice == 3){
             u.printProfile();
             return "user";
