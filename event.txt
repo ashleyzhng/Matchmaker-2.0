@@ -4,6 +4,7 @@ codingnight
 2026-07-15
 19:00
 21:00
+12.30
 gaming reading
 discord
 567890
@@ -15,6 +16,7 @@ artgallerydate
 2026-07-20
 14:00
 16:00
+12.30
 art traveling
 m2n3a4
 3
@@ -26,6 +28,7 @@ hikingadventure
 2026-08-02
 09:00
 13:00
+12.30
 fitness traveling animal
 l4c5e6
 22
@@ -37,6 +40,7 @@ bookclub
 2026-07-25
 18:30
 20:00
+12.30
 reading music
 zoom
 891234
@@ -48,6 +52,7 @@ cookingtogether
 2026-08-10
 17:00
 20:00
+12.30
 cooking music
 k1p2r3
 5

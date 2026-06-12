@@ -82,7 +82,7 @@ public class EventMenu {
     public void adminEventReview() {
         boolean cont = true;
         int index = 0;
-        Event event;
+        Event event = null;
         boolean result;
         while(cont && evda.getNumPendingEvents() > 0 && index < evda.getNumPendingEvents()) {
             event = evda.getPendingEventList()[index];
@@ -108,7 +108,7 @@ public class EventMenu {
                 cont = false;
             }   
         }
-        System.out.println("Finished approving events.");
+        System.out.println("Finished approving events."); 
 
         
             if (event.autoApproveEvent()) {
@@ -123,13 +123,13 @@ public class EventMenu {
             } else {
                 System.out.println("Event rejected automatically. No admin override allowed.");
             }
-        } else if (evda.searchForApprovedEvent(event)){ 
+        if (evda.searchForApprovedEvent(event)){ 
             System.out.println("Event had already been approved!");
         } else {
             System.out.println("Event does not exist!");
         }
-    }
 }
+
 
     //virtual
      public boolean manualApproveVirtualEvent(Event event) {
@@ -234,6 +234,7 @@ public class EventMenu {
   
         } else {
             System.out.println("This event does not exist.");
+            return false; 
         }
     }
 
@@ -334,7 +335,7 @@ public class EventMenu {
         } else {
             System.out.println("This event does not exist.");
         }
-        
+        return true;
     }
 
     //indoor
@@ -434,6 +435,7 @@ if (event != null && event instanceof Indoor) {
         } else {
             System.out.println("This event does not exist.");
         }
+        return true;
 
     }
 
