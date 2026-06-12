@@ -4,6 +4,7 @@ public class MatchmakerRunner{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         Matchmaker system = new Matchmaker();
+        //Matchmaker system = new Matchmaker(file.txt);
         Menu menu = new Menu();
 
         boolean running = true;
@@ -31,7 +32,7 @@ public class MatchmakerRunner{
                     currentMenu = menu.getCreateAccountMenu(sc, system);
                     break;
                 case "matchMenu":
-                    currentMenu = menu.matchMenu(sc);
+                    currentMenu = menu.matchMenu(sc, (User)currentAccount);
                     break;
                 case "logout":
                     currentAccount = null;

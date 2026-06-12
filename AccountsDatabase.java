@@ -7,6 +7,10 @@ public class AccountsDatabase {
     public AccountsDatabase(){
         accounts = new ArrayList<Account>();
     }
+    public ArrayList<Account> getAccounts(){
+        return accounts;
+    }
+
     public boolean deleteAccount(Account a, String pass){
         if(a != null && a.correctPass(pass)){
             accounts.remove(a);
@@ -56,25 +60,26 @@ public class AccountsDatabase {
             BufferedReader in = new BufferedReader(new FileReader(file));
             // take in first line for number of accounts
             int numAccounts = Integer.parseInt(in.readLine());
-            Account user;
+            Account user = null;
             for(int i = numAccounts; i > 0; i--){
-                if (in.readLine().equals("Admin")){
+                String accountType = in.readLine();
+                if (accountType.equals("Admin")){
                     Admin admin = new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()));
                     user = admin;
                     accounts.add(admin);
                 } 
-                if(in.readLine().equals("Teen")){
-                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline()), Integer.parseInt(in.readline())));
+                if(accountType.equals("Teen")){
+                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
                     user = teen;
                     accounts.add(teen);
                 }
-                if(in.readLine().equals("Adult")){
+                if(accountType.equals("Adult")){
                     Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
                     accounts.add(adult);
                     user = adult;
                 }
-                if(in.readLine().equals("Senior")){
-                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                if(accountType.equals("Senior")){
+                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
                     user = senior;
                     accounts.add(senior);
                 }

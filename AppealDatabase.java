@@ -14,6 +14,10 @@ public class AppealDatabase {
         appeals = a;
     }
 
+    public void addAppeal(User u, String r){
+        appeals.add(new Appeal(u, r));
+    }
+
     public String toString(){
         return "";
     }

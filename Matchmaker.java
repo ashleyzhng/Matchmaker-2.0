@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Matchmaker {
@@ -178,67 +183,94 @@ public class Matchmaker {
         return null;
     }
 
-
-    /* 
-    public boolean changeUsername(String pass, String newUsername){
-        if(correctPass(pass)){ // and check if uesrname exists or not
-            /* 
-            if(AccountsDatabase.searchByUsername(newUsername) == null){
-                this.username = newUsername;
-                return true;
-            }else{
-                
-                System.out.println("Username Already Exsits");
-                return false;
+    public void saveAccountsToFile(String file){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            ArrayList<Account> a = accounts.getAccounts(); 
+            out.write(a.size());
+            for(int i = 0; i< a.size(); i++){
+                if(a.get(i) instanceof Admin){
+                    out.write("admin");
+                }
+                if(a.get(i) instanceof Teen){
+                    out.write("teen");
+                }
+                if(a.get(i) instanceof Adult){
+                    out.write("adult");
+                }
+                if(a.get(i) instanceof Senior){
+                    out.write("senior");
+                }
+                out.write(a.get(i).getUsername());
+                out.write(a.get(i).getPassword());
+                out.write(a.get(i).getEmail());
+                out.write("" + a.get(i).isEmailVerified());
+                if(a.get(i) instanceof User){
+                    out.write("" + ((User) (a.get(i))).getName());
+                    out.write("" + ((User) (a.get(i))).getBirthday());
+                    out.write("" + ((User) (a.get(i))).getPostalCode());
+                    out.write("" + ((User) (a.get(i))).getCity());
+                    out.write("" + ((User) (a.get(i))).getBio());
+                    out.write("" + ((User) (a.get(i))).getGender());
+                    out.write("" + ((User) (a.get(i))).getPreferredGender());
+                    out.write("" + ((User) (a.get(i))).getMatched());
+                    //out.write("" + ((User) (a.get(i))).InterestTagInt());
+                }
+                if(a.get(i) instanceof Adult){
+                    out.write("" + ((Adult) (a.get(i))).getOccupation());
+                    out.write("" + ((Adult) (a.get(i))).getMaritalStatus());
+                    out.write("" + ((Adult) (a.get(i))).getPreferredMaxAge());
+                    out.write("" + ((Adult) (a.get(i))).getPreferredMinAge());
+                }   
+                if(a.get(i) instanceof Senior){
+                    out.write("" + ((Adult) (a.get(i))).getOccupation());
+                    out.write("" + ((Adult) (a.get(i))).getMaritalStatus());
+                    out.write("" + ((Adult) (a.get(i))).getPreferredMaxAge());
+                    out.write("" + ((Adult) (a.get(i))).getPreferredMinAge());
+                    out.write("" + ((Senior) (a.get(i))).hasMobilityLimitations());
+                }    
             }
-        }else{
-            System.out.println("Incorrect Password");
-            return false;
+            out.close();
+        } catch (IOException e){
+            System.out.println("Error Accessing File"); 
         }
     }
-    
-    public boolean resetPass(String email, String newPass){
-        if(this.email == email && emailVerified){
-            System.out.println(verifyCode);
-            //idk how im gonna do this
-            return true;
-        }else{
-            return false;
+
+    public void loadAccountsFromFile(String file){
+        accounts.loadFromFile(file, this);
+    }
+
+    public void saveAppealsToFile(String file){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            ArrayList<Appeal> a = appeals.getAppeals();
+            out.write(a.size());
+            for(int i = 0; i< a.size(); i++){
+                out.write(a.get(i).getUser().getUsername());
+                out.write(a.get(i).getReason());
+            }
+            out.close();
+        }catch (IOException e){
+            System.out.println("Error Accessing File"); 
         }
     }
-    public boolean verifyEmail(String pass){
-        if(correctPass(pass)){
-            emailVerified = true;
-            verifyCode = (int)(Math.random() * 1000000);
-            return true;
-        }else{
-            return false;
+
+    public void loadAppealsFromFile(String file){
+        ArrayList<Appeal> a = new ArrayList<>();
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            int num = Integer.parseInt(in.readLine());
+            User u = null;
+            for(int i = 0; i<num; i++){
+                u = accounts.searchByUsername(in.readLine());
+                a.add(new Appeal(u, in.readLine()));
+            }
+            in.close();
+        }catch (IOException e){
+            System.out.println("Error Accessing File"); 
         }
     }
-    public boolean inactivateAccount(String pass){
-        if(correctPass(pass)){
-            accountStatus = false;
-            //cals id.logout()
-            return true;
-        }else{
-            return false;
-        }
-    }
-    public boolean activateAccount(String pass){
-        if(correctPass(pass)){
-            /*
-            if ID in list of accounts
-            if status is inactive
-            checks if current password matches 
-            if matches
-            ^^ add all this stuff in a diff method in matchmaker
-            
-           accountStatus = true;
-           return true;
-        }else{
-            return false;
-        }
-    } */
+
     public User searchByUsername(String targetUsername){
         return accounts.searchByUsername(targetUsername);
     }

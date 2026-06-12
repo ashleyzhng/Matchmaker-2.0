@@ -10,6 +10,6 @@ public class Teen extends User {
     }
     
     public String toString(){
-        return "ya";
+        return super.toString();
     }
 }

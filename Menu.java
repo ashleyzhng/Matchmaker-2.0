@@ -73,9 +73,10 @@ public class Menu {
         System.out.println("2. Host Event"); // KATHY - add in the sub options/menu for vewiing event history, and events the user hosted
         System.out.println("3. View Profile");
         System.out.println("4. Account Settings");
-        System.out.println("5. Logout");
+        System.out.println("5. Report User");
+        System.out.println("6. Logout");
         System.out.println("=======================");
-        int choice = input(1,5, sc);
+        int choice = input(1,6, sc);
         if(choice == 1){
             return "match";
         }else if (choice == 2){
@@ -85,6 +86,22 @@ public class Menu {
             return "user";
         }else if(choice == 4){
             return getAccountSettingsMenu(sc, u, mm); 
+        }else if(choice == 5){
+            System.out.println("Enter username to report: ");
+            String username = sc.nextLine();
+            User reportUser = null;
+                boolean userNotExists = !mm.getAccounts().usernameExists(username);
+                    while(userNotExists){
+                        System.out.println("Username does not exsit. Please input another username");
+                        System.out.print("Username: ");
+                        username = sc.next();
+                        userNotExists = !mm.getAccounts().usernameExists(username);
+                    }
+                reportUser = mm.getAccounts().searchByUsername(username);
+            System.out.println("Enter reason for report (or keep blank): ");
+            String reason = sc.nextLine();
+            mm.getAppeals().addAppeal(reportUser, reason);
+            return "user";
         }
         System.out.println("Logout successful.");
         return "logout"; 
@@ -102,23 +119,28 @@ public class Menu {
         if(choice == 1){
             if(a instanceof User){
                 userChangeDetails((User)a, sc, mm);
+                mm.saveAccountsToFile("Test.txt");
                 return "user";
             }else if(a instanceof Admin){
                 accountChangeDetails(a, sc, mm);
+                mm.saveAccountsToFile("Test.txt");
                 return "admin";
             }else{
                 accountChangeDetails(a, sc, mm);
+                mm.saveAccountsToFile("Test.txt");
                 return "parent";
             }
         }else if(choice == 2){
             a.setEmailVerified(true);
             System.out.println("Email verified.");
+            mm.saveAccountsToFile("Test.txt");
             return "user";
         }else if(choice == 3){
             System.out.print("Enter Password to delete account: ");
             String pass = sc.nextLine();
             System.out.println("Account Deleted Succesfully. Logging out.");
             mm.getAccounts().deleteAccount(a, pass);
+            mm.saveAccountsToFile("Test.txt");
             return "logout";
         }
         return "user";
@@ -170,6 +192,18 @@ public class Menu {
         int choice = input(1,3,sc);
         editProfile(choice, a, sc, mm);
     }
+/* 
+    public void validUsername(String username){
+        username = sc.nextLine();
+                boolean userExists = mm.getAccounts().usernameExists(username);
+                    while(userExists){
+                        System.out.println("Username already exsits. Please input another username");
+                        System.out.print("Username: ");
+                        username = sc.next();
+                        userExists = mm.getAccounts().usernameExists(username);
+                    }
+    }
+                    */
 
     public void editProfile(int choice, Account a, Scanner sc, Matchmaker mm){
         User u = null;
@@ -520,10 +554,10 @@ public class Menu {
         } 
         return "matchMenu";
     }
-    public String matchMenu(Scanner sc){
+    public String matchMenu(Scanner sc, User u){
         System.out.println("=======================");
         System.out.println("Match Menu: ");
-        System.out.println("1. View Current Matches"); // ASHLEY - can u add this option in ur thing: View Match History (there should be a user method for it)
+        System.out.println("1. View Current Matches (" + u.getNumMatches() + " pending matches!"); 
         System.out.println("2. Create New Match");
         System.out.println("3. Exit");
         System.out.println("=======================");
