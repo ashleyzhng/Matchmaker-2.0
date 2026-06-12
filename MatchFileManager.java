@@ -157,12 +157,14 @@ public class MatchFileManager {
             user.setMatches(matches);
             user.setMatchHistory(matchHistory);
             user.setNumMatches(matches.length);
-            
-
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
             matches = new Match[0];
             matchHistory = new ArrayList<Match>();
+            User user = matchmaker.searchByUsername(username);
+            user.setMatches(matches);
+            user.setMatchHistory(matchHistory);
+            user.setNumMatches(0);
         }
     }
 
