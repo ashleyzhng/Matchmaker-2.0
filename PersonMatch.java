@@ -197,9 +197,12 @@ public abstract class PersonMatch extends Match{
      */
     @Override
     public boolean checkAgeCompatibility(User u){
-        if (u instanceof Teen){
+        if (u instanceof Teen && pair[0] instanceof Teen){
             return true;
+        }else if (pair[0] instanceof Teen){
+            return false;
         }
+        
         if (u.getBirthday() == null){
             return false;
         }
@@ -231,7 +234,7 @@ public abstract class PersonMatch extends Match{
         String s = "=======================\n";
         s += "Match Type: " + matchType + "\n";
         s += "Expiry Date: " + expiryDate + "\n";
-        s += "Compatibility Score: " + (this.getScore()*100) + "%\n";
+        s += "Compatibility Score: " + (this.getScore()) + "%\n";
         s += "-----------------------\n";
     
         // User 1 (Owner) Info
@@ -256,9 +259,9 @@ public abstract class PersonMatch extends Match{
             s += pair[1].getName() + "\n";
             s += "User 2 Status: " + status[1] + "\n";
              if(rating[1] == -1){
-                s+= "User 1 Rating: n/a \n";
+                s+= "User 2 Rating: n/a \n";
             }else{
-                 s += "User 1 Rating: " + rating[1] + "\n";
+                 s += "User 2 Rating: " + rating[1] + "\n";
             }
         } else {
             s += "Still Searching...\n";
