@@ -156,8 +156,8 @@ public class MatchFileManager {
 
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
-            matches = null;
-            matchHistory = null;
+            matches = new Match[0];
+            matchHistory = new ArrayList<Match>();
         }
     }
 
