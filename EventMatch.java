@@ -44,7 +44,7 @@ public abstract class EventMatch extends Match{
     Constructor
     Initalizes an EventMatch object with given values, used for reading in file for User
     */
-    public EventMatch(double score,String e, String s, String en, String d, Event eve){
+    public EventMatch(String e, double score, String s, String en, String d, Event eve){
         super(score);
         eventType = e;
         start = LocalTime.parse(s);
@@ -80,7 +80,7 @@ public abstract class EventMatch extends Match{
     public abstract boolean checkAgeCompatibility(User u);
     public abstract boolean checkGenderCompatibilty(User u);
     public abstract void completed();
-
+    public abstract boolean isCompleted();
     /*
         Determines whether the event match has expired based on date and time.
         Notes: Overrides isExpire() method in Match

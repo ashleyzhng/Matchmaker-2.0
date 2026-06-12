@@ -49,8 +49,8 @@ public class DoubleEventMatch extends EventMatch {
      *             r1, r2, r3, r4 - the rating of each user (-1 if no rating)
      * Returns: None
      */
-    public DoubleEventMatch(double score, String e, String s, String en, String d, Event eve, User u1, User u2, User u3, User u4, char s1, char s2, char s3, char s4, int r1, int r2, int r3, int r4) {
-        super(score, e, s, en, d, eve);
+    public DoubleEventMatch(String e, double score, String s, String en, String d, Event eve, User u1, User u2, User u3, User u4, char s1, char s2, char s3, char s4, int r1, int r2, int r3, int r4) {
+        super(e, score, s, en, d, eve);
         pair1[0] = u1;
         pair1[1] = u2;
         pair2[0] = u3;
@@ -82,6 +82,9 @@ public class DoubleEventMatch extends EventMatch {
         status[1]='C';
         status[2]='C';
         status[3]='C';
+    }
+    public boolean isCompleted(){
+        return status[0] =='C' && status[1] == 'C' && status[2] == 'C' && status[3] == 'C';
     }
      /*
       * Executes the matchmaking process for a double event match
@@ -595,7 +598,7 @@ public class DoubleEventMatch extends EventMatch {
                 s += "Still Searching...\n";
             }
         } else {
-            s += "Event Name: No Event Selected\n";
+            s += "Event Name: No Comptiable Event\n";
         }
 
         s += "=======================\n";

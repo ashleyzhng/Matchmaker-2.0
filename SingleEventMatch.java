@@ -48,12 +48,14 @@ public class SingleEventMatch extends EventMatch{
     Returns: none
     Preconditions: u1 must not be null, stat must be 'P', 'A', or 'R'
     */
-    public SingleEventMatch(double score, String e, String s, String en, String d, Event eve, User u1, User u2, char stat1, char stat2){
-        super(score,e,s,en,d,eve);
+    public SingleEventMatch(String e, double score, String s, String en, String d, Event eve, User u1, User u2, char stat1, char stat2, int r1, int r2){
+        super(e, score,s,en,d,eve);
         pair[0] = u1;
         pair[1] = u2;
         status[0] = stat1;
         status[1] = stat2;
+        rating[0]= r1;
+        rating[1]= r2;
     }  
     
     /*
@@ -161,6 +163,9 @@ public class SingleEventMatch extends EventMatch{
     public void completed(){
         status[0] = 'C';
         status[1] = 'C';
+    }
+    public boolean isCompleted(){
+        return status[0]=='C' && status[1]=='C';
     }
     
     /*
@@ -354,7 +359,7 @@ public class SingleEventMatch extends EventMatch{
                 s += "Still Searching...\n";
             }
         } else {
-            s += "Event Name: No Event Selected\n";
+            s += "Event Name: No Compatiable Event\n";
         }
 
         s += "=======================\n";
