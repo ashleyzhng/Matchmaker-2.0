@@ -637,7 +637,7 @@ public class Menu {
     public int input(int firstChoice, int lastChoice, Scanner sc){ // change to menu input
         while(true){
             try {
-                System.out.println("OPTION: ");
+                System.out.print("OPTION: ");
                 int choice = sc.nextInt();
                 if(choice < firstChoice || choice > lastChoice){
                     System.out.println("Invalid option. Please try again.");
