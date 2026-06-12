@@ -29,6 +29,8 @@ public class MatchFileManager {
             User user = matchmaker.searchByUsername(username);
             user.setNumMatches(numMatches);
             matches = new Match[numMatches];
+            int historySize = Integer.parseInt(in.readLine());
+            matchHistory = new ArrayList<Match>();
 
             for(int i = 0; i < numMatches; i++){
 
@@ -62,20 +64,22 @@ public class MatchFileManager {
 
                 else if(matchType.equals("Single")){
                     matches[i] = new SingleEventMatch(
-                        Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        "Single", Double.parseDouble(in.readLine()),
+                        in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         in.readLine().charAt(0),
-                        in.readLine().charAt(0)
+                        in.readLine().charAt(0),
+                        Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())
                     );
                 }
 
                 else if(matchType.equals("Double")){
                     matches[i] = new DoubleEventMatch(
+                        "Double",
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                         in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
@@ -87,9 +91,7 @@ public class MatchFileManager {
                 }
             }
 
-            int historySize = Integer.parseInt(in.readLine());
-            matchHistory = new ArrayList<Match>();
-
+            
             for(int i = 0; i < historySize; i++){
 
                 String matchType = in.readLine();
@@ -122,20 +124,23 @@ public class MatchFileManager {
 
                 else if(matchType.equals("Single")){
                     matchHistory.add(new SingleEventMatch(
+                        "Single",
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         in.readLine().charAt(0),
-                        in.readLine().charAt(0)
+                        in.readLine().charAt(0),
+                        Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())
                     ));
                 }
 
                 else if(matchType.equals("Double")){
                     matchHistory.add(new DoubleEventMatch(
+                        "Double",
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
@@ -199,7 +204,6 @@ public class MatchFileManager {
                 else if(curMatches[i] instanceof SingleEventMatch){
                     out.println("Single");
                     out.println(curMatches[i].getScore());
-                    out.println(((SingleEventMatch)curMatches[i]).getEventType());
                     out.println(((SingleEventMatch)curMatches[i]).getStart());
                     out.println(((SingleEventMatch)curMatches[i]).getEnd());
                     out.println(((SingleEventMatch)curMatches[i]).getDate());
@@ -213,7 +217,6 @@ public class MatchFileManager {
                 }else{
                     out.println("Double");
                     out.println(curMatches[i].getScore());
-                    out.println(((DoubleEventMatch)curMatches[i]).getEventType());
                     out.println(((DoubleEventMatch)curMatches[i]).getStart());
                     out.println(((DoubleEventMatch)curMatches[i]).getEnd());
                     out.println(((DoubleEventMatch)curMatches[i]).getDate());
@@ -276,8 +279,6 @@ public class MatchFileManager {
                     out.println("Single");
                     out.println(m.getScore());
 
-                    out.println(((SingleEventMatch)m).getEventType());
-                    out.println(((SingleEventMatch)m).getStart());
                     out.println(((SingleEventMatch)m).getEnd());
                     out.println(((SingleEventMatch)m).getDate());
 
@@ -295,7 +296,6 @@ public class MatchFileManager {
                     out.println("Double");
                     out.println(m.getScore());
 
-                    out.println(((DoubleEventMatch)m).getEventType());
                     out.println(((DoubleEventMatch)m).getStart());
                     out.println(((DoubleEventMatch)m).getEnd());
                     out.println(((DoubleEventMatch)m).getDate());

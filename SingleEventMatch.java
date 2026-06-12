@@ -48,12 +48,14 @@ public class SingleEventMatch extends EventMatch{
     Returns: none
     Preconditions: u1 must not be null, stat must be 'P', 'A', or 'R'
     */
-    public SingleEventMatch(double score, String e, String s, String en, String d, Event eve, User u1, User u2, char stat1, char stat2){
-        super(score,e,s,en,d,eve);
+    public SingleEventMatch(String e, double score, String s, String en, String d, Event eve, User u1, User u2, char stat1, char stat2, int r1, int r2){
+        super(e, score,s,en,d,eve);
         pair[0] = u1;
         pair[1] = u2;
         status[0] = stat1;
         status[1] = stat2;
+        rating[0]= r1;
+        rating[1]= r2;
     }  
     
     /*
@@ -70,6 +72,8 @@ public class SingleEventMatch extends EventMatch{
                 ePool[i] = (Event)pool[i];
             }
             Event event = execute(ePool, 0, null, -1);
+            // attach the chosen event to this match
+            setEvent(event);
             setScore(determineScore(event));
             LocalTime start = event.getStartTime();
             LocalTime end = event.getEndTime();
@@ -77,7 +81,7 @@ public class SingleEventMatch extends EventMatch{
             setStart(start);
             setEnd(end);
             setDate(date);
-            
+
             if(event instanceof Virtual){
                 setEventType("Virtual");
             }else{
@@ -92,6 +96,7 @@ public class SingleEventMatch extends EventMatch{
                     status[1] = 'P';
                 }
             }
+            
             setEventTitle(event.getTitle());
             storeMatch();
             event.addUser(pair[0]);
@@ -161,6 +166,11 @@ public class SingleEventMatch extends EventMatch{
     public void completed(){
         status[0] = 'C';
         status[1] = 'C';
+        pair[0].deleteMatch(this);
+        pair[1].deleteMatch(this);
+    }
+    public boolean isCompleted(){
+        return status[0]=='C' && status[1]=='C';
     }
     
     /*
@@ -173,14 +183,14 @@ public class SingleEventMatch extends EventMatch{
         if (u == pair[0]) {
             status[0] = x;
             if (x == 'R'){
-            pair[0] = null;
-            getEvent().setCurrentUser1(null);
+                pair[0] = null;
+                getEvent().setCurrentUser1(null);
             }
         } else if (u == pair[1]) {
             status[1] = x;
             if (x == 'R'){
-            pair[1] = null;
-            getEvent().setCurrentUser2(null);
+                pair[1] = null;
+                getEvent().setCurrentUser2(null);
             }   
         }
     }
@@ -204,8 +214,9 @@ public class SingleEventMatch extends EventMatch{
         if (pair[1] != null){
             pair[1].deleteMatch(getEventTitle());
             pair[1].storeMatch(this);
+        }else if (getEvent() != null){
+            getEvent().addUser(pair[0]);
         }
-        getEvent().addUser(pair[0]);
     }
     /*
      * Deletes the match from the users' profiles and also the event database
@@ -354,7 +365,7 @@ public class SingleEventMatch extends EventMatch{
                 s += "Still Searching...\n";
             }
         } else {
-            s += "Event Name: No Event Selected\n";
+            s += "Event Name: No Event Compatible\n";
         }
 
         s += "=======================\n";

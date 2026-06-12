@@ -15,7 +15,6 @@ public class Matchmaker {
         accounts = new AccountsDatabase(this);
         appeals = new AppealDatabase(); // changes
         accounts.loadMatches(this);
-        events.loadAllEvents("event.txt");
     }
     public AccountsDatabase getAccounts(){
         return accounts;
@@ -47,8 +46,8 @@ public class Matchmaker {
                     }
                     if (cur instanceof EventMatch) {
                         Event event = ((EventMatch) cur).getEvent();
-                        if (event.getCurrentUser1() == check ||
-                            event.getCurrentUser2() == check) {
+                        if (event != null && (event.getCurrentUser1() == check ||
+                            event.getCurrentUser2() == check)) {
                             alreadyMatched = true;
                         }
                     }
@@ -65,8 +64,8 @@ public class Matchmaker {
                         }
                         if (cur instanceof EventMatch) {
                             Event event = ((EventMatch) cur).getEvent();
-                            if (event.getCurrentUser1() == check ||
-                                event.getCurrentUser2() == check) {
+                            if (event!= null && (event.getCurrentUser1() == check ||
+                                event.getCurrentUser2() == check)) {
                                 alreadyMatched = true;
                             }
                         }
@@ -100,7 +99,7 @@ public class Matchmaker {
 
         for (int i = 0; i < all.length; i ++){
             Event curEvent = all[i];
-            if (curEvent instanceof Virtual || curEvent instanceof Outdoor){
+            if (curEvent!= null && (curEvent instanceof Virtual || curEvent instanceof Outdoor)){
                 User cur1 = all[i].getCurrentUser1();
                 User cur2 = all[i].getCurrentUser2();
                 
@@ -123,7 +122,8 @@ public class Matchmaker {
         ArrayList<User> eligibleUsers = eligibleUserPool(user);
         for (int i = 0; i < all.length; i ++){
             Event curEvent = all[i];
-            if(curEvent instanceof Indoor){
+            
+            if(curEvent != null && curEvent instanceof Indoor){
                 Indoor indoor = (Indoor)curEvent;
                 User cur1 = indoor.getCurrentUser1();
                 User cur2 = indoor.getCurrentUser2();
