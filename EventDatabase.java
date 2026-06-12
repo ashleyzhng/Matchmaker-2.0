@@ -753,4 +753,12 @@ public class EventDatabase {
             }
         }
     }
+
+    public void viewApprovedEventByUser(User u) {
+        for (int i = 0; i < numApprovedEvents; i ++) {
+            if (approvedEventList[i].getCurrentUser1().equals(u)) {
+                System.out.print(approvedEventList[i]);
+            }
+        }
+    }
 }

@@ -5,8 +5,7 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
 
-
-    public void attendEvent (Event event, User user) {
+    public void rateEvent (Event event, User user) {
         System.out.println("Rate the event out of 5: ");
         int rate = sc.nextInt();
         event.attendEvent(user, rate);
@@ -389,7 +388,7 @@ if (event != null && event instanceof Indoor) {
 
     //change pending details things
     public void changeOutdoorPendingEventDetails(String eventname) {
-        Event event = evda.searchApprovedEventByTitle(eventname);
+        Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Outdoor) {
 
         System.out.println("Changing event details for outdoor event: " + event.getTitle());
@@ -507,7 +506,7 @@ if (event != null && event instanceof Indoor) {
     }
 
     public void changeVirtualPendingEventDetails(String eventname) {
-        Event event = evda.searchApprovedEventByTitle(eventname);
+        Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Virtual) {
         System.out.println("Changing event details for virtual event: " + event.getTitle());
         System.out.println("1. Current title: " + event.getTitle());
@@ -624,8 +623,8 @@ if (event != null && event instanceof Indoor) {
     }
 }
 
-    public void changeIndoorEventDetails(String eventname) {
-Event event = evda.searchApprovedEventByTitle(eventname);
+    public void changeIndoorPendingEventDetails(String eventname) {
+Event event = evda.searchPendingEventByTitle(eventname);
         if (event != null && event instanceof Indoor) {
 
         System.out.println("Changing event details for indoor event: " + event.getTitle());
@@ -912,15 +911,17 @@ Event event = evda.searchApprovedEventByTitle(eventname);
         System.out.println("2. Choose Pre-existing Event");
         System.out.println("3. Alter pending event");
         System.out.println("4. View event history");
+        System.out.println("5. View hosted events");
         System.out.println("=================================");
         int choice = sc.nextInt();
 
-        while (choice < 1 && choice > 4) {
+        while (choice < 1 && choice > 5) {
             System.out.println("That is not a valid choice");
             System.out.println("1. Create Event");
             System.out.println("2. Choose Pre-existing Event");
             System.out.println("3. Alter pending event");
             System.out.println("4. View event history");
+            System.out.println("5. View hosted events");
             choice = sc.nextInt();
         }
 
@@ -995,8 +996,30 @@ Event event = evda.searchApprovedEventByTitle(eventname);
             }
         }
         else if (choice == 3) {
-            System.out.println("Your pending events:");
+            sc.nextLine();
+            System.out.println("Enter event title: ");
+            String title = sc.nextLine();
+            Event e = evda.searchPendingEventByTitle(title);
+            while (e == null) {
+                System.out.println("Event does not exist. Enter valid event title: ");
+                title = sc.nextLine();
+                e = evda.searchApprovedEventByTitle(title);
+            }
+
+            if (e instanceof Virtual) {
+                changeVirtualPendingEventDetails(title);
+            } else if (e instanceof Outdoor) {
+                changeOutdoorPendingEventDetails(title);
+            } else {
+                changeIndoorPendingEventDetails(title);
+            }
+            
+        }
+        else if (choice == 4) {
+            System.out.println("Your hosted pending events:");
             evda.viewPendingEventByUser(user);
+            System.out.println("Your hosted approved events");
+            evda.viewApprovedEventByUser(user);
         } else {
             System.out.println("Your Event History:");
             System.out.println("-----------------------------");
