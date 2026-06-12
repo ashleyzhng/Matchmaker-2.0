@@ -44,7 +44,7 @@ public class Menu {
     }
 
     public String getMainMenu(Scanner sc, Matchmaker mm){
-        System.out.flush();
+        flush();
         System.out.println("Welcome to Matchmaker!");
         System.out.println("=======================");
         System.out.println("1. Login");
@@ -66,7 +66,7 @@ public class Menu {
         return "";
     }
     public String getUserMenu(User u, Scanner sc, Matchmaker mm){
-        System.out.flush();
+        flush();
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
         System.out.println("1. Match Menu"); 
@@ -77,7 +77,6 @@ public class Menu {
         System.out.println("6. Logout");
         System.out.println("=======================");
         int choice = input(1,6, sc);
-        sc.nextLine(); // changes
         if(choice == 1){
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
@@ -195,18 +194,6 @@ public class Menu {
         int choice = input(1,3,sc);
         editProfile(choice, a, sc, mm);
     }
-/* 
-    public void validUsername(String username){
-        username = sc.nextLine();
-                boolean userExists = mm.getAccounts().usernameExists(username);
-                    while(userExists){
-                        System.out.println("Username already exsits. Please input another username");
-                        System.out.print("Username: ");
-                        username = sc.next();
-                        userExists = mm.getAccounts().usernameExists(username);
-                    }
-    }
-                    */
 
     public void editProfile(int choice, Account a, Scanner sc, Matchmaker mm){
         User u = null;
@@ -709,5 +696,9 @@ public class Menu {
         return birthday;
     }
 
-    
+    public void flush(){
+        for(int i = 0; i < 50; i++){
+            System.out.println();
+        }
+    }
 }
