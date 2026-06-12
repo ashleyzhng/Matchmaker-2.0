@@ -23,7 +23,7 @@ public class MatchmakerRunner{
                     break;
                 case "user":
                     //((User)currentAccount).updateMatches();
-                    menu.getUserMenu((User)currentAccount, sc, system); //change return type
+                    currentMenu = menu.getUserMenu((User)currentAccount, sc, system); //changes!!
                     break;
                 case "admin":
                     currentMenu = menu.getAdminMenu(sc, system, (Admin)currentAccount); 

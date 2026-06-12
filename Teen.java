@@ -1,3 +1,11 @@
+/**
+	File Name: Teen.java
+	Name: Joyce Lin
+	Class: ICS4U1
+	Date: July 12, 2026
+	Description: This program represents a Teen User object
+*/
+
 import java.time.LocalDate;
 
 public class Teen extends User {
@@ -13,3 +21,11 @@ public class Teen extends User {
         return super.toString();
     }
 }
+/*
+    add to menu (flushing method)
+    public void flush(){
+        for(int i = 0; i < 50; i++){
+            System.out.println();
+        }
+    }
+*/

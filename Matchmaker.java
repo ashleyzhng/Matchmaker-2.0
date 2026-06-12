@@ -13,6 +13,7 @@ public class Matchmaker {
     public Matchmaker(){
         events = new EventDatabase();
         accounts = new AccountsDatabase(this);
+        appeals = new AppealDatabase(); // changes
         accounts.loadMatches(this);
     }
     public AccountsDatabase getAccounts(){
@@ -270,6 +271,10 @@ public class Matchmaker {
                 a.add(new Appeal(u, in.readLine()));
             }
             in.close();
+            if (appeals == null) { // changes
+                appeals = new AppealDatabase();
+            }
+            appeals.setAppeals(a); // changes
         }catch (IOException e){
             System.out.println("Error Accessing File"); 
         }

@@ -76,8 +76,8 @@ public class Menu {
         System.out.println("5. Report User");
         System.out.println("6. Logout");
         System.out.println("=======================");
-        sc.nextLine();
         int choice = input(1,6, sc);
+        sc.nextLine(); // changes
         if(choice == 1){
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
@@ -89,18 +89,17 @@ public class Menu {
         }else if(choice == 4){
             return getAccountSettingsMenu(sc, u, mm); 
         }else if(choice == 5){
-            System.out.println("Enter username to report: ");
+            sc.nextLine();
+            System.out.print("Enter username to report: ");
             String username = sc.nextLine();
             User reportUser = null;
-                boolean userNotExists = !mm.getAccounts().usernameExists(username);
-                    while(userNotExists){
-                        System.out.println("Username does not exsit. Please input another username");
-                        System.out.print("Username: ");
-                        username = sc.next();
-                        userNotExists = !mm.getAccounts().usernameExists(username);
-                    }
+                while(!mm.getAccounts().usernameExists(username)){ // changes here
+                    System.out.print("User name does not exists. Please try again.");
+                    System.out.print("Username: ");
+                    username = sc.nextLine();
+                } // changes
                 reportUser = mm.getAccounts().searchByUsername(username);
-            System.out.println("Enter reason for report (or keep blank): ");
+            System.out.print("Enter reason for report (or keep blank): "); //changes
             String reason = sc.nextLine();
             mm.getAppeals().addAppeal(reportUser, reason);
             return "user";
