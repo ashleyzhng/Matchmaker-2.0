@@ -64,7 +64,7 @@ public class DoubleEventMatch extends EventMatch {
         rating[2] = r3;
         rating[3] = r4;
     }
-
+    
     // accessors and mutators
     public User getUser(int idx){
         if (idx >= 0 && idx < 4) {
@@ -75,6 +75,12 @@ public class DoubleEventMatch extends EventMatch {
             }
         }
         return null;
+    }
+
+    public void completed(){
+        for (int i = 0; i < status.length; i++) {
+            status[i] = 'C';
+        }
     }
      /*
       * Executes the matchmaking process for a double event match

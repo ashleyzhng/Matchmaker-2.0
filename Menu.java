@@ -608,10 +608,11 @@ public class Menu {
         System.out.println(match);
         System.out.println("1. Accept  Match");
         System.out.println("2. Reject Match");
-        System.out.println("3. Exit");
+        System.out.println("3. Complete Match");
+        System.out.println("4. Exit");
         System.out.println("=======================");
         System.out.print("OPTION: ");
-        int choice = input(1, 3, sc);
+        int choice = input(1, 4, sc);
         if (choice == 1){
             if (match instanceof  PersonMatch){
                ((PersonMatch)match).updateUserDecision(user, PersonMatch.ACCEPT);
@@ -630,6 +631,20 @@ public class Menu {
                 ((DoubleEventMatch)match).updateUserDecision(user, PersonMatch.REJECT);
             }
             System.out.println("Decision Updated");
+        }else if (choice == 3){
+            match.completed();
+            System.out.println("Match Completed! Please rate your experience (1-5, 1 being the lowest, 5 being the highest): ");
+            int rating = input(1,5,sc);
+            if (match instanceof  PersonMatch){
+               ((PersonMatch)match).setRating(rating, user);
+            }else if (match instanceof SingleEventMatch){
+                ((SingleEventMatch)match).setRating(user, rating);
+            }else{
+                ((DoubleEventMatch)match).setRating(user, rating);
+            }
+            System.out.println("Rating Updated");
+        }else{
+            System.out.println("Exiting...");
         }
         return "matchMenu";
     }

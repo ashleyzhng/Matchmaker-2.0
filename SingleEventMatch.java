@@ -159,6 +159,11 @@ public class SingleEventMatch extends EventMatch{
     public User getSoulmate(){
         return pair[1];
     }
+
+    public void completed(){
+        status[0] = 'C';
+        status[1] = 'C';
+    }
     
     /*
      * Updates the decision for the user in the match
