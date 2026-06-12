@@ -1012,7 +1012,7 @@ Event event = evda.searchPendingEventByTitle(eventname);
             while (e == null) {
                 System.out.println("Event does not exist. Enter valid event title: ");
                 title = sc.nextLine();
-                e = evda.searchApprovedEventByTitle(title);
+                e = evda.searchPendingEventByTitle(title);
             }
 
             if (e instanceof Virtual) {
