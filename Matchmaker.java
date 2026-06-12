@@ -13,6 +13,7 @@ public class Matchmaker {
     public Matchmaker(){
         events = new EventDatabase();
         accounts = new AccountsDatabase();
+        loadAccountsFromFile("Accounts.txt");
     }
     public AccountsDatabase getAccounts(){
         return accounts;
