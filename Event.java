@@ -1,3 +1,14 @@
+/*
+   File Name: Event.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The Event class is an abstract superclass that represents an event
+   and all of its corresponding fields and methods.
+*/
+
 import java.time.*;
 
 public abstract class Event {

@@ -1,3 +1,12 @@
+/*
+   File Name: Virtual.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The Virtual class is a subclass of Event that inherits the properties of an event, alongside additional fields unique to Virtual type events.
+*/
 import java.time.*;
 
 public class Virtual extends Event {

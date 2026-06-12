@@ -1,4 +1,12 @@
+/*
+   File Name: Outdoor.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
 
+   Description:
+   The Outdoor class is a subclass of Event that inherits the properties of an event, alongside additional fields unique to outdoor type events.
+*/
 import java.time.*;
 public class Outdoor extends Event {
     private String location; //note: This needs to be the postal code

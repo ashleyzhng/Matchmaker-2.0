@@ -1,3 +1,13 @@
+/*
+   File Name: EventDatabase.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The EventDatabase class is responsible for managing many events the comprise the entire program.
+*/
+
 import java.io.*;
 import java.time.*;
 import java.util.*;
@@ -13,27 +23,14 @@ public class EventDatabase {
     public static int maxPendingEvents = 50;
     AccountsDatabase ad = new AccountsDatabase();
 
+    //constructor
     public EventDatabase() {
         approvedEventList = new Event[maxApprovedEvents];
         pendingEventList = new Event[maxPendingEvents];
         numApprovedEvents = 0;
         numPendingEvents = 0;
     }
-
-    public LocalDate stringToLocalDate(String date) {
-        int year = Integer.parseInt(date.substring(0,4));
-        int month = Integer.parseInt(date.substring(5,7));
-        int day = Integer.parseInt(date.substring(8));
-        LocalDate ld = LocalDate.of(year, month, day);
-        return ld;
-    }
-    public LocalTime stringToLocalTime(String time) {
-        int hour = Integer.parseInt(time.substring(0,2));
-        int min = Integer.parseInt(time.substring(3));
-        LocalTime lt = LocalTime.of(hour, min);
-
-        return lt;
-    }
+    
 
     public boolean loadEvent(String filename) {
         try {
@@ -42,11 +39,12 @@ public class EventDatabase {
             if (type.equals("virtual")) {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = stringToLocalDate(date);
+                
+                LocalDate ld = LocalDate.parse(date);
                 String startTime = in.readLine();
-                LocalTime lst = stringToLocalTime(startTime);
+                LocalTime lst = LocalTime.parse(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = stringToLocalTime(endTime);
+                LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -121,11 +119,11 @@ public class EventDatabase {
             } else if (type.equals("outdoor")) {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = stringToLocalDate(date);
+                LocalDate ld = LocalDate.parse(date);
                 String startTime = in.readLine();
-                LocalTime lst = stringToLocalTime(startTime);
+                LocalTime lst = LocalTime.parse(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = stringToLocalTime(endTime);
+                LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -202,11 +200,11 @@ public class EventDatabase {
             } else {
                 String title = in.readLine();
                 String date = in.readLine();
-                LocalDate ld = stringToLocalDate(date);
+                LocalDate ld = LocalDate.parse(date);
                 String startTime = in.readLine();
-                LocalTime lst = stringToLocalTime(startTime);
+                LocalTime lst = LocalTime.parse(startTime);
                 String endTime = in.readLine();
-                LocalTime ldt = stringToLocalTime(endTime);
+                LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
                 String categories = in.readLine();
                 String[] taglist = categories.split(" ");
@@ -283,7 +281,7 @@ public class EventDatabase {
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
             return false;
-        }
+        } catch ()
     }
 
     public boolean saveEvent(String filename, Event event) {

@@ -1,3 +1,12 @@
+/*
+   File Name: Indoor.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The Indoor class is a subclass of Event that inherits the properties of an event, alongside additional fields unique to Indoor type events.
+*/
 import java.time.*;
 public class Indoor extends Event {
     private String location; //Note: This needs to be the postal code

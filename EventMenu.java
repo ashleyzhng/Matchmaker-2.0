@@ -1,3 +1,12 @@
+/*
+   File Name: EventMenu.java
+   Name: Kathy Wu
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The EventMenu class contains the UI methods to allow user to interact with the program.
+*/
 import java.time.*;
 import java.util.*;
 
@@ -414,21 +423,21 @@ if (event != null && event instanceof Indoor) {
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
+                LocalDate localuserdate = LocalDate.parse(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = evda.stringToLocalTime(usertime);
+                LocalTime localusertime = LocalTime.parse(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = LocalTime.parse(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -532,21 +541,21 @@ if (event != null && event instanceof Indoor) {
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
+                LocalDate localuserdate = LocalDate.parse(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = evda.stringToLocalTime(usertime);
+                LocalTime localusertime = LocalTime.parse(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = LocalTime.parse(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -650,21 +659,21 @@ Event event = evda.searchPendingEventByTitle(eventname);
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
                 String userdate = sc.nextLine();
-                LocalDate localuserdate = evda.stringToLocalDate(userdate);                
+                LocalDate localuserdate = LocalDate.parse(userdate);                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
                 String usertime = sc.nextLine();
-                LocalTime localusertime = evda.stringToLocalTime(usertime);
+                LocalTime localusertime = LocalTime.parse(usertime);
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
                 String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = evda.stringToLocalTime(endusertime);
+                LocalTime endlocalusertime = LocalTime.parse(endusertime);
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
@@ -747,13 +756,13 @@ Event event = evda.searchPendingEventByTitle(eventname);
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = evda.stringToLocalDate(date);
+        LocalDate ld = LocalDate.parse(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = evda.stringToLocalTime(startTime);
+        LocalTime lst = LocalTime.parse(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = evda.stringToLocalTime(endTime);
+        LocalTime ldt = LocalTime.parse(endTime);
         System.out.print("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
@@ -800,13 +809,13 @@ Event event = evda.searchPendingEventByTitle(eventname);
         String title = sc.nextLine();
        System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = evda.stringToLocalDate(date);
+        LocalDate ld = LocalDate.parse(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = evda.stringToLocalTime(startTime);
+        LocalTime lst = LocalTime.parse(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = evda.stringToLocalTime(endTime);
+        LocalTime ldt = LocalTime.parse(endTime);
         System.out.println("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
@@ -854,13 +863,13 @@ Event event = evda.searchPendingEventByTitle(eventname);
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
-        LocalDate ld = evda.stringToLocalDate(date);
+        LocalDate ld = LocalDate.parse(date);
         System.out.print("Enter starting time (HH:MM): ");
         String startTime = sc.nextLine();
-        LocalTime lst = evda.stringToLocalTime(startTime);
+        LocalTime lst = LocalTime.parse(startTime);
         System.out.print("Enter ending time (HH:MM): ");
         String endTime = sc.nextLine();
-        LocalTime ldt = evda.stringToLocalTime(endTime);
+        LocalTime ldt = LocalTime.parse(endTime);
         System.out.println("Enter base cost $: ");
         double originalCost = sc.nextDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
