@@ -64,11 +64,12 @@ public class InterestMatch extends PersonMatch{
                 best = current;
                 maxTags = score;
             }
-            return execute(pool, idx+1, best, maxTags);
         }
+        return execute(pool, idx+1, best, maxTags);
         
         
         
+        /* 
         else{
             if(pool[idx] != null && pool[idx]!= getOwner() &&  prelimCheck(pool[idx])){
                 double score = evaluateTags(pool[idx]);
@@ -79,6 +80,7 @@ public class InterestMatch extends PersonMatch{
             return execute(pool, idx + 1, best, maxTags);
             
         }
+            */
     }
     /*
      * Evaluates the number of matching tags between users
