@@ -14,8 +14,8 @@ import java.util.*;
 public class EventDatabase {
     private Event[] approvedEventList;
     private Event[] pendingEventList;
-    ArrayList<Event> expiredEventList;
-    ArrayList<Event> allEventList;
+    ArrayList<Event> expiredEventList = new ArrayList<Event>();
+    ArrayList<Event> allEventList = new ArrayList<Event>();
     private Event[] eventList;
     private int numApprovedEvents;
     private int numPendingEvents;
@@ -281,7 +281,7 @@ public class EventDatabase {
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
             return false;
-        } catch ()
+        } 
     }
 
     public boolean saveEvent(String filename, Event event) {
