@@ -18,6 +18,7 @@ public class DistanceMatch extends PersonMatch{
      */
     public DistanceMatch(User u){
         super("distance", u);
+        
     }
 
     public DistanceMatch(double score, User u, User s, String exp, char ownerStatus, char soulmateStatus, int ownerRating, int soulmateRating){
