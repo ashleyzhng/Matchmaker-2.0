@@ -609,6 +609,22 @@ public class EventDatabase {
         }
     }
 
+    public void sortPendingByAlphaTitle() {
+        int maxIndex;
+        Event temp;
+        for (int upper = numPendingEvents - 1; upper > 0; upper--) {
+            maxIndex = 0;
+            for (int i = 0; i < upper; i++) {
+                if (pendingEventList[i].compareToTitle(pendingEventList[maxIndex]).equals(pendingEventList[i])) {
+                    maxIndex = i;
+                }
+            }
+            temp = pendingEventList[upper];
+            pendingEventList[upper] = pendingEventList[maxIndex];
+            pendingEventList[maxIndex] = temp;
+        }
+    }
+
     public void displayVirtualEvents() {
         sortEventByAlphaTitle();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -646,7 +662,7 @@ public class EventDatabase {
     }
 
     public Event searchPendingEventByTitle(String title) {
-        sortEventByAlphaTitle();
+        sortPendingByAlphaTitle();
         int bottom = 0;
         int top = numPendingEvents - 1;
         boolean found = false;
