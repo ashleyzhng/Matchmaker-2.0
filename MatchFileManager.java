@@ -63,7 +63,7 @@ public class MatchFileManager {
                 else if(matchType.equals("Single")){
                     matches[i] = new SingleEventMatch(
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
@@ -75,7 +75,7 @@ public class MatchFileManager {
                 else if(matchType.equals("Double")){
                     matches[i] = new DoubleEventMatch(
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
                         matchmaker.getAccounts().searchByUsername(in.readLine()),
@@ -123,7 +123,7 @@ public class MatchFileManager {
                 else if(matchType.equals("Single")){
                     matchHistory.add(new SingleEventMatch(
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
@@ -135,7 +135,7 @@ public class MatchFileManager {
                 else if(matchType.equals("Double")){
                     matchHistory.add(new DoubleEventMatch(
                         Double.parseDouble(in.readLine()),
-                        in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine(),
+                        in.readLine(), in.readLine(), in.readLine(), in.readLine(),
                         matchmaker.getEvents().searchEventByTitle(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
                         matchmaker.searchByUsername(in.readLine()),
@@ -203,7 +203,6 @@ public class MatchFileManager {
                     out.println(((SingleEventMatch)curMatches[i]).getStart());
                     out.println(((SingleEventMatch)curMatches[i]).getEnd());
                     out.println(((SingleEventMatch)curMatches[i]).getDate());
-                    out.println(((SingleEventMatch)curMatches[i]).getDuration());
                     out.println(((SingleEventMatch)curMatches[i]).getEvent().getTitle());
                     out.println(((SingleEventMatch)curMatches[i]).getOwner().getUsername());
                     if (((SingleEventMatch) curMatches[i]).getSoulmate() != null){
@@ -218,7 +217,6 @@ public class MatchFileManager {
                     out.println(((DoubleEventMatch)curMatches[i]).getStart());
                     out.println(((DoubleEventMatch)curMatches[i]).getEnd());
                     out.println(((DoubleEventMatch)curMatches[i]).getDate());
-                    out.println(((DoubleEventMatch)curMatches[i]).getDuration());
                     out.println(((DoubleEventMatch)curMatches[i]).getEvent().getTitle());
                     out.println(((DoubleEventMatch)curMatches[i]).getUser(0).getUsername());
                     if (((DoubleEventMatch) curMatches[i]).getUser(1) != null){
@@ -282,7 +280,6 @@ public class MatchFileManager {
                     out.println(((SingleEventMatch)m).getStart());
                     out.println(((SingleEventMatch)m).getEnd());
                     out.println(((SingleEventMatch)m).getDate());
-                    out.println(((SingleEventMatch)m).getDuration());
 
                     out.println(((SingleEventMatch)m).getEvent().getTitle());
                     out.println(((SingleEventMatch)m).getOwner().getUsername());
@@ -302,7 +299,6 @@ public class MatchFileManager {
                     out.println(((DoubleEventMatch)m).getStart());
                     out.println(((DoubleEventMatch)m).getEnd());
                     out.println(((DoubleEventMatch)m).getDate());
-                    out.println(((DoubleEventMatch)m).getDuration());
 
                     out.println(((DoubleEventMatch)m).getEvent().getTitle());
 

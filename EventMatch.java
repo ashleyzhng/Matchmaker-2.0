@@ -24,7 +24,6 @@ public abstract class EventMatch extends Match{
     private LocalTime start;
     private LocalTime end;
     private LocalDate date;
-    private Duration duration;
     private String eventTitle;
     private Event event;
 
@@ -45,13 +44,12 @@ public abstract class EventMatch extends Match{
     Constructor
     Initalizes an EventMatch object with given values, used for reading in file for User
     */
-    public EventMatch(double score,String e, String s, String en, String d, String dur, Event eve){
+    public EventMatch(double score,String e, String s, String en, String d, Event eve){
         super(score);
         eventType = e;
         start = LocalTime.parse(s);
         end = LocalTime.parse(en);
         date = LocalDate.parse(d);
-        duration = Duration.parse(dur);
         event = eve; 
     }
 
@@ -62,8 +60,6 @@ public abstract class EventMatch extends Match{
     public void setEnd(LocalTime x) { end = x; }
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate x) { date = x; }
-    public void setDuration(Duration x) { duration = x; }
-    public Duration getDuration() { return duration; }
     public Event getEvent() { return event; }
     public void setEventType(String x){eventType = x;}
     public void setEvent(Event e) {event = e;}

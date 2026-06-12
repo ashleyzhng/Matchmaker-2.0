@@ -584,10 +584,10 @@ public class Menu {
                 System.out.println((i+1) + ". DistanceMatch: Expiry Date is " + ((DistanceMatch)match[i]).getExpiryDate());
             }else if (match[i] instanceof SingleEventMatch){
                 EventMatch eMatch = (SingleEventMatch)match[i];
-                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", End Time: " + eMatch.getEnd()); 
             }else if (match[i] instanceof DoubleEventMatch){
                EventMatch eMatch = (DoubleEventMatch)match[i];
-                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", Duration: " + eMatch.getDuration()); 
+                System.out.println( (i+1) + ". EventMatch -  Event Date:" + eMatch.getDate() + ", Start Time: " + eMatch.getStart() + ", End Time: " + eMatch.getEnd()); 
             }
         }
         System.out.println((match.length + 1) + " Exit");

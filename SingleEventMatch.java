@@ -48,8 +48,8 @@ public class SingleEventMatch extends EventMatch{
     Returns: none
     Preconditions: u1 must not be null, stat must be 'P', 'A', or 'R'
     */
-    public SingleEventMatch(double score, String e, String s, String en, String d, String dur, Event eve, User u1, User u2, char stat1, char stat2){
-        super(score,e,s,en,d,dur,eve);
+    public SingleEventMatch(double score, String e, String s, String en, String d, Event eve, User u1, User u2, char stat1, char stat2){
+        super(score,e,s,en,d,eve);
         pair[0] = u1;
         pair[1] = u2;
         status[0] = stat1;
@@ -72,12 +72,10 @@ public class SingleEventMatch extends EventMatch{
             Event event = execute(ePool, 0, null, -1);
             setScore(determineScore(event));
             LocalTime start = event.getStartTime();
-            Duration duration = event.getDuration();
-            LocalTime end = start.plus(duration);
+            LocalTime end = event.getEndTime();
             LocalDate date = event.getDate();
             setStart(start);
             setEnd(end);
-            setDuration(duration);
             setDate(date);
             
             if(event instanceof Virtual){

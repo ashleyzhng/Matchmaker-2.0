@@ -15,7 +15,7 @@ public class Matchmaker {
         accounts = new AccountsDatabase(this);
         appeals = new AppealDatabase(); // changes
         accounts.loadMatches(this);
-        events.loadAllEvents("event.txt");
+        //events.loadAllEvents("event.txt");
     }
     public AccountsDatabase getAccounts(){
         return accounts;
