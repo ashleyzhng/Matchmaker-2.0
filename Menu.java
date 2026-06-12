@@ -69,7 +69,7 @@ public class Menu {
         System.out.flush();
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
-        System.out.println("1. Match!"); 
+        System.out.println("1. Match Menu"); 
         System.out.println("2. Host Event"); // KATHY - add in the sub options/menu for vewiing event history, and events the user hosted
         System.out.println("3. View Profile");
         System.out.println("4. Account Settings");
@@ -78,7 +78,7 @@ public class Menu {
         System.out.println("=======================");
         int choice = input(1,6, sc);
         if(choice == 1){
-            return "match";
+            return "matchMenu";
         }else if (choice == 2){
             em.getEventScreen(u);
             return "event";

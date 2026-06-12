@@ -38,6 +38,9 @@ public class MatchmakerRunner{
                     currentAccount = null;
                     currentMenu = "main";
                     break;
+                case "currentMatchMenu":
+                    currentMenu = menu.currentMatchMenu(sc, (User)currentAccount);
+                    break;
                 case "exit":
                     running = false;
                     break;
