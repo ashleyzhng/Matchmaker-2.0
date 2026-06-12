@@ -11,7 +11,7 @@ discord
 1234
 false
 skatergirl16
-indoor3
+indoor
 artgallerydate
 2026-07-20
 14:00

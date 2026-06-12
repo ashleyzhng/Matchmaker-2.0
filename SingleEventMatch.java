@@ -72,6 +72,8 @@ public class SingleEventMatch extends EventMatch{
                 ePool[i] = (Event)pool[i];
             }
             Event event = execute(ePool, 0, null, -1);
+            // attach the chosen event to this match
+            setEvent(event);
             setScore(determineScore(event));
             LocalTime start = event.getStartTime();
             LocalTime end = event.getEndTime();
@@ -79,7 +81,7 @@ public class SingleEventMatch extends EventMatch{
             setStart(start);
             setEnd(end);
             setDate(date);
-            
+
             if(event instanceof Virtual){
                 setEventType("Virtual");
             }else{
