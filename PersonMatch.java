@@ -64,6 +64,11 @@ public abstract class PersonMatch extends Match{
         rating[1] = soulmateRating;
     }
 
+    public void completed(){
+        status[0] = 'C';
+        status[1] = 'C';
+    }
+
     //---accessors and mutators---
     public User getOwner(){
         return pair[0];

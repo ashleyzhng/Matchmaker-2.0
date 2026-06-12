@@ -83,6 +83,7 @@ public abstract class EventMatch extends Match{
     public abstract boolean prelimCheck(User u);
     public abstract boolean checkAgeCompatibility(User u);
     public abstract boolean checkGenderCompatibilty(User u);
+    public abstract void completed();
 
     /*
         Determines whether the event match has expired based on date and time.

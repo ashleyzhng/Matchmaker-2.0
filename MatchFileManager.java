@@ -156,8 +156,8 @@ public class MatchFileManager {
 
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
-            matches = null;
-            matchHistory = null;
+            matches = new Match[0];
+            matchHistory = new ArrayList<Match>();
         }
     }
 
@@ -233,7 +233,6 @@ public class MatchFileManager {
             }
             
             ArrayList<Match> pastMatches = matchmaker.searchByUsername(username).getMatchHistory();
-            out.println();
             out.println(pastMatches.size());
             
             for(int k = 0; k < pastMatches.size(); k++){

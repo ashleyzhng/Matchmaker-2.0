@@ -40,6 +40,7 @@ public abstract class Match{
     public abstract boolean checkAgeCompatibility(User u);
     public abstract boolean checkGenderCompatibilty(User u);
     public abstract String toString();
+    public abstract void completed();
     
     /* Compares the score of this match with another match.
      * @param other the other match to compare with
