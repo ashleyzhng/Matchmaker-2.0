@@ -158,10 +158,15 @@ public abstract class PersonMatch extends Match{
      * Returns: none
      */
     public void updateUserDecision(User u, char c){
-        if (u == pair[0]){
-            status[0]=c;
+        if (c == 'R'){
+            pair[0].deleteMatch(this);
+            pair[1].deleteMatch(this);
         }else{
-            status[1]=c;
+            if (u == pair[0]){
+                status[0]=c;
+            }else{
+                status[1]=c;
+            }
         }
     }
     /*
