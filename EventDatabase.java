@@ -55,41 +55,16 @@ public class EventDatabase {
                 String endTime = in.readLine();
                 LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
-                String categories = in.readLine();
-                String[] taglist = categories.split(" ");
-                int r = 0, s = 0, m = 0, a = 0, t = 0, f = 0, g = 0, c = 0, an = 0, re = 0;
-                for (int i = 0; i < taglist.length; i ++) {
-                    if (taglist[i].equals("religion")) {
-                        r = 1;
-                    }
-                    if (taglist[i].equals("sports")) {
-                        s = 1;
-                    } 
-                    if (taglist[i].equals("music")) {
-                        m = 1;
-                    } 
-                    if (taglist[i].equals("art")) {
-                        a = 1;
-                    }
-                    if (taglist[i].equals("traveling")) {
-                        t = 1;
-                    } 
-                    if (taglist[i].equals("fitness")) {
-                        f = 1;
-                    } 
-                    if (taglist[i].equals("gaming")) {
-                        g = 1;
-                    } 
-                    if (taglist[i].equals("cooking")) {
-                        c = 1;
-                    } 
-                    if (taglist[i].equals("animal")) {
-                        an = 1;
-                    } 
-                    if (taglist[i].equals("reading")) {
-                        re = 1;
-                    }    
-                }
+                int r = Integer.parseInt(in.readLine());
+                int s = Integer.parseInt(in.readLine());
+                int m = Integer.parseInt(in.readLine());
+                int a = Integer.parseInt(in.readLine());
+                int t = Integer.parseInt(in.readLine());
+                int f = Integer.parseInt(in.readLine());
+                int g = Integer.parseInt(in.readLine());
+                int c = Integer.parseInt(in.readLine());
+                int an = Integer.parseInt(in.readLine());
+                int re = Integer.parseInt(in.readLine());
                 String platform = in.readLine();
                 int meetingid = Integer.parseInt(in.readLine());
                 int password = Integer.parseInt(in.readLine());
@@ -133,41 +108,18 @@ public class EventDatabase {
                 String endTime = in.readLine();
                 LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
-                String categories = in.readLine();
-                String[] taglist = categories.split(" ");
-                int r = 0, s = 0, m = 0, a = 0, t = 0, f = 0, g = 0, c = 0, an = 0, re = 0;
-                for (int i = 0; i < taglist.length; i ++) {
-                    if (taglist[i].equals("religion")) {
-                        r = 1;
-                    }
-                    if (taglist[i].equals("sports")) {
-                        s = 1;
-                    } 
-                    if (taglist[i].equals("music")) {
-                        m = 1;
-                    } 
-                    if (taglist[i].equals("art")) {
-                        a = 1;
-                    }
-                    if (taglist[i].equals("traveling")) {
-                        t = 1;
-                    } 
-                    if (taglist[i].equals("fitness")) {
-                        f = 1;
-                    } 
-                    if (taglist[i].equals("gaming")) {
-                        g = 1;
-                    } 
-                    if (taglist[i].equals("cooking")) {
-                        c = 1;
-                    } 
-                    if (taglist[i].equals("animal")) {
-                        an = 1;
-                    } 
-                    if (taglist[i].equals("reading")) {
-                        re = 1;
-                    }    
-                }
+
+                int r = Integer.parseInt(in.readLine());
+                int s = Integer.parseInt(in.readLine());
+                int m = Integer.parseInt(in.readLine());
+                int a = Integer.parseInt(in.readLine());
+                int t = Integer.parseInt(in.readLine());
+                int f = Integer.parseInt(in.readLine());
+                int g = Integer.parseInt(in.readLine());
+                int c = Integer.parseInt(in.readLine());
+                int an = Integer.parseInt(in.readLine());
+                int re = Integer.parseInt(in.readLine());
+                
                 String location = in.readLine();
                 int temp = Integer.parseInt(in.readLine());
                 int precip = Integer.parseInt(in.readLine());
@@ -214,41 +166,16 @@ public class EventDatabase {
                 String endTime = in.readLine();
                 LocalTime ldt = LocalTime.parse(endTime);
                 double originalCost = Double.parseDouble(in.readLine());
-                String categories = in.readLine();
-                String[] taglist = categories.split(" ");
-                int r = 0, s = 0, m = 0, a = 0, t = 0, f = 0, g = 0, c = 0, an = 0, re = 0;
-                for (int i = 0; i < taglist.length; i ++) {
-                    if (taglist[i].equals("religion")) {
-                        r = 1;
-                    }
-                    if (taglist[i].equals("sports")) {
-                        s = 1;
-                    } 
-                    if (taglist[i].equals("music")) {
-                        m = 1;
-                    } 
-                    if (taglist[i].equals("art")) {
-                        a = 1;
-                    }
-                    if (taglist[i].equals("traveling")) {
-                        t = 1;
-                    } 
-                    if (taglist[i].equals("fitness")) {
-                        f = 1;
-                    } 
-                    if (taglist[i].equals("gaming")) {
-                        g = 1;
-                    } 
-                    if (taglist[i].equals("cooking")) {
-                        c = 1;
-                    } 
-                    if (taglist[i].equals("animal")) {
-                        an = 1;
-                    } 
-                    if (taglist[i].equals("reading")) {
-                        re = 1;
-                    }    
-                }
+                int r = Integer.parseInt(in.readLine());
+                int s = Integer.parseInt(in.readLine());
+                int m = Integer.parseInt(in.readLine());
+                int a = Integer.parseInt(in.readLine());
+                int t = Integer.parseInt(in.readLine());
+                int f = Integer.parseInt(in.readLine());
+                int g = Integer.parseInt(in.readLine());
+                int c = Integer.parseInt(in.readLine());
+                int an = Integer.parseInt(in.readLine());
+                int re = Integer.parseInt(in.readLine());
                 String loca = in.readLine();
                 int floornum = Integer.parseInt(in.readLine());
                 String room = in.readLine();
@@ -313,37 +240,25 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getOriginalCost() + "");
                 out.newLine();
-                
-                if (event.getCategories().getReligion() == 1) {
-                    out.write("religion ");
-                }
-                if (event.getCategories().getSports() == 1) {
-                    out.write("sports ");
-                }
-                if (event.getCategories().getMusic() == 1) {
-                    out.write("music ");
-                }
-                if (event.getCategories().getArt() == 1) {
-                    out.write("art ");
-                }
-                if (event.getCategories().getTraveling() == 1) {
-                    out.write("traveling ");
-                }
-                if (event.getCategories().getFitness() == 1) {
-                    out.write("fitness ");
-                }
-                if (event.getCategories().getGaming() == 1) {
-                    out.write("gaming ");
-                }  
-                if (event.getCategories().getCooking() == 1) {
-                    out.write("cooking ");
-                }
-                if (event.getCategories().getAnimal() == 1) {
-                    out.write("animal ");
-                }
-                if (event.getCategories().getReading()== 1) {
-                    out.write("reading");
-                }
+                out.write(event.getCategories().getReligion() + "");
+                out.newLine();
+                out.write(event.getCategories().getSports() + "");
+                out.newLine();
+                out.write(event.getCategories().getMusic() + "");
+                out.newLine();
+                out.write(event.getCategories().getArt() + "");
+                out.newLine();
+                out.write(event.getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(event.getCategories().getFitness() + "");
+                out.newLine();
+                out.write(event.getCategories().getGaming() + "");
+                out.newLine();
+                out.write(event.getCategories().getCooking() + "");
+                out.newLine();
+                out.write(event.getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(event.getCategories().getReading() + "");
                 out.newLine();
                 out.write(((Virtual)event).getPlatform());
                 out.newLine();
@@ -367,37 +282,25 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getOriginalCost() + "");
                 out.newLine();
-                
-                if (event.getCategories().getReligion() == 1) {
-                    out.write("religion ");
-                }
-                if (event.getCategories().getSports() == 1) {
-                    out.write("sports ");
-                }
-                if (event.getCategories().getMusic() == 1) {
-                    out.write("music ");
-                }
-                if (event.getCategories().getArt() == 1) {
-                    out.write("art ");
-                }
-                if (event.getCategories().getTraveling() == 1) {
-                    out.write("traveling ");
-                }
-                if (event.getCategories().getFitness() == 1) {
-                    out.write("fitness ");
-                }
-                if (event.getCategories().getGaming() == 1) {
-                    out.write("gaming ");
-                }  
-                if (event.getCategories().getCooking() == 1) {
-                    out.write("cooking ");
-                }
-                if (event.getCategories().getAnimal() == 1) {
-                    out.write("animal ");
-                }
-                if (event.getCategories().getReading()== 1) {
-                    out.write("reading");
-                }
+                out.write(event.getCategories().getReligion() + "");
+                out.newLine();
+                out.write(event.getCategories().getSports() + "");
+                out.newLine();
+                out.write(event.getCategories().getMusic() + "");
+                out.newLine();
+                out.write(event.getCategories().getArt() + "");
+                out.newLine();
+                out.write(event.getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(event.getCategories().getFitness() + "");
+                out.newLine();
+                out.write(event.getCategories().getGaming() + "");
+                out.newLine();
+                out.write(event.getCategories().getCooking() + "");
+                out.newLine();
+                out.write(event.getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(event.getCategories().getReading() + "");
                 out.newLine();
                 out.write(((Outdoor)event).getLocation());
                 out.newLine();
@@ -421,37 +324,25 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getOriginalCost() + "");
                 out.newLine();
-                
-                if (event.getCategories().getReligion() == 1) {
-                    out.write("religion ");
-                }
-                if (event.getCategories().getSports() == 1) {
-                    out.write("sports ");
-                }
-                if (event.getCategories().getMusic() == 1) {
-                    out.write("music ");
-                }
-                if (event.getCategories().getArt() == 1) {
-                    out.write("art ");
-                }
-                if (event.getCategories().getTraveling() == 1) {
-                    out.write("traveling ");
-                }
-                if (event.getCategories().getFitness() == 1) {
-                    out.write("fitness ");
-                }
-                if (event.getCategories().getGaming() == 1) {
-                    out.write("gaming ");
-                }  
-                if (event.getCategories().getCooking() == 1) {
-                    out.write("cooking ");
-                }
-                if (event.getCategories().getAnimal() == 1) {
-                    out.write("animal ");
-                }
-                if (event.getCategories().getReading()== 1) {
-                    out.write("reading");
-                }
+                out.write(event.getCategories().getReligion() + "");
+                out.newLine();
+                out.write(event.getCategories().getSports() + "");
+                out.newLine();
+                out.write(event.getCategories().getMusic() + "");
+                out.newLine();
+                out.write(event.getCategories().getArt() + "");
+                out.newLine();
+                out.write(event.getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(event.getCategories().getFitness() + "");
+                out.newLine();
+                out.write(event.getCategories().getGaming() + "");
+                out.newLine();
+                out.write(event.getCategories().getCooking() + "");
+                out.newLine();
+                out.write(event.getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(event.getCategories().getReading() + "");
                 out.newLine();
                 out.write(((Indoor)event).getLocation());
                 out.newLine();
@@ -801,7 +692,7 @@ public class EventDatabase {
 
     public void viewPendingEventByUser(User u) {
         for (int i = 0; i < numPendingEvents; i ++) {
-            if (pendingEventList[i].getCurrentUser1().equals(u)) {
+            if (pendingEventList[i].getCurrentUser1() != null && pendingEventList[i].getCurrentUser1().equals(u)) {
                 System.out.print(pendingEventList[i]);
             }
         }
@@ -809,7 +700,7 @@ public class EventDatabase {
 
     public void viewApprovedEventByUser(User u) {
         for (int i = 0; i < numApprovedEvents; i ++) {
-            if (approvedEventList[i].getCurrentUser1().equals(u)) {
+            if (approvedEventList[i].getCurrentUser1() != null && approvedEventList[i].getCurrentUser1().equals(u)) {
                 System.out.print(approvedEventList[i]);
             }
         }

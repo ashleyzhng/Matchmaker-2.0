@@ -13,7 +13,7 @@ import java.util.*;
 public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
-
+    
     /*
         Parameters: none
         Return values: void
@@ -22,42 +22,41 @@ public class EventMenu {
     */
     public void adminViewEvents() {
         System.out.println("View Event Titles:");
+
         System.out.println("1. Approved Events");
         System.out.println("2. Pending Events");
-        String choice = sc.nextLine();
-        while (choice.equals("1") == false && choice.equals("2") == false) {
-            System.out.println("Invalid input. Enter 1 or 2: ");
-            choice = sc.nextLine();
-        }
-        if (choice.equals("1")) {
+        int choice = sc.nextInt();
+        if (choice == 1) {
             evda.printEventByAlphaTitle();
-            System.out.print("Want to view details? (Y/N): ");
-            choice = sc.nextLine();
+            System.out.print("Want to view details? (1 for yes, 2 for no): ");
+            choice = sc.nextInt();
 
-            if (choice.equals("Y")) {
+            if (choice == 1) {
                 System.out.println("Enter title: ");
-                choice = sc.nextLine();
-                Event ev = evda.searchApprovedEventByTitle(choice);
+                sc.nextLine();
+                String title = sc.nextLine();
+                Event ev = evda.searchApprovedEventByTitle(title);
                 while (ev == null) {
                     System.out.println("Event does not exist. enter correct name: ");
-                    choice = sc.nextLine();
-                    ev = evda.searchApprovedEventByTitle(choice);
+                    title = sc.nextLine();
+                    ev = evda.searchApprovedEventByTitle(title);
                 } 
                 System.out.println(ev);
             } 
         } else  {
             evda.printPendingByAlphaTitle();
-            System.out.print("Want to view details? (Y/N): ");
-            choice = sc.nextLine();
+            System.out.print("Want to view details? (1 for yes, 2 for no): ");
+            choice = sc.nextInt();
 
-            if (choice.equals("Y")) {
+            if (choice == 1) {
                 System.out.println("Enter title: ");
-                choice = sc.nextLine();
-                Event ev = evda.searchPendingEventByTitle(choice);
+                sc.nextLine();
+                String title = sc.nextLine();
+                Event ev = evda.searchPendingEventByTitle(title);
                 while (ev == null) {
                     System.out.println("Event does not exist. enter correct name: ");
-                    choice = sc.nextLine();
-                    ev = evda.searchPendingEventByTitle(choice);
+                    title = sc.nextLine();
+                    ev = evda.searchPendingEventByTitle(title);
                 } 
                 System.out.println(ev);
             } 
@@ -196,26 +195,7 @@ public class EventMenu {
             }   
         }
         System.out.println("Finished approving events."); 
-
-        
-            if (event.autoApproveEvent()) {
-                System.out.println("Passed system checks. Admin review available.");
-                if (event instanceof Virtual) {
-                    manualApproveVirtualEvent(event);
-                } else if (event instanceof Outdoor) {
-                    manualApproveOutdoorEvent(event);
-                } else {
-                    manualApproveIndoorEvent(event);
-                }
-            } else {
-                System.out.println("Event rejected automatically. No admin override allowed.");
-            }
-        if (evda.searchForApprovedEvent(event)){ 
-            System.out.println("Event had already been approved!");
-        } else {
-            System.out.println("Event does not exist!");
-        }
-}
+    }
 
 
     /*
