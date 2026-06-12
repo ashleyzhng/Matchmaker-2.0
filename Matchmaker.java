@@ -26,40 +26,60 @@ public class Matchmaker {
     public EventDatabase getEvents(){
         return events;
     }
-    public ArrayList <User> eligibleUserPool(User user){
+    public ArrayList<User> eligibleUserPool(User user) {
         User[] all = accounts.getUsers();
-        ArrayList <Match> matchHistory = user.getMatchHistory();
-        
-        if (user.getMatched() || user.maxMatches() || all == null || all.length == 0){
+        ArrayList<Match> matchHistory = user.getMatchHistory();
+        if (user.getMatched() || user.maxMatches() || all == null || all.length == 0) {
             return new ArrayList<>();
         }
-        
-        ArrayList <User> pool = new ArrayList<User>();
-        for (int i = 0; i < all.length; i ++){
-            if (all[i] != null && all[i] != user){
+        ArrayList<User> pool = new ArrayList<User>();
+        for (int i = 0; i < all.length; i++) {
+            User check = all[i];
+            if (check != null && check != user) {
                 boolean alreadyMatched = false;
-                for (int k = 0; k < matchHistory.size(); k ++){
-                   Match cur = matchHistory.get(k);
-                   User check = all[i];
-                   if(cur instanceof PersonMatch && ( ((PersonMatch)cur).getSoulmate() == check) || ((PersonMatch)cur).getOwner() == check){
-                     alreadyMatched = true;
-                   }
-                   if (cur instanceof EventMatch){
-                        Event event = ((EventMatch)cur).getEvent();
-                        User cur1 = event.getCurrentUser1();
-                        User cur2 = event.getCurrentUser2();
-                        if(cur1 == check || cur2 == check){
+                // Check history
+                for (int k = 0; k < matchHistory.size() && !alreadyMatched; k++) {
+                    Match cur = matchHistory.get(k);
+                    if (cur instanceof PersonMatch &&
+                    (((PersonMatch) cur).getSoulmate() == check ||
+                        ((PersonMatch) cur).getOwner() == check)) {
+                        alreadyMatched = true;
+                    }
+                    if (cur instanceof EventMatch) {
+                        Event event = ((EventMatch) cur).getEvent();
+                        if (event.getCurrentUser1() == check ||
+                            event.getCurrentUser2() == check) {
                             alreadyMatched = true;
                         }
-                   }
+                    }
                 }
-                if(!alreadyMatched){
-                    pool.add(all[i]);
+                // Check CURRENT matches
+                if (!alreadyMatched) {
+                    Match[] currentMatches = user.getMatches();
+                    for (int k = 0; k < currentMatches.length && !alreadyMatched; k++) {
+                        Match cur = currentMatches[k];
+                        if (cur instanceof PersonMatch &&
+                        (((PersonMatch) cur).getSoulmate() == check ||
+                            ((PersonMatch) cur).getOwner() == check)) {
+                            alreadyMatched = true;
+                        }
+                        if (cur instanceof EventMatch) {
+                            Event event = ((EventMatch) cur).getEvent();
+                            if (event.getCurrentUser1() == check ||
+                                event.getCurrentUser2() == check) {
+                                alreadyMatched = true;
+                            }
+                        }
+                    }
+                }
+                if (!alreadyMatched) {
+                    pool.add(check);
                 }
             }
         }
         return pool;
     }
+
     public Object[] generateUserPool(User user){
         ArrayList <User> pool = eligibleUserPool(user);
         Object[] poolArray = new Object[pool.size()];
