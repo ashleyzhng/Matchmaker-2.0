@@ -33,11 +33,11 @@ public class EventDatabase {
     }
     
 
-    public boolean loadAllEvents(String filename) {
+    public void loadAllEvents(String filename) {
         try {
             BufferedReader in = new BufferedReader(new FileReader(filename));
             numEvents = Integer.parseInt(in.readLine());
-            for (int i = 0; i < numEvents; i ++) {
+            for (int k = 0; k < numEvents; k ++) {
             String type = in.readLine();
             if (type.equals("virtual")) {
                 String title = in.readLine();
@@ -103,20 +103,20 @@ public class EventDatabase {
                     added = addApprovedEvent(vir);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-                        return false;
+
                     }
 
                 } else {
                     added = addPendingEvent(vir);
                     if (added) {
                         System.out.print("Event was successfully added. To be approved by admin.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-                        return false;
+  
                     } 
                 }
             } else if (type.equals("outdoor")) {
@@ -184,20 +184,20 @@ public class EventDatabase {
                     added = addApprovedEvent(outdoor);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-                        return false;
+
                     }
 
                 } else {
                     added = addPendingEvent(outdoor);
                     if (added) {
                         System.out.print("Event was successfully added. To be approved by admin.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-                        return false;
+  
                     } 
                 }
             } else {
@@ -264,27 +264,27 @@ public class EventDatabase {
                     added = addApprovedEvent(indoor);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-                        return false;
+
                     }
 
                 } else {
                     added = addPendingEvent(indoor);
                     if (added) {
                         System.out.print("Event was successfully added. To be approved by admin.");
-                        return true;
+
                     } else {
                         System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-                        return false;
+
                     } 
                 }
             }
         }
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
-            return false;
+
         } 
     }
 

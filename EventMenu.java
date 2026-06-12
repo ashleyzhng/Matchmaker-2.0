@@ -82,27 +82,35 @@ public class EventMenu {
     public void adminEventReview() {
         boolean cont = true;
         int index = 0;
+        Event event;
+        boolean result;
         while(cont && evda.getNumPendingEvents() > 0 && index < evda.getNumPendingEvents()) {
-            event = evda.getNumPendingEvent
-            if (evda.getNumPendingEvents() > 0 && event.autoApproveEvent()) {
+            event = evda.getPendingEventList()[index];
+            if (event.autoApproveEvent()) {
                 System.out.println("Passed system checks. Admin review available.");
                 if (event instanceof Virtual) {
-                    manualApproveVirtualEvent(event);
+                    result = manualApproveVirtualEvent(event);
                 } else if (event instanceof Outdoor) {
-                    manualApproveOutdoorEvent(event);
+                    result = manualApproveOutdoorEvent(event);
                 } else {
-                    manualApproveIndoorEvent(event);
+                    result = manualApproveIndoorEvent(event);
+                }
+                if (!result) {
+                    index ++;
                 }
             } else {
                 System.out.println("Event rejected automatically. No admin override allowed.");
+                index ++;
             }
-            System.out.println("Want to approve next event (Y/N): ");   
+            System.out.println("Want to approve next event (Y/N)? ");   
             String response = sc.nextLine();
             if (response.equalsIgnoreCase("N"))  {
                 cont = false;
             }   
         }
         System.out.println("Finished approving events.");
+
+        
             if (event.autoApproveEvent()) {
                 System.out.println("Passed system checks. Admin review available.");
                 if (event instanceof Virtual) {
@@ -134,7 +142,7 @@ public class EventMenu {
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
-            
+
         }
 
         System.out.println(("Date: " + event.getDate()));
@@ -215,9 +223,13 @@ public class EventMenu {
             if (addapp == true) {
                 event.setApproved(true);
                 System.out.println("Event succesfully approved!");
+                return true;
             } else {
                 System.out.println("Reached max capacity of events. Remove old events.");
+                return false;
             }
+        } else {
+            return false;
         }
   
         } else {
@@ -226,7 +238,7 @@ public class EventMenu {
     }
 
     //outdoor
-    public void manualApproveOutdoorEvent(Event event) {
+    public boolean manualApproveOutdoorEvent(Event event) {
 
         if (event != null && event instanceof Outdoor) {
             String response;
@@ -310,10 +322,14 @@ public class EventMenu {
             if (addapp == true) {
                 event.setApproved(true);
                 System.out.println("Event succesfully approved!");
+                return true;
             } else {
                 System.out.println("Reached max capacity of events. Remove old events.");
+                return false;
             }
-        } 
+        } else {
+            return false;
+        }
   
         } else {
             System.out.println("This event does not exist.");
@@ -322,7 +338,7 @@ public class EventMenu {
     }
 
     //indoor
-    public void manualApproveIndoorEvent(Event event) {
+    public boolean manualApproveIndoorEvent(Event event) {
 
 if (event != null && event instanceof Indoor) {
         String response;
@@ -406,10 +422,14 @@ if (event != null && event instanceof Indoor) {
             if (addapp == true) {
                 event.setApproved(true);
                 System.out.println("Event succesfully approved!");
+                return true;
             } else {
                 System.out.println("Reached max capacity of events. Remove old events.");
+                return false;
             }
-        } 
+        } else {
+            return false;
+        }
   
         } else {
             System.out.println("This event does not exist.");
