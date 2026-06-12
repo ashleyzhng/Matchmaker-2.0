@@ -598,7 +598,7 @@ public class EventDatabase {
         Event temp;
         for (int upper = numApprovedEvents - 1; upper > 0; upper--) {
             maxIndex = 0;
-            for (int i = 0; i < upper; i++) {
+            for (int i = 0; i <= upper; i++) {
                 if (approvedEventList[i].compareToTitle(approvedEventList[maxIndex]).equals(approvedEventList[i])) {
                     maxIndex = i;
                 }
@@ -614,7 +614,7 @@ public class EventDatabase {
         Event temp;
         for (int upper = numPendingEvents - 1; upper > 0; upper--) {
             maxIndex = 0;
-            for (int i = 0; i < upper; i++) {
+            for (int i = 0; i <= upper; i++) {
                 if (pendingEventList[i].compareToTitle(pendingEventList[maxIndex]).equals(pendingEventList[i])) {
                     maxIndex = i;
                 }
@@ -691,7 +691,7 @@ public class EventDatabase {
         Event temp;
         for (int upper = allEventList.size() - 1; upper > 0; upper--) {
             maxIndex = 0;
-            for (int i = 0; i < upper; i++) {
+            for (int i = 0; i <= upper; i++) {
                 if (allEventList.get(i).compareToTitle(allEventList.get(maxIndex)).equals(allEventList.get(i))) {
                     maxIndex = i;
                 }
