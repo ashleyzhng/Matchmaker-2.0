@@ -19,7 +19,7 @@ public class EventMenu {
         System.out.println("1. Approved Events");
         System.out.println("2. Pending Events");
         String choice = sc.nextLine();
-        while (choice != "1" && choice != "2") {
+        while (choice.equals("1") == false && choice.equals("2") == false) {
             System.out.println("Invalid input. Enter 1 or 2: ");
             choice = sc.nextLine();
         }
