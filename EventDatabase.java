@@ -548,6 +548,7 @@ public class EventDatabase {
         return false;
     }
 
+
     public boolean removeApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {
             if (approvedEventList[i].equals(event)) {

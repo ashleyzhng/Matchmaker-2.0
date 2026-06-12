@@ -6,6 +6,13 @@ public class EventMenu {
     EventDatabase evda = new EventDatabase();
 
 
+    public void attendEvent (Event event, User user) {
+        System.out.println("Rate the event out of 5: ");
+        int rate = sc.nextInt();
+        event.attendEvent(user, rate);
+        evda.removeApprovedEvent(event);
+    }
+    
     public void payForEvent(Event event) {
         double amount;
         System.out.println("The event is starting...");
