@@ -97,6 +97,19 @@ public abstract class PersonMatch extends Match{
             return status[1];
         }
     }
+    public char getStatus1(){
+        return status[0];
+    }
+    public char getStatus2(){
+        return status[1];
+    }
+    
+    public int getRating1(){
+        return rating[1];
+    }
+    public int getRating2(){
+        return rating[2];
+    }
     public int getRating(User u){
         if (u == pair[0]){
             return rating[0];

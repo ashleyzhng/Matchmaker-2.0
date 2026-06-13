@@ -76,6 +76,32 @@ public class DoubleEventMatch extends EventMatch {
         }
         return null;
     }
+    public char getStatus1(){
+        return status[0];
+    }
+    public char getStatus2(){
+        return status[1];
+    }
+    public char getStatus3(){
+        return status[2];
+    }
+    public char getStatus4(){
+        return status[3];
+    }
+    public int getRating1(){
+        return rating[0];
+    }
+    public int getRating2(){
+        return rating[1];
+    }
+    public int getRating3(){
+        return rating[2];
+    }
+    public int getRating4(){
+        return rating[3];
+    }
+    
+    
 
     /*
       * Changes all user status fields to completed and updates their fields by calling deleteMatch(Match) in User class

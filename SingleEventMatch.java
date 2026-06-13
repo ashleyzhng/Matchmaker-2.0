@@ -72,34 +72,38 @@ public class SingleEventMatch extends EventMatch{
                 ePool[i] = (Event)pool[i];
             }
             Event event = execute(ePool, 0, null, -1);
-            // attach the chosen event to this match
-            setEvent(event);
-            setScore(determineScore(event));
-            LocalTime start = event.getStartTime();
-            LocalTime end = event.getEndTime();
-            LocalDate date = event.getDate();
-            setStart(start);
-            setEnd(end);
-            setDate(date);
-
-            if(event instanceof Virtual){
-                setEventType("Virtual");
+            if (event == null){
+                pair[0].deleteMatch(this);
             }else{
-                setEventType("Outdoor");
-            }
-            pair[1]= event.getCurrentUser1();
-            if (pair[1] != null){
-                EventMatch old = pair[1].getEventMatch(event.getTitle());
-                if (old instanceof SingleEventMatch){
-                    status[1] = ((SingleEventMatch)old).status[1];
+                // attach the chosen event to this match
+                setEvent(event);
+                setScore(determineScore(event));
+                LocalTime start = event.getStartTime();
+                LocalTime end = event.getEndTime();
+                LocalDate date = event.getDate();
+                setStart(start);
+                setEnd(end);
+                setDate(date);
+
+                if(event instanceof Virtual){
+                    setEventType("Virtual");
                 }else{
-                    status[1] = 'P';
+                    setEventType("Outdoor");
                 }
+                pair[1]= event.getCurrentUser1();
+                if (pair[1] != null){
+                    EventMatch old = pair[1].getEventMatch(event.getTitle());
+                    if (old instanceof SingleEventMatch){
+                        status[1] = ((SingleEventMatch)old).status[1];
+                    }else{
+                        status[1] = 'P';
+                    }
+                }
+                
+                setEventTitle(event.getTitle());
+                storeMatch();
+                event.addUser(pair[0]);
             }
-            
-            setEventTitle(event.getTitle());
-            storeMatch();
-            event.addUser(pair[0]);
         }
         
     }
@@ -155,6 +159,18 @@ public class SingleEventMatch extends EventMatch{
             return status[1];
         }
         return 'X';
+    }
+    public char getStatus1(){
+        return status[0];
+    }
+    public char getStatus2(){
+        return status[1];
+    }
+    public int getRating1(){
+        return rating[0];
+    }
+    public int getRating2(){
+        return rating[1];
     }
     public User getOwner(){
         return pair[0];

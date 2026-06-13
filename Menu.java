@@ -732,7 +732,11 @@ public class Menu {
             if(choice >= 1 && choice <= 4){
             Match m = mm.generateMatch(user, choice);
             if (m != null){
-                System.out.println("Match generated and stored successfully!");
+                if (m instanceof EventMatch && ((EventMatch)m).getEvent() == null){
+                    System.out.println("Match generate is not compatible, therefore not saved");
+                }else{
+                    System.out.println("Match generated and stored successfully!");
+                }
                 System.out.println(m);
             } else {
                 System.out.println("No match could be generated due to incompatibility");

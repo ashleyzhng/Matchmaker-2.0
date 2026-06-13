@@ -59,7 +59,7 @@ public class MatchFileManager {
             User user = matchmaker.searchByUsername(username);
             if (firstLine == null || firstLine.isEmpty()){
                 // Malformed or empty file: initialize empty match lists and return
-                matches = new Match[0];
+                matches = new Match[5];
                 matchHistory = new ArrayList<Match>();
                 user.setMatches(matches);
                 user.setMatchHistory(matchHistory);
@@ -236,6 +236,8 @@ public class MatchFileManager {
                 }
             }
             out.println(nonNullCount);
+            ArrayList<Match> pastMatches = matchmaker.searchByUsername(username).getMatchHistory();
+            out.println(pastMatches.size());
             for (int i = 0; i < (curMatches == null ? 0 : curMatches.length); i ++){
                 if (curMatches[i] == null) continue;
                 if(curMatches[i] instanceof InterestMatch){
@@ -243,6 +245,7 @@ public class MatchFileManager {
                     out.println(curMatches[i].getScore());
                     out.println(((InterestMatch)curMatches[i]).getOwner().getUsername());
                     out.println(((InterestMatch)curMatches[i]).getSoulmate().getUsername());
+                    out.println(((PersonMatch)curMatches[i]).getExpiryDate());
                     out.println(((InterestMatch)curMatches[i]).getStatus(((InterestMatch)curMatches[i]).getOwner()));
                     out.println(((InterestMatch)curMatches[i]).getStatus(((InterestMatch)curMatches[i]).getSoulmate()));
                     out.println(((InterestMatch)curMatches[i]).getRating(((InterestMatch)curMatches[i]).getOwner()));
@@ -253,6 +256,7 @@ public class MatchFileManager {
                     out.println(curMatches[i].getScore());
                     out.println(((DistanceMatch)curMatches[i]).getOwner().getUsername());
                     out.println(((DistanceMatch)curMatches[i]).getSoulmate().getUsername());
+                    out.println(((PersonMatch)curMatches[i]).getExpiryDate());
                     out.println(((DistanceMatch)curMatches[i]).getStatus(((DistanceMatch)curMatches[i]).getOwner()));
                     out.println(((DistanceMatch)curMatches[i]).getStatus(((DistanceMatch)curMatches[i]).getSoulmate()));
                     out.println(((DistanceMatch)curMatches[i]).getRating(((DistanceMatch)curMatches[i]).getOwner()));
@@ -271,6 +275,12 @@ public class MatchFileManager {
                     } else {
                         out.println("null");
                     }
+                    out.println( ((SingleEventMatch)curMatches[i]).getStatus1());
+                    out.println( ((SingleEventMatch)curMatches[i]).getStatus2());
+                    out.println( ((SingleEventMatch)curMatches[i]).getRating1());
+                    out.println( ((SingleEventMatch)curMatches[i]).getRating2());
+                    
+
                 }else{
                     out.println("Double");
                     out.println(curMatches[i].getScore());
@@ -294,11 +304,16 @@ public class MatchFileManager {
                     } else {
                         out.println("null");
                     }
+                    out.println( ((DoubleEventMatch)curMatches[i]).getStatus1());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getStatus2());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getStatus3());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getStatus4());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getRating1());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getRating2());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getRating3());
+                    out.println( ((DoubleEventMatch)curMatches[i]).getRating4());
                 }
             }
-            
-            ArrayList<Match> pastMatches = matchmaker.searchByUsername(username).getMatchHistory();
-            out.println(pastMatches.size());
             
             for(int k = 0; k < pastMatches.size(); k++){
 
@@ -310,7 +325,7 @@ public class MatchFileManager {
 
                     out.println(((InterestMatch)m).getOwner().getUsername());
                     out.println(((InterestMatch)m).getSoulmate().getUsername());
-
+                    out.println(((PersonMatch)m).getExpiryDate());
                     out.println(((InterestMatch)m).getStatus(((InterestMatch)m).getOwner()));
                     out.println(((InterestMatch)m).getStatus(((InterestMatch)m).getSoulmate()));
 
@@ -324,7 +339,7 @@ public class MatchFileManager {
 
                     out.println(((DistanceMatch)m).getOwner().getUsername());
                     out.println(((DistanceMatch)m).getSoulmate().getUsername());
-
+                    out.println(((PersonMatch)m).getExpiryDate());
                     out.println(((DistanceMatch)m).getStatus(((DistanceMatch)m).getOwner()));
                     out.println(((DistanceMatch)m).getStatus(((DistanceMatch)m).getSoulmate()));
 
@@ -335,7 +350,7 @@ public class MatchFileManager {
                 else if(m instanceof SingleEventMatch){
                     out.println("Single");
                     out.println(m.getScore());
-
+                    out.println(((SingleEventMatch)m).getStart());
                     out.println(((SingleEventMatch)m).getEnd());
                     out.println(((SingleEventMatch)m).getDate());
 
@@ -347,6 +362,10 @@ public class MatchFileManager {
                     } else {
                         out.println("null");
                     }
+                    out.println( ((SingleEventMatch)m).getStatus1());
+                    out.println( ((SingleEventMatch)m).getStatus2());
+                    out.println( ((SingleEventMatch)m).getRating1());
+                    out.println( ((SingleEventMatch)m).getRating2());
                 }
 
                 else if(m instanceof DoubleEventMatch){
@@ -378,6 +397,15 @@ public class MatchFileManager {
                     } else {
                         out.println("null");
                     }
+
+                    out.println( ((DoubleEventMatch)m).getStatus1());
+                    out.println( ((DoubleEventMatch)m).getStatus2());
+                    out.println( ((DoubleEventMatch)m).getStatus3());
+                    out.println( ((DoubleEventMatch)m).getStatus4());
+                    out.println( ((DoubleEventMatch)m).getRating1());
+                    out.println( ((DoubleEventMatch)m).getRating2());
+                    out.println( ((DoubleEventMatch)m).getRating3());
+                    out.println( ((DoubleEventMatch)m).getRating4());
                 }
             }
 
