@@ -496,6 +496,12 @@ public class EventDatabase {
         return false;
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: sorts approved events by time
+    */
     public void sortEventsByTime() {
         Event itemToCompare;
         int blankIndex;
@@ -510,6 +516,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: prints approved events by alpha order title
+    */
     public void printEventByAlphaTitle() {
         sortEventByAlphaTitle();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -517,6 +529,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: prints pending events by alpha order title
+    */
     public void printPendingByAlphaTitle() {
         sortPendingByAlphaTitle();
         for (int i = 0; i < numPendingEvents; i ++) {
@@ -524,6 +542,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: prints approved events in order of time soonest to lastest
+    */
     public void printEventByTime() {
         sortEventsByTime();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -531,6 +555,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: none
+        Purpose: sorts approved events by alpha title
+    */
     public void sortEventByAlphaTitle() {
         int maxIndex;
         Event temp;
@@ -547,6 +577,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: there must be 
+        Purpose: sorts approved events by alpha title
+    */
     public void sortPendingByAlphaTitle() {
         int maxIndex;
         Event temp;
@@ -563,6 +599,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: virtual approved events must exist
+        Purpose: shows the virtual events that have been sorted alpha order
+    */
     public void displayVirtualEvents() {
         sortEventByAlphaTitle();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -572,6 +614,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: indoor approved events must exist
+        Purpose: shows the indoor events that have been sorted alpha order
+    */
     public void displayIndoorEvents() {
         sortEventByAlphaTitle();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -581,6 +629,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: outdoor approved events must exist
+        Purpose: shows the outdoor events that have been sorted alpha order
+    */
     public void displayOutdoorEvents() {
         sortEventByAlphaTitle();
         for (int i = 0; i < numApprovedEvents; i++) {
@@ -590,6 +644,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: String
+        Return values: Event
+        Preconditions: title must be string
+        Purpose: returns the approved event of the particular title
+    */
     public Event searchApprovedEventByTitle(String title) {
         for (int i = 0; i < numApprovedEvents; i++) {
             if (approvedEventList[i].getTitle().equalsIgnoreCase(title)) {
@@ -599,6 +659,12 @@ public class EventDatabase {
         return null; 
     }
 
+    /*
+        Parameters: String
+        Return values: Event
+        Preconditions: title must be string
+        Purpose: returns the pending event of the particular title
+    */
     public Event searchPendingEventByTitle(String title) {
         sortPendingByAlphaTitle();
         int bottom = 0;
@@ -624,6 +690,13 @@ public class EventDatabase {
         }
         
     }
+
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: events must exist
+        Purpose: sorts all events by title alpha order
+    */
     public void sortAllEventsByTitle() {
         int maxIndex;
         Event temp;
@@ -641,6 +714,12 @@ public class EventDatabase {
     }
 
 
+    /*
+        Parameters: String
+        Return values: Event
+        Preconditions: title must be string
+        Purpose: returns the event of the particular title
+    */
     public Event searchEventByTitle(String title) {
         sortAllEventsByTitle();
         int bottom = 0;
@@ -667,6 +746,12 @@ public class EventDatabase {
     }
     
 
+    /*
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event muts be type Event
+        Purpose: determines if approved event exists
+    */
     public boolean searchForApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {
             if (approvedEventList[i].equals(event)) {
@@ -676,6 +761,12 @@ public class EventDatabase {
         return false; 
     }
 
+    /*
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event must be type Event
+        Purpose: determines if pending event exists
+    */
         public boolean searchForPendingEvent(Event event) {
         for (int i = 0; i < numPendingEvents; i++) {
             if (pendingEventList[i].equals(event)) {
@@ -685,6 +776,12 @@ public class EventDatabase {
         return false; 
     }
 
+    /*
+        Parameters: Event
+        Return values: voud
+        Preconditions: Event muts be type Event
+        Purpose: cancels a booked event
+    */
     public void cancelBookedEvent(Event event) {
         if (searchForApprovedEvent(event) && event instanceof Indoor) {
             event.setCurrentUser1(null);
@@ -698,9 +795,15 @@ public class EventDatabase {
         }
             event.setBooked(false);
             event.setDate(null);
-            System.out.println("Refunded amount: $" + event.calculateCost());
+            System.out.println("Refunded amount: $" + event.cancelEvent());
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must be type user
+        Purpose: prints the list of events that the user attended previously
+    */
     public void viewEventHistory(User u) {
         ArrayList<Event> eh = u.getEventHistory();
         for (int i = 0; i < eh.size(); i ++) {
@@ -708,6 +811,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must be type user
+        Purpose: prints the list of pending events that the user made
+    */
     public void viewPendingEventByUser(User u) {
         for (int i = 0; i < numPendingEvents; i ++) {
             if (pendingEventList[i].getCurrentUser1() != null && pendingEventList[i].getCurrentUser1().equals(u)) {
@@ -716,6 +825,12 @@ public class EventDatabase {
         }
     }
 
+    /*
+        Parameters: User
+        Return values: void
+        Preconditions: User must be type user
+        Purpose: prints the list of approved events made by the user
+    */
     public void viewApprovedEventByUser(User u) {
         for (int i = 0; i < numApprovedEvents; i ++) {
             if (approvedEventList[i].getCurrentUser1() != null && approvedEventList[i].getCurrentUser1().equals(u)) {

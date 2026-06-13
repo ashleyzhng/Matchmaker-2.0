@@ -34,8 +34,7 @@ public abstract class Event {
     LocalTime todayTime = LocalTime.now();
     LocalDate todayDate = LocalDate.now();
 
-    public abstract double cancelEvent();
-
+    //constructor
     public Event(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser) {
         this.title = title;
         this.date = date;
@@ -52,6 +51,7 @@ public abstract class Event {
         this.currentUser2 = null;
     }
 
+    //accessors and mutators
     public User getCurrentUser1() {
         return currentUser1;
     }
@@ -191,12 +191,25 @@ public abstract class Event {
         return duration;
     }
 
+    /*
+        Parameters: none
+        Return values: boolean
+        Preconditions: none
+        Purpose: returns whther event is expired and should be removed from system
+    */
     public boolean isExpired() {
         if (determineDatePassed() && determineTimePassed()) {
             return true;
         }
         return false;
     }
+
+    /*
+        Parameters: none
+        Return values: boolean
+        Preconditions: event exists
+        Purpose: to determine if the event is over based on time
+    */
     public boolean determineTimePassed() {
         int hourthis = endTime.getHour();
         int minthis = endTime.getMinute();
@@ -216,6 +229,12 @@ public abstract class Event {
         }
     }
 
+    /*
+        Parameters: none
+        Return values: boolean
+        Preconditions: event must exist
+        Purpose: determine if the event has expired by today
+    */
     public boolean determineDatePassed() {
         int yearthis = date.getYear();
         int monththis = date.getMonthValue();
@@ -245,6 +264,12 @@ public abstract class Event {
     
     }
 
+    /*
+        Parameters: Event
+        Return values: Event
+        Preconditions: both events must exist
+        Purpose: returns the event that appears last alphabetically
+    */
     public Event compareToTitle(Event other) {
         if (this.title.compareToIgnoreCase(other.title) > 0) {
             return this;
@@ -255,6 +280,12 @@ public abstract class Event {
         }
     }
 
+    /*
+        Parameters: Event
+        Return values: Event
+        Preconditions: both events must exist
+        Purpose: to return which event has an earlier time
+    */
     public Event compareToTime(Event other) {
         int yearthis = this.date.getYear();
         int monththis = this.date.getMonthValue();
@@ -301,6 +332,12 @@ public abstract class Event {
         }
     }
 
+    /*
+        Parameters: User, int
+        Return values: void
+        Preconditions: User must exist and rate be valid
+        Purpose: the user rates event after attending, and is added to their events history
+    */
     public void attendEvent(User user, int rate) {
         if (isExpired() && getBooked() == true) {
             if (rate > 2) {
@@ -311,10 +348,36 @@ public abstract class Event {
         } 
     }
 
+    /*
+        Parameters: User
+        Return values: boolean
+        Preconditions: User must exist
+        Purpose: returns if a user has been succesfully added to an event
+    */
     public abstract boolean addUser(User user);
 
+    /*
+        Parameters: none
+        Return values: double
+        Preconditions: Event must exist
+        Purpose: the refund or fee to cancel a booked event
+    */
+    public abstract double cancelEvent();
+
+    /*
+        Parameters: none
+        Return values: boolean
+        Preconditions: Event must exist
+        Purpose: determines if the event has been auto approevd or rejected by the system
+    */
     public abstract boolean autoApproveEvent();
 
+    /*
+        Parameters: none
+        Return values: double
+        Preconditions: event must exist
+        Purpose: the new cost if the user wants adjustments before th event starts
+    */
     public abstract double calculateCost();
 
     public String toString() {

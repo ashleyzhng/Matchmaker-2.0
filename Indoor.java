@@ -15,12 +15,7 @@ public class Indoor extends Event {
     private User user3;
     private User user4;
 
-    public double cancelEvent() {
-        setApproved(false);
-        setBooked(false);
-
-        return getOriginalCost() * 0.5;
-    }
+    //constructor
     public Indoor(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser, String location, int floorNumber, String room) {
         super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser);
         this.location = location;
@@ -30,6 +25,7 @@ public class Indoor extends Event {
         this.user4 = null;
     }
 
+    //accessors and mutators
     public String getLocation() {
         return location;
     }
@@ -108,6 +104,13 @@ public class Indoor extends Event {
         } else {
             return getOriginalCost(); 
         }
+    }
+
+    public double cancelEvent() {
+        setApproved(false);
+        setBooked(false);
+
+        return getOriginalCost() * 0.5;
     }
 
     public String toString() {

@@ -15,6 +15,7 @@ public class Virtual extends Event {
     private int password;
     private String usedDiscountCode;
     
+    //constructor
     public Virtual(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser, String platform, int meetingID, int password) {
         super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser);
         this.platform = platform;
@@ -23,6 +24,7 @@ public class Virtual extends Event {
         usedDiscountCode = null;
     }
 
+    //accessors and mutators
     public String getPlatform() {
         return platform;
     }

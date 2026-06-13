@@ -13,6 +13,7 @@ public class Outdoor extends Event {
     private int temperature;
     private int precipitation;
 
+    //constructor
     public Outdoor(String title, LocalDate date, LocalTime startTime, LocalTime endTime, double originalCost, int r, int s, int m, int a, int t, int f, int g, int c, int an, int re, User initialUser, String location, int temperature, int precipitation) {
         super(title, date, startTime, endTime, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser);
         this.location = location;
@@ -20,6 +21,7 @@ public class Outdoor extends Event {
         this.precipitation = precipitation;
     }
 
+    //accessors and mutators
     public String getLocation() {
         return location;
     }
@@ -81,7 +83,7 @@ public class Outdoor extends Event {
         if (precipitation > 70) {
             return getOriginalCost() * 0.6; // bad weather discount
         } else if (precipitation < 20) {
-            return getOriginalCost() * 1.2; // high demand / good weather
+            return getOriginalCost() * 1.2; // good weather increase
         }
         return getOriginalCost();
     }
