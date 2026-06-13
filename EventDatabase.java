@@ -417,10 +417,10 @@ public class EventDatabase {
     }
 
     /*
-        Parameters: User
-        Return values: void
-        Preconditions: User must exist
-        Purpose: for the user to create a new virtual event
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event must exist
+        Purpose: to add a pending event tot he system of pending events
     */
     public boolean addPendingEvent(Event event) {
         if (numPendingEvents < maxPendingEvents) {
@@ -432,6 +432,12 @@ public class EventDatabase {
         return false; 
     }
 
+     /*
+        Parameters: Event
+        Return values: boolean
+        Preconditions: Event must exist
+        Purpose: to add an approved event tot he system of approved events
+    */
     public boolean addApprovedEvent(Event event) {
         if (numApprovedEvents < maxApprovedEvents) {
             approvedEventList[numApprovedEvents] = event;
@@ -442,6 +448,12 @@ public class EventDatabase {
         return false; 
     }
 
+     /*
+        Parameters: Event
+        Return values: void
+        Preconditions: Event must exist
+        Purpose: to remove a pending event from the system of pending events
+    */
     public boolean removePendingEvent(Event event) {
         for (int i = 0; i < numPendingEvents; i++) {
             if (pendingEventList[i].equals(event)) {
@@ -460,6 +472,12 @@ public class EventDatabase {
     }
 
 
+     /*
+        Parameters: Event
+        Return values: void
+        Preconditions: Event must exist
+        Purpose: to remove an approved event from the system of pending events
+    */
     public boolean removeApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {
             if (approvedEventList[i].equals(event)) {
