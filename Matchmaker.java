@@ -459,7 +459,7 @@ public class Matchmaker {
      * @return      The matching Account object instance, or null if not found
      */
     public Account searchAccountByUsername(String targetUsername){
-        return accounts.searchAccountByUsername(targetUsername);
+        return accounts.searchByUsername(targetUsername);
     }
 
 }
