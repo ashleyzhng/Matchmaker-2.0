@@ -1,17 +1,41 @@
 import java.io.*;
 import java.util.*;
 
+/*
+   File Name: MatchFileManager.java
+   Name: Ashley Zhong
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The MatchFileManager class is responsible for loading and saving
+   user match information from text files. It manages both current
+   matches and match history, reconstructs Match objects from file
+   data, and synchronizes match information with User accounts in
+   the Matchmaker system.
+*/
+
 public class MatchFileManager {
 
+    ////Reference to the main Matchmaker system
     private Matchmaker matchmaker;
+    //Current active matches loaded from file
     private Match[] matches;
+    //Past matches loaded from file
     private ArrayList<Match> matchHistory;
 
+    /*
+     * Constructor for MatchFileManager
+     * Parameters: mm - the Matchmaker system associated with this file manager
+     * Returns: None
+     */
     public MatchFileManager(Matchmaker mm){
         this.matchmaker = mm;
         matches = null;
         matchHistory = null;
     }
+
+    // -- acessors --
     public Match[] getMatches(){
         return matches;
     }
@@ -19,6 +43,11 @@ public class MatchFileManager {
         return matchHistory;
     }
 
+    /*
+     * Loads match information for a user from a text file
+     * Parameters: username - the username whose matches are being loaded
+     * Returns: None (updates the user's current matches and match history)
+     */
     public void loadMatches(String username) {
         try {
             BufferedReader in = new BufferedReader(
@@ -173,6 +202,11 @@ public class MatchFileManager {
         }
     }
 
+     /*
+     * Saves match information for a user to a text file
+     * Parameters: username - the username whose matches are being saved
+     * Returns: None
+     */
     public void saveMatches(String username){
         try {
             PrintWriter out = new PrintWriter(
