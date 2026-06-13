@@ -14,6 +14,12 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
     
+    /*
+        Parameters: Event, User
+        Return values: boolean
+        Preconditions: events and user must exist
+        Purpose: ui to determine if user wants to continue with event after paying, else, cancels event
+    */
     public boolean dateSim (Event event, User user) {
         System.out.println("Want to continue on date? (Y/N)");
         sc.nextLine();
@@ -1200,13 +1206,14 @@ int choice;
                 System.out.println("Sort Event Options:");
                 System.out.println("1. Sort by Title");
                 System.out.println("2. Sort by Date and Time");
+                System.out.println("3. Search & Sort by Date and Max Cost");
                 choice = sc.nextInt();
-                while (choice != 1 && choice != 2) {
+                while (choice < 1 || choice > 3) {
                     System.out.println("That is not a valid option");
                     System.out.println("Sort Event Options:");
                     System.out.println("1. Sort by Title");
                     System.out.println("2. Sort by Date and Time");
-                    System.out.println("3. Sort by Date and Max Cost");
+                    System.out.println("3. Search & Sort by Date and Max Cost");
                     choice = sc.nextInt();
                 }
                 System.out.println("List of all events:");
@@ -1252,7 +1259,18 @@ int choice;
         } else {
             System.out.println("Your Event History:");
             System.out.println("-----------------------------");
-            evda.viewEventHistory(user);
+            ArrayList <Event> eh = evda.viewEventHistory(user);
+            System.out.println("-----------------------------");
+            if (eh != null) {
+                System.out.println("Archive event history? (Y/N): "); 
+                sc.nextLine();
+                String response = sc.nextLine();
+                if (response.equalsIgnoreCase("y")) {
+                    System.out.print("Enter file name: ");
+                    String file = sc.nextLine();
+                    evda.saveAllEvents(file, eh);
+                }
+            }  
         }
     }
 }

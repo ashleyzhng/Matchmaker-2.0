@@ -223,6 +223,170 @@ public class EventDatabase {
     }
 
     /*
+        Parameters: String, ArrayList<Event>
+        Return values: void
+        Preconditions: file and events must exist
+        Purpose: saves events from eventhistory to a new file
+    */
+    public void saveAllEvents(String filename, ArrayList<Event> e) {
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+            out.write(e.size() + "");
+            out.newLine();
+            for (int i = 0; i < e.size(); i ++) {
+                if (e.get(i) instanceof Virtual) {
+                out.write("virtual");
+                out.newLine();
+                out.write(e.get(i).getTitle());
+                out.newLine();
+                out.write(e.get(i).getDate() + "");
+                out.newLine();
+                out.write(e.get(i).getStartTime() + "");
+                out.newLine();
+                out.write(e.get(i).getEndTime() + "");
+                out.newLine();
+                out.write(e.get(i).getOriginalCost() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReligion() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getSports() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getMusic() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getArt() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getFitness() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getGaming() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getCooking() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReading() + "");
+                out.newLine();
+                out.write(((Virtual)e.get(i)).getPlatform());
+                out.newLine();
+                out.write(((Virtual)e.get(i)).getMeetingID() + "");
+                out.newLine();
+                out.write(((Virtual)e.get(i)).getPassword() + "");
+                out.newLine();
+                out.write(e.get(i).getApproved() + "");
+                out.newLine();
+
+                if (e.get(i).getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(e.get(i).getCurrentUser1().getUsername());
+                }
+                out.newLine();
+            } else if (e.get(i) instanceof Outdoor) {
+                out.write("outdoor");
+                out.newLine();
+                out.write(e.get(i).getTitle());
+                out.newLine();
+                out.write(e.get(i).getDate() + "");
+                out.newLine();
+                out.write(e.get(i).getStartTime() + "");
+                out.newLine();
+                out.write(e.get(i).getEndTime() + "");
+                out.newLine();
+                out.write(e.get(i).getOriginalCost() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReligion() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getSports() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getMusic() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getArt() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getFitness() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getGaming() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getCooking() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReading() + "");
+                out.newLine();
+                out.write(((Outdoor)e.get(i)).getLocation());
+                out.newLine();
+                out.write(((Outdoor)e.get(i)).getTemperature());
+                out.newLine();
+                out.write(((Outdoor)e.get(i)).getPrecipitation());
+                out.newLine();
+                out.write(e.get(i).getApproved() + "");
+                out.newLine();
+
+                if (e.get(i).getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(e.get(i).getCurrentUser1().getUsername());
+                }
+                out.newLine();
+            } else {
+                out.write("indoor");
+                out.newLine();
+                out.write(e.get(i).getTitle());
+                out.newLine();
+                out.write(e.get(i).getDate() + "");
+                out.newLine();
+                out.write(e.get(i).getStartTime() + "");
+                out.newLine();
+                out.write(e.get(i).getEndTime() + "");
+                out.newLine();
+                out.write(e.get(i).getOriginalCost() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReligion() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getSports() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getMusic() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getArt() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getTraveling() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getFitness() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getGaming() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getCooking() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getAnimal() + "");
+                out.newLine();
+                out.write(e.get(i).getCategories().getReading() + "");
+                out.newLine();
+                out.write(((Indoor)e.get(i)).getLocation());
+                out.newLine();
+                out.write(((Indoor)e.get(i)).getFloorNumber());
+                out.newLine();
+                out.write(((Indoor)e.get(i)).getRoom());
+                out.newLine();
+                out.write(e.get(i).getApproved() + "");
+                out.newLine();
+
+                if (e.get(i).getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(e.get(i).getCurrentUser1().getUsername());
+                }
+                out.newLine();
+            }
+            }
+            out.close();
+        } catch (IOException iox) {
+            System.out.println("File not found!");
+        }
+    }
+
+    /*
         Parameters: String, Event
         Return values: boolean
         Preconditions: file and event must exist
@@ -232,6 +396,7 @@ public class EventDatabase {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filename));
             if (event instanceof Virtual) {
+                out.write("virtual");
                 out.write(event.getTitle());
                 out.newLine();
                 out.write(event.getDate() + "");
@@ -270,7 +435,13 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername() + "");
+
+                if (event.getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(event.getCurrentUser1().getUsername());
+                }
+
                 out.close();
                 return true;
             } else if (event instanceof Outdoor) {
@@ -312,7 +483,12 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername() + "");
+
+                if (event.getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(event.getCurrentUser1().getUsername());
+                }
                 out.close();
                 return true;
             } else {
@@ -354,7 +530,12 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername() + "");
+
+                if (event.getCurrentUser1() == null) {
+                    out.write("null");
+                } else {
+                    out.write(event.getCurrentUser1().getUsername());
+                }
                 out.close();
                 return true;
             }
@@ -498,24 +679,27 @@ public class EventDatabase {
         return false;
     }
 
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: pending events must exist
+        Purpose: shift a pending event from the front of the list to the back
+    */
     public void shiftPendingFrontToBack() {
 
 
-    if (numPendingEvents <= 1) {
-        return;
+        if (numPendingEvents <= 1) {
+            return;
+        }
+        Event temp = pendingEventList[0];
+
+        for (int i = 0; i < numPendingEvents - 1; i++) {
+            pendingEventList[i] = pendingEventList[i + 1];
+        }
+
+
+        pendingEventList[numPendingEvents - 1] = temp;
     }
-
-
-    Event temp = pendingEventList[0];
-
-
-    for (int i = 0; i < numPendingEvents - 1; i++) {
-        pendingEventList[i] = pendingEventList[i + 1];
-    }
-
-
-    pendingEventList[numPendingEvents - 1] = temp;
-}
 
     /*
         Parameters: none
@@ -801,15 +985,16 @@ public class EventDatabase {
 
     /*
         Parameters: User
-        Return values: void
+        Return values: ArrayList
         Preconditions: User must be type user
-        Purpose: prints the list of events that the user attended previously
+        Purpose: prints the list of events that the user attended previously and returns array list for the system to potentially archive
     */
-    public void viewEventHistory(User u) {
+    public ArrayList<Event> viewEventHistory(User u) {
         ArrayList<Event> eh = u.getEventHistory();
         for (int i = 0; i < eh.size(); i ++) {
             System.out.println(eh.get(i).getTitle());
         }
+        return eh;
     }
 
     /*
