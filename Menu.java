@@ -821,20 +821,25 @@ public class Menu {
             System.out.println("Decision Updated");
         }else if (choice == 3){
             match.completed();
-            System.out.println("Match Completed! Please rate your experience (1-5, 1 being the lowest, 5 being the highest): ");
-            int rating = input(1,5,sc);
-            if (match instanceof  PersonMatch){
-               ((PersonMatch)match).setRating(rating, user);
-            }else if (match instanceof SingleEventMatch){
+            boolean dated = true;
+            if (match instanceof SingleEventMatch || match instanceof DoubleEventMatch) {
                 em.payForEvent( ((EventMatch)match).getEvent());
-                ((SingleEventMatch)match).setRating(user, rating);
-                em.rateEvent(((EventMatch)match).getEvent(), user);
-            }else{
-                em.payForEvent( ((EventMatch)match).getEvent());
-                ((DoubleEventMatch)match).setRating(user, rating);
-                em.rateEvent(((EventMatch)match).getEvent(), user);
-            }
-            System.out.println("Rating Updated");
+                dated = em.dateSim(((EventMatch)match).getEvent(), user);
+            } 
+            if (dated || match instanceof PersonMatch) {
+                System.out.println("Match Completed! Please rate your experience (1-5, 1 being the lowest, 5 being the highest): ");
+                int rating = input(1,5,sc);
+                if (match instanceof  PersonMatch){
+                    ((PersonMatch)match).setRating(rating, user);
+                }else if (match instanceof SingleEventMatch){
+                    ((SingleEventMatch)match).setRating(user, rating);
+                    em.rateEvent(((EventMatch)match).getEvent(), user);
+                }else{
+                    ((DoubleEventMatch)match).setRating(user, rating);
+                    em.rateEvent(((EventMatch)match).getEvent(), user);
+                }
+                System.out.println("Rating Updated");
+            }           
         }else{
             System.out.println("Exiting...");
         }

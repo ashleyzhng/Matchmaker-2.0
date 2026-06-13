@@ -14,6 +14,22 @@ public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
     
+    public boolean dateSim (Event event, User user) {
+        System.out.println("Want to continue on date? (Y/N)");
+        sc.nextLine();
+        String response = sc.nextLine();
+        if (response.equals("Y")) {
+            System.out.println("Enjoy the event!!");
+            System.out.println(user.getName() + " is currently in " + event.getTitle());
+            return true;
+        } else {
+            System.out.println("Cancelling date...");
+            event.cancelEvent();
+            evda.removeApprovedEvent(event);
+            return false;
+        }
+    }
+
     /*
         Parameters: none
         Return values: void
@@ -105,7 +121,7 @@ public class EventMenu {
         if (amount > response) {
             System.out.println("Successfully paid! Heres your change: $" + (amount-response));
         } else {
-            System.out.println("Successfully paid! Enjoy the event");
+            System.out.println("Successfully paid!");
         }
     }
 

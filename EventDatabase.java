@@ -521,26 +521,6 @@ public class EventDatabase {
         Parameters: none
         Return values: void
         Preconditions: none
-        Purpose: sorts approved events by time
-    */
-    public void sortEventsByTime() {
-        Event itemToCompare;
-        int blankIndex;
-        for (int i = 0; i < numApprovedEvents; i ++) {
-            itemToCompare = approvedEventList[i];
-            blankIndex = i;
-            while (blankIndex > 0 && itemToCompare.compareToTime(approvedEventList[blankIndex - 1]).equals(itemToCompare)) {
-                approvedEventList[blankIndex] = approvedEventList[blankIndex - 1];
-                blankIndex--;
-            }
-            approvedEventList[blankIndex] = itemToCompare;
-        }
-    }
-
-    /*
-        Parameters: none
-        Return values: void
-        Preconditions: none
         Purpose: prints approved events by alpha order title
     */
     public void printEventByAlphaTitle() {
