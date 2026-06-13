@@ -15,6 +15,14 @@ public class EventMenu {
 
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
+    
+
+    /*
+        Parameters: none
+        Return values: int
+        Preconditions: none
+        Purpose: validates int given to prevent runtime errors
+    */
     public int getValidInt() {
 
         while (true) {
@@ -27,27 +35,37 @@ public class EventMenu {
         }
     }
 
-   public int getValidChoice(int min, int max) {
+    /*
+        Parameters: none
+        Return values: int
+        Preconditions: none
+        Purpose: validates choice given if its between min and max options to ensure correct menu input
+    */
+    public int getValidChoice(int min, int max) {
 
-    while (true) {
+        while (true) {
+            try {
+                int num = Integer.parseInt(sc.nextLine());
 
-        try {
-            int num = Integer.parseInt(sc.nextLine());
+                if (num < min || num > max) {
+                    System.out.println("Please enter a number between " + min + " and " + max + ".");
+                } else {
+                    return num;
+                }
 
-            if (num < min || num > max) {
-                System.out.println("Please enter a number between " + min + " and " + max + ".");
-            } else {
-                return num;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
             }
-
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid number.");
         }
     }
-}
 
     
-
+    /*
+        Parameters: none
+        Return values: double
+        Preconditions: none
+        Purpose: validates double given to prevent runtime errors
+    */
     public double getValidDouble() {
         while (true) {
 
@@ -59,7 +77,12 @@ public class EventMenu {
         }
     }
 
-
+    /*
+        Parameters: none
+        Return values: LocalDate
+        Preconditions: none
+        Purpose: validates date given to prevent runtime errors
+    */
     public LocalDate getValidDate() {
 
         LocalDate date = null;
@@ -83,6 +106,13 @@ public class EventMenu {
         return date;
     }
 
+
+     /*
+        Parameters: none
+        Return values: LocalTime
+        Preconditions: none
+        Purpose: validates time given to prevent runtime errors
+    */
     public LocalTime getValidTime() {
 
         LocalTime time = null;
@@ -101,6 +131,12 @@ public class EventMenu {
         return time;
     }
 
+    /*
+        Parameters: none
+        Return values: String
+        Preconditions: none
+        Purpose: validates Yes or No response to revent runtime errors
+    */
     public String getValidYN() {
 
         String response = sc.nextLine();
@@ -1287,7 +1323,6 @@ int choice;
         }
         else if (choice == 4) {
             System.out.println("Your hosted pending events:");
-            System.out.println(user.getUsername());
             evda.viewPendingEventByUser(user);
             System.out.println("Your hosted approved events:");
             evda.viewApprovedEventByUser(user);
