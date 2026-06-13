@@ -103,7 +103,7 @@ public abstract class PersonMatch extends Match{
     public char getStatus2(){
         return status[1];
     }
-    
+
     public int getRating1(){
         return rating[1];
     }
@@ -218,33 +218,52 @@ public abstract class PersonMatch extends Match{
      * Parameters: u - the user to check
      * Returns: true if the users are compatible, false otherwise
      */
-    @Override
-    public boolean checkAgeCompatibility(User u){
-        if (u instanceof Teen && pair[0] instanceof Teen){
-            return true;
-        }else if (pair[0] instanceof Teen){
+   @Override
+public boolean checkAgeCompatibility(User u){
+        if(u == null || pair[0] == null){
             return false;
-        }
-        
-        if (u.getBirthday() == null){
-            return false;
-        }
-        LocalDate now = LocalDate.now();
-        Period elapse = Period.between(u.getBirthday(), now);
-        int uAge = elapse.getYears();
-        elapse = Period.between(pair[0].getBirthday(), now);
-        int mainAge = elapse.getYears();
-        
-        if(u instanceof Adult){
-            Adult user = (Adult)u;
-            Adult mainUser = (Adult)pair[0];
-            return uAge >= mainUser.getPreferredMinAge() && uAge <= mainUser.getPreferredMaxAge() && mainAge >= user.getPreferredMinAge() && mainAge <= user.getPreferredMaxAge();
         }
 
-        Senior user = (Senior)u;
-        Senior mainUser = (Senior)pair[0];
-        return uAge >= mainUser.getPreferredMinAge() && uAge <= mainUser.getPreferredMaxAge() && mainAge >= user.getPreferredMinAge() && mainAge <= user.getPreferredMaxAge();
-        
+        if(u.getBirthday() == null || pair[0].getBirthday() == null){
+            return false;
+        }
+
+        LocalDate now = LocalDate.now();
+
+        int uAge = Period.between(u.getBirthday(), now).getYears();
+        int mainAge = Period.between(pair[0].getBirthday(), now).getYears();
+
+        if(u instanceof Teen && pair[0] instanceof Teen){
+            return true; // or use an age-difference rule
+        }
+
+        if(u instanceof Teen || pair[0] instanceof Teen){
+            return false;
+        }
+
+        if(u instanceof Adult && pair[0] instanceof Adult){
+
+            Adult user = (Adult)u;
+            Adult mainUser = (Adult)pair[0];
+
+            return uAge >= mainUser.getPreferredMinAge()
+                && uAge <= mainUser.getPreferredMaxAge()
+                && mainAge >= user.getPreferredMinAge()
+                && mainAge <= user.getPreferredMaxAge();
+        }
+
+        if(u instanceof Senior && pair[0] instanceof Senior){
+
+            Senior user = (Senior)u;
+            Senior mainUser = (Senior)pair[0];
+
+            return uAge >= mainUser.getPreferredMinAge()
+                && uAge <= mainUser.getPreferredMaxAge()
+                && mainAge >= user.getPreferredMinAge()
+                && mainAge <= user.getPreferredMaxAge();
+        }
+
+        return false;
     }
 
     /*
