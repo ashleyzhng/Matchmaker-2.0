@@ -150,8 +150,12 @@ public abstract class PersonMatch extends Match{
      * Returns: none
      */
     public void storeMatch(){
-        pair[0].storeMatch(this);
-        pair[1].storeMatch(this);
+        if(pair[0] != null){
+            pair[0].storeMatch(this);
+        }
+        if(pair[1] != null){
+            pair[1].storeMatch(this);
+        }
     }
     /* 
      * Updates the decision of a user in the match
@@ -246,7 +250,7 @@ public abstract class PersonMatch extends Match{
         // User 1 (Owner) Info
         s += "User 1: ";
         if (pair[0] != null) {
-            s += pair[0].getName() + "\n";
+            s += pair[0].getUsername() + "\n";
             s += "User 1 Status: " + status[0] + "\n";
             if(rating[0] == -1){
                 s+= "User 1 Rating: n/a \n";
@@ -262,7 +266,7 @@ public abstract class PersonMatch extends Match{
         // User 2 (Soulmate) Info
         s += "User 2: ";
         if (pair[1] != null) {
-            s += pair[1].getName() + "\n";
+            s += pair[1].getUsername() + "\n";
             s += "User 2 Status: " + status[1] + "\n";
              if(rating[1] == -1){
                 s+= "User 2 Rating: n/a \n";

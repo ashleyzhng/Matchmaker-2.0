@@ -44,6 +44,7 @@ public class InterestMatch extends PersonMatch{
                 storeMatch();
             }else{
                 setScore(0);
+                storeMatch();
             }
         }
     }

@@ -36,7 +36,7 @@ public class Matchmaker {
             User check = all[i];
             if (check != null && check != user) {
                 boolean alreadyMatched = false;
-                // Check history
+                // Check match history
                 for (int k = 0; k < matchHistory.size() && !alreadyMatched; k++) {
                     Match cur = matchHistory.get(k);
                     if (cur instanceof PersonMatch &&

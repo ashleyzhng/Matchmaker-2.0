@@ -155,7 +155,7 @@ public class User extends Account {
     public void storeMatch(Match m){
         if (numMatches < matches.length){
             matches[numMatches] = m;
-            numMatches++;
+            numMatches ++;
         }
     }
 

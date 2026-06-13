@@ -534,9 +534,11 @@ public class Menu {
     }
 
     public String matchMenu(Scanner sc, User u, Matchmaker mm){
+        int pending = u.getNumMatches();  
+        
         System.out.println("=======================");
         System.out.println("Match Menu: ");
-        System.out.println("1. View Current Matches (" + u.getNumMatches() + " pending matches!)"); 
+        System.out.println("1. View Current Matches (" + pending + " pending matches!)"); 
         System.out.println("2. Create New Match");
         System.out.println("3. Exit");
         System.out.println("=======================");
@@ -559,6 +561,14 @@ public class Menu {
         }
         return "user";
     }
+    public String viewMatches(Scanner sc, User user, Matchmaker mm){
+        int numMatch = user.getNumMatches();
+        for (int i = 0; i < numMatch; i ++){
+            System.out.println(i);
+        }
+        matchMenu(sc, user, mm);
+        return "matchMenu";
+    }
     public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("New Match Menu: ");
@@ -572,6 +582,15 @@ public class Menu {
         int choice = input(1, 5, sc);
             if(choice >= 1 && choice <= 4){
             Match m = mm.generateMatch(user, choice);
+            if (m != null){
+                user.storeMatch(m); // Ensure match is stored in users
+                System.out.println("Match generated and stored successfully!");
+                System.out.println(m);
+            } else {
+                System.out.println("No match could be generated due to incompatibility");
+            }
+            
+            /* 
             if(m != null){
                 boolean validMatch = true;
                 if (m instanceof PersonMatch){
@@ -588,7 +607,9 @@ public class Menu {
                     }
 
                     if (!alreadyStored) {
-                        m.storeMatch();
+                        user.storeMatch(m);
+                        System.out.println("\n✓ Match stored successfully!");
+                        System.out.println("You now have " + user.getNumMatches() + " pending match(es).\n");
                     }
 
                     System.out.println(m);
@@ -598,6 +619,7 @@ public class Menu {
             } else {
                 System.out.println("No match could be generated.");
             }
+                */
         }
         return matchMenu(sc, user, mm);
 
@@ -699,22 +721,6 @@ public class Menu {
                 sc.next();
             }
         }
-        
-        /* 
-        int choice;
-        while(true){
-            System.out.print("OPTION: ");
-            if(!sc.hasNextInt()){
-                System.out.println("Invalid Input. Please try again.");
-                sc.next();
-            }else{
-                choice = sc.nextInt();
-                if(choice >= firstChoice && choice <= lastChoice){
-                    return choice;
-                }
-            }
-        }
-        */
     }
     public LocalDate validLocalDate(Scanner sc){
         LocalDate birthday = null;

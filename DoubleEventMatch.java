@@ -77,6 +77,11 @@ public class DoubleEventMatch extends EventMatch {
         return null;
     }
 
+    /*
+      * Changes all user status fields to completed and updates their fields by calling deleteMatch(Match) in User class
+      * Parameters: none
+      * Returns: None
+      */
     public void completed(){
         status[0]='C';
         status[1]='C';
