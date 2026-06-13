@@ -44,7 +44,7 @@ public class MatchmakerRunner{
                     break;
                 case "user":
                     ((User)currentAccount).updateMatches();
-                    currentMenu = menu.getUserMenu((User)currentAccount, sc, system); //changes!!
+                    currentMenu = menu.getUserMenu((User)currentAccount, sc, system); 
                     break;
                 case "admin":
                     currentMenu = menu.getAdminMenu(sc, system, (Admin)currentAccount); 

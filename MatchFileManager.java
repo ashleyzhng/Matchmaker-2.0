@@ -54,11 +54,27 @@ public class MatchFileManager {
                 new FileReader("matches/matches_" + username + ".txt")
             );
 
-            int numMatches = Integer.parseInt(in.readLine());
+            // Read number of current matches, guarding against malformed/truncated files
+            String firstLine = in.readLine();
             User user = matchmaker.searchByUsername(username);
+            if (firstLine == null || firstLine.isEmpty()){
+                // Malformed or empty file: initialize empty match lists and return
+                matches = new Match[0];
+                matchHistory = new ArrayList<Match>();
+                user.setMatches(matches);
+                user.setMatchHistory(matchHistory);
+                user.setNumMatches(0);
+                in.close();
+                return;
+            }
+            int numMatches = Integer.parseInt(firstLine);
             user.setNumMatches(numMatches);
             matches = new Match[5];
-            int historySize = Integer.parseInt(in.readLine());
+            String historyLine = in.readLine();
+            int historySize = 0;
+            if (historyLine != null && !historyLine.isEmpty()){
+                historySize = Integer.parseInt(historyLine);
+            }
             matchHistory = new ArrayList<Match>();
 
             for(int i = 0; i < numMatches; i++){
@@ -212,8 +228,16 @@ public class MatchFileManager {
                 new FileWriter("matches/matches_" + username + ".txt")
             );
             Match[] curMatches = matchmaker.searchByUsername(username).getMatches();
-            out.println(curMatches.length);
-            for (int i = 0; i < curMatches.length; i ++){
+            // Count only non-null current matches so we don't write empty slots
+            int nonNullCount = 0;
+            if (curMatches != null){
+                for (int i = 0; i < curMatches.length; i++){
+                    if (curMatches[i] != null) nonNullCount++;
+                }
+            }
+            out.println(nonNullCount);
+            for (int i = 0; i < (curMatches == null ? 0 : curMatches.length); i ++){
+                if (curMatches[i] == null) continue;
                 if(curMatches[i] instanceof InterestMatch){
                     out.println("Interest");
                     out.println(curMatches[i].getScore());

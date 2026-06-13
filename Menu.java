@@ -131,18 +131,19 @@ public class Menu {
             System.out.print("Enter username to report: ");
             String username = sc.nextLine();
             User reportUser = null;
-                while(!mm.getAccounts().usernameExists(username)){ // changes here
+                while(!mm.getAccounts().usernameExists(username)){ 
                     System.out.print("User name does not exists. Please try again.");
                     System.out.print("Username: ");
                     username = sc.nextLine();
-                } // changes
+                } 
                 reportUser = mm.getAccounts().searchByUsername(username);
-            System.out.print("Enter reason for report (or keep blank): "); //changes
+            System.out.print("Enter reason for report (or keep blank): "); 
             String reason = sc.nextLine();
             mm.getAppeals().addAppeal(reportUser, reason);
             return "user";
         }else if (choice == 6){
             System.out.println("Logout successful.");
+            mm.saveAccountsToFile("Test.txt");
             return "logout"; 
         }
         return "user";
@@ -181,8 +182,12 @@ public class Menu {
                 return "parent";
             }
         }else if(choice == 2){
-            a.setEmailVerified(true);
-            System.out.println("Email verified.");
+            if(a.isEmailVerified()){
+                System.out.println("Email already verified.");
+            }else{
+                a.setEmailVerified(true);
+                System.out.println("Email verified.");
+            }
             mm.saveAccountsToFile("Test.txt");
             return "user";
         }else if(choice == 3){
@@ -231,7 +236,7 @@ public class Menu {
             System.out.println("12. marital status");
             System.out.println("13. preferred max age");
             System.out.println("14. preferred min age");
-            System.out.println("15. mbility mimitations");
+            System.out.println("15. mobility limitations");
             System.out.println("=======================");
             choice = input(1,15,sc);
         }else{

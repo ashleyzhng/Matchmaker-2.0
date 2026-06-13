@@ -1,4 +1,14 @@
 
+/*
+   File Name: User.java
+   Name: Joyce Lin
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The User class is an subclass that extends Account. It represents a User account type in the matchmaker system.
+*/
+
 import java.time.*;
 import java.util.ArrayList;
 
@@ -19,6 +29,7 @@ public class User extends Account {
     private ArrayList<Event> eventHosted;
     private Tag interestTag;
 
+    //constructor for manual account creation
     public User(String u, String p, String e, String n, LocalDate b, String pc, String c, String bi, char g, char pg, Tag t){
         super(u, p, e);
         name = n;
@@ -33,7 +44,7 @@ public class User extends Account {
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
-
+    //constructor for loading from file
     public User(String u, String p, String e, boolean ev, String n, LocalDate b, String pc, String c, String bi, char g, char pg, Tag t){
         super(u, p, e, ev);
         name = n;
@@ -49,71 +60,55 @@ public class User extends Account {
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
-    // accesors mutators
+    //---accessors and mutators as necessary---
     public String getName(){
         return name;
     }
-
     public void setName(String n){
         name = n;
     }
-
     public LocalDate getBirthday(){
         return birthday;
     }
-
     public void setBirthday(LocalDate b){
         birthday = b;
     }
-
     public String getPostalCode(){
         return postalCode;
     }
-
     public void setPostalCode(String pc){
         postalCode = pc;
     }
-
     public String getCity(){
         return city;
     }
-
     public void setCity(String c){
         city = c;
     }
-
     public String getBio(){
         return bio;
     }
-
     public void setBio(String b){
         bio = b;
     }
-
     public char getGender(){
         return gender;
     }
-
     public void setGender(char g){
         gender = g;
     }
-
     public char getPreferredGender(){
         return preferredGender;
     }
-
     public void setPreferredGender(char pg){
         preferredGender = pg;
     }
-
     public boolean getMatched(){
         return matched;
     }
-
     public void setMatched(boolean m){
         matched = m;
     }
-
     public Match[] getMatches(){
         return matches;
     }
@@ -123,15 +118,12 @@ public class User extends Account {
     public void setMatchHistory(ArrayList<Match> mh){
         matchHistory = mh;
     }
-
     public int getNumMatches(){
         return numMatches;
     }
-
     public void setNumMatches(int n){
         numMatches = n;
     }
-
     public ArrayList<Match> getMatchHistory(){
         return matchHistory;
     }
@@ -147,21 +139,28 @@ public class User extends Account {
     public void setEventHosted(ArrayList<Event> eh){
         eventHosted = eh;
     }
-
     public Tag getTag(){
         return interestTag;
     }
     
+    /* Stores a current match for this user
+    * @param Match the match to store
+    */
     public void storeMatch(Match m){
         if (numMatches < matches.length){
             matches[numMatches] = m;
             numMatches ++;
         }
     }
+    /* Stores a match in this user's match history
+    * @param Match the match to add to the history
+    */
     public void storeMatchHistory(Match m){
         matchHistory.add(m);
     }
-
+    /* Removes a match from this user's current matches
+    * @param Match the match to remove
+    */
     public void deleteMatch(Match m){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] == m){
@@ -175,6 +174,9 @@ public class User extends Account {
             }
         }
     }
+    /* Removes a match with the specified name from this user's matches
+    * @param String the name of the match to remove
+    */
     public void deleteMatch(String name){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] instanceof EventMatch && ((EventMatch)matches[i]).getEventTitle().equals(name)){
@@ -187,6 +189,10 @@ public class User extends Account {
             }
         }
     }
+    /* Retrieves an event match with the specified name
+    * @param String the name of the event match
+    * @return the matching EventMatch, or null if not found
+    */
     public EventMatch getEventMatch(String name){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] instanceof EventMatch){ 
@@ -197,7 +203,9 @@ public class User extends Account {
         }   
         return null;
     } 
-
+    /* Determines whether this user has reached the maximum number of matches
+    * @return true if the maximum number of matches has been reached, false otherwise
+    */
     public boolean maxMatches(){
         if(numMatches == MAX_MATCHES){
             return true;
@@ -205,10 +213,11 @@ public class User extends Account {
             return false;
         }
     }
-    public void maxEvents(){
-        // update later
-    }
-        
+    /* Determines whether this user is available during a given time period
+    * @param LocalTime the start time to check
+    * @param LocalTime the end time to check
+    * @return true if the user is available, false otherwise
+    */
     public boolean isAvailable(LocalTime start, LocalTime end){
         for (int i = 0; i < matches.length; i ++){
             if (matches[i] != null && matches[i] instanceof EventMatch){
@@ -222,7 +231,9 @@ public class User extends Account {
         }
         return true;
     }
-
+    /* Updates this user's tags based on the tags of a given event
+    * @param Event the event whose tags will be used to update the user
+    */
     public void updateTags(Event e){
         // update user tags based on event tags
         interestTag.updateTag(e.getCategories().getReligion(), e.getCategories().getSports(),
@@ -230,7 +241,8 @@ public class User extends Account {
         e.getCategories().getFitness(), e.getCategories().getGaming(), e.getCategories().getCooking(),
         e.getCategories().getAnimal(), e.getCategories().getReading());
     }
-    
+    /* Removes expired matches from this user's current matches
+    */
     public void updateMatches(){
         if(numMatches > 0){
             for(int i = 0; i<numMatches; i++){
@@ -241,38 +253,51 @@ public class User extends Account {
             }
         }
     }
-
+    /* Creates an appeal reporting a specified user for a given reason
+    * @param User the user being reported
+    * @param String the reason for the report
+    * @return the created appeal
+    */
     public Appeal reportUser(User u, String reason){
         Appeal appeal = new Appeal(u, reason);
         // semd to admin in runner class
         return appeal;
     }
-
+    /* Creates an appeal reporting a specified user
+    * @param User the user being reported
+    * @return the created appeal
+    */
     public Appeal reportUser(User u){
         Appeal appeal = new Appeal(u, "No reason provided");
         // semd to admin in runner class
         return appeal;
     }
-
+    /* Displays this user's match history
+    */
     public void printMatchHistory(){
         System.out.println("Match History:");
         for(int i = 0; i < matchHistory.size(); i++){
             System.out.println(matchHistory.get(i));
         }
     }
+    /* Displays this user's event history
+    */
     public void printEventHistory(){
         System.out.println("Event History:");
         for(int i = 0; i < eventHistory.size(); i++){
             System.out.println(eventHistory.get(i));
         }
     }
+    /* Displays the events hosted by this user
+    */
     public void printHostedEvents(){
         System.out.println("Hosted Events:");
         for(int i = 0; i < eventHosted.size(); i++){
             System.out.println(eventHosted.get(i));
         }
     }
-
+    /* Displays this user's profile information
+    */
     public void printProfile(){ 
         System.out.println("Name: " + name);
         System.out.println("Birthday: " + birthday);
@@ -281,7 +306,9 @@ public class User extends Account {
         System.out.println("Gender: " + gender);
         System.out.println("Preferred Gender: " + preferredGender);
     }
-
+    /* Returns a string representation of this user
+    * @return a string containing information about this user
+    */
     public String toString(){
         return "Username: " + getUsername() + "\nName: " + name + "\nBirthday: " + birthday + "\nPostal Code: " + postalCode + "\nCity: " + city + "\nBio: " + bio + "\nGender";
     }

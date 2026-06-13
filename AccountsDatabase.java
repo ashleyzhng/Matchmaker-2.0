@@ -1,9 +1,19 @@
+/*
+   File Name: AccountDatabase.java
+   Name: Joyce Lin
+   Class: ICS4U1
+   Date: June 2026
+
+   Description:
+   The AccountDatabase class contains an Array List of accounts.
+*/
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
 public class AccountsDatabase {
     private ArrayList<Account> accounts;
+    //constructors
     public AccountsDatabase(){
         accounts = new ArrayList<Account>();
     }
@@ -11,10 +21,19 @@ public class AccountsDatabase {
         accounts = new ArrayList<>();
         loadFromFile("Accounts.txt", mm);
     }
+    //---accessors and mutators as necessary---
     public ArrayList<Account> getAccounts(){
         return accounts;
     }
-
+    public void setAccounts(ArrayList<Account> a){
+        accounts = a;
+    }
+    
+    /* Deletes an account if the provided password matches the account's password
+    * @param Account the account to delete
+    * @param String the password used for verification
+    * @return true if the account was deleted, false otherwise
+    */
     public boolean deleteAccount(Account a, String pass){
         if(a != null && a.correctPass(pass)){
             accounts.remove(a);
@@ -24,9 +43,15 @@ public class AccountsDatabase {
             return false;
         }
     }
+    /* Adds an account to the account database
+    * @param Account the account to add
+    */
     public void addAccount(Account a){
         accounts.add(a);
     }
+    /* Retrieves all user accounts in the database
+    * @return an array containing all user accounts
+    */
     public User[] getUsers(){
         User[] userArray = new User[accounts.size()];
         int index = 0;
@@ -38,7 +63,10 @@ public class AccountsDatabase {
         }
         return userArray;
     }
-    // all the searching methods for accounts database
+    /* Searches for a user account matching the given user
+    * @param User the user to search for
+    * @return the matching user, or null if not found
+    */
     public User searchByUser(User u){
         boolean found = false;
         User foundUser = null;
@@ -51,7 +79,10 @@ public class AccountsDatabase {
         }
         return foundUser;
     }
-
+    /* Determines whether a username already exists in the database
+    * @param String the username to search for
+    * @return true if the username exists, false otherwise
+    */
     public boolean usernameExists(String u){
         if(searchByUsername(u) == null){
             return false;
@@ -59,15 +90,10 @@ public class AccountsDatabase {
         return true;
     }
 
-    public Account searchAccountByUsername(String targetUsername){
-        for (int i = 0; i < accounts.size(); i++){
-            if(accounts.get(i).getUsername().equals(targetUsername)){
-                return accounts.get(i);
-            }
-        }
-        return null;
-    }
-    // add user from file
+    /* Loads account data from a file
+    * @param String the name of the file to load from
+    * @param Matchmaker the matchmaker associated with the accounts
+    */
     public void loadFromFile(String file, Matchmaker mm){
         try{
             BufferedReader in = new BufferedReader(new FileReader(file));
@@ -101,7 +127,9 @@ public class AccountsDatabase {
             System.out.println("File format error or missing data");
         }
     }
-
+    /* Loads match data for users
+    * @param Matchmaker the matchmaker containing the match information
+    */
     public void loadMatches(Matchmaker mm){
         MatchFileManager loader = new MatchFileManager(mm);
         for (int i = 0; i < accounts.size(); i ++){
@@ -111,7 +139,9 @@ public class AccountsDatabase {
             }
         }
     }
-
+    /* Saves match data for users
+    * @param Matchmaker the matchmaker containing the match information
+    */
     public void saveMatches(Matchmaker mm){
         MatchFileManager loader = new MatchFileManager(mm);
         for (int i = 0; i < accounts.size(); i ++){
@@ -121,7 +151,10 @@ public class AccountsDatabase {
             }
         }
     }
-
+    /* Searches for a user with a specific username
+    * @param String the username to search for
+    * @return the matching user, or null if not found
+    */
     public User searchByUsername(String targetUsername){
         for (int i = 0; i < accounts.size(); i++){
             if(accounts.get(i) instanceof User){
@@ -133,7 +166,10 @@ public class AccountsDatabase {
         }
         return null;
     }
-
+    /* Searches for a user with a specific first name
+    * @param String the first name to search for
+    * @return the matching user, or null if not found
+    */
     public User searchByFirstName(String firstName) {
         for (int i = 0; i<accounts.size(); i++) {
             if (accounts != null && ((User)accounts.get(i)).getName() != null) {
@@ -145,6 +181,10 @@ public class AccountsDatabase {
         }
         return null;
     }
+    /* Searches for a user with a specific last name
+    * @param String the last name to search for
+    * @return the matching user, or null if not found
+    */
     public User searchByLastName(String lastName) {
         for (int i = 0; i<accounts.size(); i++)  {
             if (accounts != null && ((User)accounts.get(i)).getName() != null) {
@@ -156,7 +196,9 @@ public class AccountsDatabase {
         }
         return null;
     }
-
+    /* Sorts a list of users alphabetically by first name
+    * @param ArrayList<User> the list of users to sort
+    */
     public void sortByFirstName(ArrayList<User> accounts) {
         for (int i = 0; i < accounts.size() - 1; i++) {
             for (int j = i + 1; j < accounts.size(); j++) {
@@ -170,6 +212,10 @@ public class AccountsDatabase {
             }
         }
     }
+    /* Sorts accounts by user type and returns the sorted users
+    * @param ArrayList<Account> the list of accounts to sort
+    * @return an array of users sorted by user type
+    */
     public User[] sortByUserType(ArrayList<Account> accounts) {
         User[] sorted = new User[accounts.size()];
             int index = 0;
