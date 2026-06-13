@@ -498,6 +498,25 @@ public class EventDatabase {
         return false;
     }
 
+    public void shiftPendingFrontToBack() {
+
+
+    if (numPendingEvents <= 1) {
+        return;
+    }
+
+
+    Event temp = pendingEventList[0];
+
+
+    for (int i = 0; i < numPendingEvents - 1; i++) {
+        pendingEventList[i] = pendingEventList[i + 1];
+    }
+
+
+    pendingEventList[numPendingEvents - 1] = temp;
+}
+
     /*
         Parameters: none
         Return values: void
@@ -551,7 +570,7 @@ public class EventDatabase {
         Purpose: prints approved events in order of time soonest to lastest
     */
     public void printEventByTime() {
-        sortEventsByTime();
+        sortApprovedByDateThenTime();
         for (int i = 0; i < numApprovedEvents; i++) {
             System.out.println(approvedEventList[i].getTitle());
         }
@@ -840,40 +859,96 @@ public class EventDatabase {
             }
         }
     }
-    
-    
-    public void SortApprovedByCostThenTitle() {
-    boolean sorted = false;
 
-    for (int upperBound = size - 1; upperBound >= 1 && !sorted; upperBound--) {
+    /*
+        Parameters: none
+        Return values: void
+        Preconditions: events must exist in approvedEventList
+        Purpose: sorts events by earliest dates, then by time in case of tie
+    */
+    public void sortApprovedByDateThenTime() {
 
-        sorted = true;
+        for (int i = 1; i < numApprovedEvents; i++) {
 
-        for (int j = 0; j < upperBound; j++) {
+            Event itemToCompare = approvedEventList[i];
+            int blankIndex = i;
 
-            boolean greater = false;
+            while (blankIndex > 0 &&
+                (itemToCompare.getDate().isBefore(approvedEventList[blankIndex - 1].getDate()) ||
+                (itemToCompare.getDate().equals(approvedEventList[blankIndex - 1].getDate()) &&
+                itemToCompare.getStartTime().isBefore(approvedEventList[blankIndex - 1].getStartTime())))) {
 
-            // Primary: cost
-            if (events[j].getOriginalCost() > events[j + 1].getOriginalCost()) {
-                greater = true;
+                approvedEventList[blankIndex] = approvedEventList[blankIndex - 1];
+                blankIndex--;
             }
 
-            // Secondary: alphabetical order (if same cost)
-            else if (events[j].getOriginalCost() == events[j + 1].getOriginalCost()) {
-                if (events[j].getTitle()
-                        .compareToIgnoreCase(events[j + 1].getTitle()) > 0) {
+            approvedEventList[blankIndex] = itemToCompare;
+        }
+    }   
+    
+     /*
+        Parameters: none
+        Return values: void
+        Preconditions: events must exist in approvedEventList
+        Purpose: sorts events by cheapest cost, then alpha order in case of tie
+    */
+    public void sortApprovedByCostThenTitle() {
+        boolean sorted = false;
+
+        for (int upperBound = numApprovedEvents - 1; upperBound >= 1 && !sorted; upperBound--) {
+
+            sorted = true;
+
+            for (int j = 0; j < upperBound; j++) {
+
+                boolean greater = false;
+
+                // First criterion - cost
+                if (approvedEventList[j].compareToCost(approvedEventList[j + 1]) > 0) {
                     greater = true;
                 }
-            }
 
-            if (greater) {
-                sorted = false;
+                // Second criterion - alphabetical order (if same cost)
+                else if (approvedEventList[j].compareToCost(approvedEventList[j + 1]) == 0) {
+                    if (approvedEventList[j].getTitle().compareToIgnoreCase(approvedEventList[j + 1].getTitle()) > 0) {
+                        greater = true;
+                    }
+                }
 
-                Event temp = events[j];
-                events[j] = events[j + 1];
-                events[j + 1] = temp;
+                if (greater) {
+                    sorted = false;
+
+                    Event temp = approvedEventList[j];
+                    approvedEventList[j] = approvedEventList[j + 1];
+                    approvedEventList[j + 1] = temp;
+                }
             }
         }
+    }
+
+     /*
+        Parameters: LocalDate, double
+        Return values: void
+        Preconditions: events must exist in approvedEventList
+        Purpose: searches and prints all events that take place on the date AND have a cost equal to or lower than specified double
+    */
+public void searchApprovedByDateAndCost(LocalDate targetDate, double maxCost) {
+    sortApprovedByCostThenTitle();
+    boolean found = false;
+
+    for (int i = 0; i < numApprovedEvents; i++) {
+
+        if (approvedEventList[i].getDate().equals(targetDate) &&
+            approvedEventList[i].getOriginalCost() <= maxCost) {
+
+            System.out.print(approvedEventList[i]);
+            System.out.println(", Cost: $" + approvedEventList[i].getOriginalCost());
+            found = true;
+        }
+    }
+
+    if (!found) {
+        System.out.println("No matching events found.");
     }
 }
 }

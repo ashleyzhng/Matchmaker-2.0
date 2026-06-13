@@ -280,6 +280,10 @@ public abstract class Event {
         }
     }
 
+    public double compareToCost(Event other) {
+        return this.originalCost - other.originalCost;
+    }
+
     /*
         Parameters: Event
         Return values: Event
