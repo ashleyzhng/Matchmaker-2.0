@@ -4,10 +4,31 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * ----------------------------------------------------------------------------
+ * File Name:    Menu.java
+ * Authors:      Ashley Zhong, Joyce Lin
+ * Course:       ICS4U1
+ * Description:  Handles the User Interface (UI) console menus for the 
+ * Matchmaker system. This class manages states for visitor 
+ * navigation, user actions (profile updates, matching, and 
+ * reporting), admin controls (event approval and appeal resolutions), 
+ * and account authentication workflows.
+ * ----------------------------------------------------------------------------
+ */
 public class Menu {
-    // all menu/ui methods go here
+    // Handles event-related UI screens
     EventMenu em = new EventMenu();
     
+     /**
+     * Handles the login process for users and admins.
+     * Asks for a username and password, checks if they are correct, 
+     * and lets the person exit back to the main menu if they type '0'.
+     *
+     * @param sc  The Scanner used to read what the user types
+     * @param mm  The Matchmaker system that holds all account records
+     * @return    The login results, including the next screen to show and the logged-in account
+     */
     public LoginResults login(Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("Enter the following information to login('0' to exit):");
@@ -43,7 +64,14 @@ public class Menu {
             System.out.println("Incorrect password. Please try again.");
         }
     }
-
+    /**
+     * Displays the very first menu of the program.
+     * Gives choices to log in, reset a password, create a new account, or exit.
+     *
+     * @param sc  The Scanner used to read the user's choice
+     * @param mm  The Matchmaker system instance
+     * @return    A text string telling the program which screen to open next
+     */
     public String getMainMenu(Scanner sc, Matchmaker mm){
         flush();
         System.out.println("Welcome to Matchmaker!");
@@ -66,6 +94,17 @@ public class Menu {
         }
         return "";
     }
+
+    /**
+     * Displays the main menu for a regular user after they log in.
+     * Lets the user look at matches, host events, view their profile, 
+     * change settings, report another user, or log out.
+     *
+     * @param u   The User who is currently logged in
+     * @param sc  The Scanner used to read the user's choice
+     * @param mm  The Matchmaker system instance
+     * @return    A text string telling the program which screen to open next
+     */
     public String getUserMenu(User u, Scanner sc, Matchmaker mm){
         System.out.println("Welcome, " + u.getName() + "!");
         System.out.println("=======================");
@@ -108,7 +147,16 @@ public class Menu {
         }
         return "user";
     }
-
+    /**
+     * Displays the account settings menu.
+     * Gives choices to edit profile details, verify an email, or delete the account. 
+     * It automatically sends users, admins, or parents to the right screen.
+     *
+     * @param sc  The Scanner used to read the user's choice
+     * @param a   The Account that is being changed
+     * @param mm  The Matchmaker system instance that saves the files
+     * @return    A text string telling the program which screen to open next
+     */
     public String getAccountSettingsMenu(Scanner sc, Account a, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Account Settings: ");
@@ -148,6 +196,15 @@ public class Menu {
         return "user";
     }
 
+    /**
+     * Shows a list of details a User can change on their profile.
+     * It adds extra options if the user is an Adult or a Senior, 
+     * then sends their choice to the actual profile editor.
+     *
+     * @param u   The User whose profile details are being changed
+     * @param sc  The Scanner used to read the user's choice
+     * @param mm  The Matchmaker system instance
+     */
     public void userChangeDetails(User u, Scanner sc, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Choose one of the following to change");
@@ -184,6 +241,14 @@ public class Menu {
         editProfile(choice, u, sc, mm);
     }
 
+    /**
+     * Shows a list of basic details a generic Account can change.
+     * Limits the choices to just Username, Password, and Email (used for Admins or Parents).
+     *
+     * @param a   The Account being changed
+     * @param sc  The Scanner used to read the user's choice
+     * @param mm  The Matchmaker system instance
+     */
     public void accountChangeDetails(Account a, Scanner sc, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Choose one of the following to change");
@@ -195,6 +260,16 @@ public class Menu {
         editProfile(choice, a, sc, mm);
     }
 
+    /**
+     * Changes a specific piece of information on a profile based on the user's menu choice.
+     * It handles typing in new text, making sure usernames aren't already taken, 
+     * setting genders, and updating specific Adult/Senior settings.
+     *
+     * @param choice  The number of the menu option the user wants to change
+     * @param a       The Account or User profile being edited
+     * @param sc      The Scanner used to read the new information typed by the user
+     * @param mm      The Matchmaker system instance
+     */
     public void editProfile(int choice, Account a, Scanner sc, Matchmaker mm){
         User u = null;
         if(a instanceof User){
@@ -317,6 +392,16 @@ public class Menu {
         }
     }
 
+    /**
+     * Displays the menu for system Administrators.
+     * Gives admins the tools to view users, check reports (appeals), 
+     * delete bad accounts, and approve or review community events.
+     *
+     * @param sc  The Scanner used to read the admin's choice
+     * @param mm  The Matchmaker system instance
+     * @param ad  The Admin who is currently logged in
+     * @return    A text string telling the program which screen to open next
+     */
     public String getAdminMenu(Scanner sc, Matchmaker mm, Admin ad){
         System.out.println("=======================");
         System.out.println("Admin Menu: ");
@@ -357,6 +442,15 @@ public class Menu {
         return "logout";
     }
 
+    /**
+     * Helps a user reset their password if they forgot it.
+     * Checks if the username matches the email address and makes sure 
+     * the email was verified before allowing the password change.
+     *
+     * @param sc  The Scanner used to read the user's input
+     * @param mm  The Matchmaker system instance
+     * @return    A text string that sends the user back to the main menu
+     */
     public String resetPassword(Scanner sc, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("ENTER the following information");
@@ -380,7 +474,15 @@ public class Menu {
         System.out.println("Email entered is Incorrect");
         return "main";
     }
-
+    /**
+     * Displays the options for creating a new account.
+     * The user can choose to load a batch of accounts from a file 
+     * or create a brand new user account by typing in their information.
+     *
+     * @param sc  The Scanner used to read the user's choice
+     * @param mm  The Matchmaker system instance
+     * @return    A text string telling the program which screen to open next
+     */
     public String getCreateAccountMenu(Scanner sc, Matchmaker mm){
         System.out.flush();
         System.out.println("=======================");
@@ -402,6 +504,14 @@ public class Menu {
         return "main";
     }
 
+    /**
+     * Walks a new user through the step-by-step account sign-up process.
+     * Checks that the username isn't taken, calculates their age from their birthday, 
+     * and automatically creates a Teen, Adult, or Senior account based on how old they are.
+     *
+     * @param sc  The Scanner used to read all the registration answers
+     * @param mm  The Matchmaker system instance where the new account will be saved
+     */
     public void createUser(Scanner sc, Matchmaker mm){ 
         System.out.flush();
         System.out.println("ENTER THE FOLLOWING INFORMATION" );
@@ -476,6 +586,13 @@ public class Menu {
         }
     }
 
+    /**
+     * Asks the user a series of Yes/No questions about their hobbies and interests.
+     * Saves these choices into a Tag object so the system can use them to find matches later.
+     *
+     * @param sc  The Scanner used to read the choices (1 for Yes, 2 for No)
+     * @return    A new Tag object filled with the user's hobby preferences
+     */
     public Tag tagMenu(Scanner sc){
         int religion = 0, sports = 0, music = 0, art = 0, traveling = 0, fitness = 0, gaming = 0, cooking = 0, animal = 0, reading = 0;
         // prompts
@@ -533,6 +650,16 @@ public class Menu {
         return new Tag(religion, sports, music, art, traveling, fitness, gaming, cooking, animal, reading);
     }
 
+    /**
+     * Displays the main matching options for a user.
+     * Shows how many active matches they have and prevents them from making new ones 
+     * if they hit the maximum limit of 5.
+     *
+     * @param sc  The Scanner used to read the user's choice
+     * @param u   The User looking at the match options
+     * @param mm  The Matchmaker system instance
+     * @return    A text string telling the program which screen to open next
+     */
     public String matchMenu(Scanner sc, User u, Matchmaker mm){
         int pending = u.getNumMatches();  
         
@@ -561,6 +688,14 @@ public class Menu {
         }
         return "user";
     }
+    /**
+     * A helper method that prints out numbers representing the user's active matches.
+     *
+     * @param sc    The Scanner instance
+     * @param user  The User whose matches are being counted
+     * @param mm    The Matchmaker system instance
+     * @return      A text string that loops back to the match menu
+     */
     public String viewMatches(Scanner sc, User user, Matchmaker mm){
         int numMatch = user.getNumMatches();
         for (int i = 0; i < numMatch; i ++){
@@ -569,6 +704,15 @@ public class Menu {
         matchMenu(sc, user, mm);
         return "matchMenu";
     }
+    /**
+     * Displays options to create a brand new match.
+     * Users can choose to match by hobbies (interests), distance, or select single/double date events.
+     *
+     * @param sc    The Scanner used to read the user's choice
+     * @param user  The User requesting a new match
+     * @param mm    The Matchmaker system instance that runs the matching algorithm
+     * @return      A text string that loops back to the match menu
+     */
     public String newMatchMenu(Scanner sc, User user, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("New Match Menu: ");
@@ -583,47 +727,25 @@ public class Menu {
             if(choice >= 1 && choice <= 4){
             Match m = mm.generateMatch(user, choice);
             if (m != null){
-                user.storeMatch(m); // Ensure match is stored in users
                 System.out.println("Match generated and stored successfully!");
                 System.out.println(m);
             } else {
                 System.out.println("No match could be generated due to incompatibility");
             }
-            
-            /* 
-            if(m != null){
-                boolean validMatch = true;
-                if (m instanceof PersonMatch){
-                    validMatch = ((PersonMatch)m).getSoulmate() != null;
-                }
-                if(validMatch){
-                    boolean alreadyStored = false;
-                    Match[] existingMatches = user.getMatches();
-                    alreadyStored = false;
-                    for (int i = 0; i < existingMatches.length; i++) {
-                        if (existingMatches[i] == m) {
-                            alreadyStored = true;
-                        }
-                    }
-
-                    if (!alreadyStored) {
-                        user.storeMatch(m);
-                        System.out.println("\n✓ Match stored successfully!");
-                        System.out.println("You now have " + user.getNumMatches() + " pending match(es).\n");
-                    }
-
-                    System.out.println(m);
-                } else {
-                    System.out.println("No match could be generated.");
-                }
-            } else {
-                System.out.println("No match could be generated.");
-            }
-                */
         }
         return matchMenu(sc, user, mm);
-
     }
+
+    /**
+     * Displays a list of all the user's current, active matches.
+     * Automatically identifies what kind of match it is to print the correct details, 
+     * like expiration dates or event times.
+     *
+     * @param sc    The Scanner used to read the user's choice
+     * @param user  The User looking at their active matches
+     * @param mm    The Matchmaker system instance
+     * @return      A text string that opens the menu for a single chosen match
+     */
     public String currentMatchMenu(Scanner sc, User user, Matchmaker mm){
         System.out.println("=======================");
         System.out.println("Current Matches Menu: ");
@@ -651,6 +773,16 @@ public class Menu {
         return matchMenu(sc, user, mm);
     }
 
+    /**
+     * Displays the details for one specific match and lets the user make a decision.
+     * The user can Accept the match, Reject it, or mark it as Completed and give it a rating from 1 to 5.
+     *
+     * @param match  The specific Match that the user is reviewing
+     * @param sc     The Scanner used to read the user's choice and rating
+     * @param user   The User interacting with this match
+     * @param mm     The Matchmaker system instance
+     * @return       A text string that takes the user back to the current matches list
+     */
     public String singleMatchMenu(Match match, Scanner sc, User user, Matchmaker mm){
         if (match == null){
             System.out.println("Match not available anymore!");
@@ -704,7 +836,15 @@ public class Menu {
         return currentMatchMenu(sc, user, mm);
     }
 
-    
+    /**
+     * Safely reads a number typed by the user and ensures it falls within a specific range.
+     * If the user types letters instead of a number, it catches the error and asks them to try again.
+     *
+     * @param firstChoice  The lowest valid number the user is allowed to pick
+     * @param lastChoice   The highest valid number the user is allowed to pick
+     * @param sc           The Scanner used to read the input
+     * @return             A validated number that is guaranteed to be within the allowed menu range
+     */
     public int input(int firstChoice, int lastChoice, Scanner sc){ // change to menu input
         while(true){
             try {
@@ -722,6 +862,14 @@ public class Menu {
             }
         }
     }
+
+    /**
+     * Prompts the user to type a date in the YYYY-MM-DD format.
+     * Makes sure the text can actually be turned into a real date and checks that it isn't in the future.
+     *
+     * @param sc  The Scanner used to read the date text
+     * @return    A working LocalDate object representing the validated date
+     */
     public LocalDate validLocalDate(Scanner sc){
         LocalDate birthday = null;
         while (birthday == null) {
@@ -739,7 +887,10 @@ public class Menu {
         }
         return birthday;
     }
-
+    
+    /**
+     * Prints 50 empty lines in the console window to clear old text off the screen.
+     */
     public void flush(){
         for(int i = 0; i < 50; i++){
             System.out.println();

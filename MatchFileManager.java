@@ -57,7 +57,7 @@ public class MatchFileManager {
             int numMatches = Integer.parseInt(in.readLine());
             User user = matchmaker.searchByUsername(username);
             user.setNumMatches(numMatches);
-            matches = new Match[numMatches];
+            matches = new Match[5];
             int historySize = Integer.parseInt(in.readLine());
             matchHistory = new ArrayList<Match>();
 
@@ -190,7 +190,6 @@ public class MatchFileManager {
             in.close();
             user.setMatches(matches);
             user.setMatchHistory(matchHistory);
-            user.setNumMatches(matches.length);
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
             matches = new Match[0];

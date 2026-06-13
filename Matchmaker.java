@@ -4,27 +4,89 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-
+/**
+ * ----------------------------------------------------------------------------
+ * File Name:    Matchmaker.java
+ * Authors:      Ashley Zhong, Joyce Lin, Kathy Wu
+ * Course:       ICS4U1
+ * Description:  The central core of the Matchmaker system. It connects the 
+ * account, event, and appeal databases together. It handles 
+ * filtering eligible users, setting up pools for events, 
+ * generating different match types, and saving or loading data.
+ * ----------------------------------------------------------------------------
+ */
 public class Matchmaker {
+    // Stores and manages all community events
     EventDatabase events;
+    // Stores and manages all system accounts and user profiles
     AccountsDatabase accounts;
+    // Stores and manages all user-submitted reports and appeals
     AppealDatabase appeals;
 
+    /**
+     * Initializes a new Matchmaker backend coordinator.
+     * Sets up the databases and loads existing match history from storage.
+     */
     public Matchmaker(){
         events = new EventDatabase();
         accounts = new AccountsDatabase(this);
         appeals = new AppealDatabase(); // changes
         accounts.loadMatches(this);
     }
+
+    /**
+     * Gets the database that stores all accounts.
+     *
+     * @return      The database containing all system accounts
+     */
     public AccountsDatabase getAccounts(){
         return accounts;
     }
+
+    /**
+     * Gets the database that stores all accounts.
+     *
+     * @return      The database containing all system accounts
+     */
     public AppealDatabase getAppeals(){
         return appeals;
     }
+
+    /**
+     * Gets the database that stores all events.
+     *
+     * @return      The database containing all created events
+     */
     public EventDatabase getEvents(){
         return events;
     }
+
+    /**
+     * Verifies user credentials for quick authentication bypass tests.
+     *
+     * @param username The typed login name
+     * @param password The typed login security pass
+     * @return      True if credentials match an active user, false if not
+     */
+    public boolean login(String username, String password){
+        User[] users = accounts.getUsers();
+        for(int i = 0; i < users.length; i++){
+            if(users[i] != null && users[i].getUsername().equals(username) && users[i].correctPass(password)){
+                System.out.println("Login Successful");
+                return true;
+            }
+        }
+        System.out.println("Login Failed");
+        return false;
+    }
+
+    /**
+     * Filters all registered accounts to find eligible matching candidates.
+     * Skips the user themselves, past matches, and active current matches.
+     *
+     * @param user  The user looking for candidate matches
+     * @return      An ArrayList of valid, unmatched users
+     */
     public ArrayList<User> eligibleUserPool(User user) {
         User[] all = accounts.getUsers();
         ArrayList<Match> matchHistory = user.getMatchHistory();
@@ -79,6 +141,12 @@ public class Matchmaker {
         return pool;
     }
 
+    /**
+     * Converts the list of eligible users into a basic object array.
+     *
+     * @param user  The user requesting the candidate pool
+     * @return      An Object array containing eligible target users
+     */
     public Object[] generateUserPool(User user){
         ArrayList <User> pool = eligibleUserPool(user);
         Object[] poolArray = new Object[pool.size()];
@@ -88,7 +156,13 @@ public class Matchmaker {
         return poolArray; 
     }
         
-    
+    /**
+     * Finds approved 2-person events (Virtual or Outdoor) available for matching.
+     * Verifies that the event slots are open and attendees are compatible.
+     *
+     * @param user  The user looking for an event match
+     * @return      An Object array of eligible small event matches
+     */
     public Object[] generateSingleEventPool(User user){
         if (user == null){
             return null;
@@ -113,6 +187,13 @@ public class Matchmaker {
         return pool.toArray();
     }
 
+    /**
+     * Finds approved 4-person events (Indoor) available for matching.
+     * Ensures the event has open space and existing attendees are valid match candidates.
+     *
+     * @param user  The user looking for a double-date event match
+     * @return      An Object array of eligible large event matches
+     */
     public Object[] generateDoubleEventPool(User user){
         if(user == null){
             return null;
@@ -161,41 +242,61 @@ public class Matchmaker {
         return pool.toArray();
     }
 
-    public boolean login(String username, String password){
-        User[] users = accounts.getUsers();
-        for(int i = 0; i < users.length; i++){
-            if(users[i] != null && users[i].getUsername().equals(username) && users[i].correctPass(password)){
-                System.out.println("Login Successful");
-                return true;
-            }
-        }
-        System.out.println("Login Failed");
-        return false;
-    }
+    /**
+     * Creates a new match card based on shared hobbies and tags.
+     *
+     * @param user  The user requesting a match
+     * @return      An initialized InterestMatch object
+     */
     public InterestMatch generateInterestMatch(User user){
         InterestMatch match = new InterestMatch(user);
         Object[] pool = generateUserPool(user);
         match.execute(pool);
         return match;
     }
+    /**
+     * Creates a new match card based on closest regional location.
+     *
+     * @param user  The user requesting a match
+     * @return      An initialized DistanceMatch object
+     */
     public DistanceMatch generateDistanceMatch(User user){
         DistanceMatch match = new DistanceMatch(user);
         Object[] pool = generateUserPool(user);
         match.execute(pool);
         return match;
     }
+    /**
+     * Creates a new match card centered around a 2-person event pairing.
+     *
+     * @param user  The user requesting an event match
+     * @return      An initialized SingleEventMatch object
+     */
     public EventMatch generateSingleEventMatch(User user){
         EventMatch match = new SingleEventMatch(user);
         Object[] pool = generateSingleEventPool(user);
         match.execute(pool);
         return match;
     }
+    /**
+     * Creates a new match card centered around a 4-person date event group.
+     *
+     * @param user  The user requesting a group match
+     * @return      An initialized DoubleEventMatch object
+     */
     public EventMatch generateDoubleEventMatch(User user){
         EventMatch match = new DoubleEventMatch(user);
         Object[] pool = generateDoubleEventPool(user);
         match.execute(pool);
         return match;
     }
+    /**
+     * Main router method to generate a match by a specific numeric category.
+     *
+     * @param user  The user requesting a match
+     * @param type  The type code (1=Interest, 2=Distance, 3=Single Event, 4=Double Event)
+     * @return      The newly generated Match object, or null if the type number is wrong
+     */
     public Match generateMatch(User user, int type){
         if(type == 1){
             return generateInterestMatch(user);
@@ -208,7 +309,12 @@ public class Matchmaker {
         }
         return null;
     }
-
+    /**
+     * Exports all account records cleanly into a text file storage.
+     * Automatically formats details based on specific type (Teen, Adult, Senior, Admin).
+     *
+     * @param file  The path destination filename string
+     */
     public void saveAccountsToFile(String file){
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
@@ -284,11 +390,19 @@ public class Matchmaker {
         }
         accounts.saveMatches(this);
     }
-
+    /**
+     * Directs the database component to import account records from a file.
+     *
+     * @param file  The source data file path string
+     */
     public void loadAccountsFromFile(String file){
         accounts.loadFromFile(file, this);
     }
-
+    /**
+     * Saves all user reports and reasons out to a plain text file.
+     *
+     * @param file  The path destination filename string
+     */
     public void saveAppealsToFile(String file){
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
@@ -303,7 +417,11 @@ public class Matchmaker {
             System.out.println("Error Accessing File"); 
         }
     }
-
+    /**
+     * Parses and builds the appeal tracking data back from a text storage file.
+     *
+     * @param file  The source report data file path string
+     */
     public void loadAppealsFromFile(String file){
         ArrayList<Appeal> a = new ArrayList<>();
         try{
@@ -324,10 +442,22 @@ public class Matchmaker {
         }
     }
 
+    /**
+     * Finds a standard user profile by their exact username identifier string.
+     *
+     * @param targetUsername The target username to look up
+     * @return      The matching User object instance, or null if not found
+     */
     public User searchByUsername(String targetUsername){
         return accounts.searchByUsername(targetUsername);
     }
 
+    /**
+     * Finds any account type (User, Admin, Parent) matching a specific username.
+     *
+     * @param targetUsername The target username to look up
+     * @return      The matching Account object instance, or null if not found
+     */
     public Account searchAccountByUsername(String targetUsername){
         return accounts.searchAccountByUsername(targetUsername);
     }

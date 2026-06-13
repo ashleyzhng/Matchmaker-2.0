@@ -158,7 +158,6 @@ public class User extends Account {
             numMatches ++;
         }
     }
-
     public void storeMatchHistory(Match m){
         matchHistory.add(m);
     }
@@ -235,7 +234,7 @@ public class User extends Account {
     public void updateMatches(){
         if(numMatches > 0){
             for(int i = 0; i<numMatches; i++){
-                if(matches[i].isExpire() && matches[1] != null){
+                if(matches[i]!= null && matches[i].isExpire() && matches[1] != null){
                         deleteMatch(matches[i]);
 
                 }
