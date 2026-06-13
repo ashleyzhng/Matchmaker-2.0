@@ -41,10 +41,11 @@ public class EventDatabase {
     */
     public void loadAllEvents(String filename) {
         try {
+            String type;
             BufferedReader in = new BufferedReader(new FileReader(filename));
             numEvents = Integer.parseInt(in.readLine());
             for (int k = 0; k < numEvents; k ++) {
-            String type = in.readLine();
+            type = in.readLine();
             if (type.equals("virtual")) {
                 String title = in.readLine();
                 String date = in.readLine();
@@ -212,8 +213,9 @@ public class EventDatabase {
                     } 
                 }
             }
-            in.close();
+            
         }
+        in.close();
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
 
@@ -268,7 +270,7 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername());
+                out.write(event.getCurrentUser1().getUsername() + "");
                 out.close();
                 return true;
             } else if (event instanceof Outdoor) {
@@ -310,7 +312,7 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername());
+                out.write(event.getCurrentUser1().getUsername() + "");
                 out.close();
                 return true;
             } else {
@@ -352,7 +354,7 @@ public class EventDatabase {
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
-                out.write(event.getCurrentUser1().getUsername());
+                out.write(event.getCurrentUser1().getUsername() + "");
                 out.close();
                 return true;
             }
@@ -838,4 +840,40 @@ public class EventDatabase {
             }
         }
     }
+    
+    
+    public void SortApprovedByCostThenTitle() {
+    boolean sorted = false;
+
+    for (int upperBound = size - 1; upperBound >= 1 && !sorted; upperBound--) {
+
+        sorted = true;
+
+        for (int j = 0; j < upperBound; j++) {
+
+            boolean greater = false;
+
+            // Primary: cost
+            if (events[j].getOriginalCost() > events[j + 1].getOriginalCost()) {
+                greater = true;
+            }
+
+            // Secondary: alphabetical order (if same cost)
+            else if (events[j].getOriginalCost() == events[j + 1].getOriginalCost()) {
+                if (events[j].getTitle()
+                        .compareToIgnoreCase(events[j + 1].getTitle()) > 0) {
+                    greater = true;
+                }
+            }
+
+            if (greater) {
+                sorted = false;
+
+                Event temp = events[j];
+                events[j] = events[j + 1];
+                events[j + 1] = temp;
+            }
+        }
+    }
+}
 }

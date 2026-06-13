@@ -961,7 +961,7 @@ Event event = evda.searchPendingEventByTitle(eventname);
     public void createOutdoorEvent(User u) {
         System.out.println("Enter title: ");
         String title = sc.nextLine();
-       System.out.print("Enter date (YYYY-MM-DD): ");
+        System.out.print("Enter date (YYYY-MM-DD): ");
         String date = sc.nextLine();
         LocalDate ld = LocalDate.parse(date);
         System.out.print("Enter starting time (HH:MM): ");
