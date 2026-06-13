@@ -560,6 +560,7 @@ public class Menu {
             }else {
                 preferredGender = 'F';
             }
+            sc.nextLine();
         int age = Period.between(birthday, LocalDate.now()).getYears();
         if(age > Senior.MIN_AGE){
             System.out.println("Occupation: ");
@@ -570,6 +571,7 @@ public class Menu {
             int maxAge = input(Adult.MIN_AGE, 100, sc);
             System.out.print("minimum preferred age (min: " + Adult.MIN_AGE);
             int minAge = input(Adult.MIN_AGE, 100, sc);
+            sc.nextLine();
             System.out.print("mobility status, invalid input will be treated as false (true/false): ");
             boolean mobilityStatus = Boolean.parseBoolean(sc.nextLine()); 
             Tag interestTag = tagMenu(sc);
