@@ -31,13 +31,14 @@ public class EventDatabase {
         numApprovedEvents = 0;
         numPendingEvents = 0;
         loadAllEvents("event.txt");
+        ad.loadFromFile("accounts.txt");
     }
     
     /*
         Parameters: String
         Return values: void
         Preconditions: file must exist and contain events
-        Purpose: for the system to have a dataabase of events read in from a file
+        Purpose: for the system to have a database of events read in from a file
     */
     public void loadAllEvents(String filename) {
         try {
@@ -912,7 +913,9 @@ public class EventDatabase {
         boolean found = false;
         int index = -1;
         int middle;
+       
         while (bottom <= top && !found) {
+           
             middle = (bottom + top) / 2;
             if (allEventList.get(middle).getTitle().equalsIgnoreCase(title)) {
                 found = true;
@@ -939,6 +942,7 @@ public class EventDatabase {
     */
     public boolean searchForApprovedEvent(Event event) {
         for (int i = 0; i < numApprovedEvents; i++) {
+            
             if (approvedEventList[i].equals(event)) {
                 return true;
             }
@@ -954,6 +958,7 @@ public class EventDatabase {
     */
         public boolean searchForPendingEvent(Event event) {
         for (int i = 0; i < numPendingEvents; i++) {
+            
             if (pendingEventList[i].equals(event)) {
                 return true;
             }
@@ -1004,10 +1009,15 @@ public class EventDatabase {
         Purpose: prints the list of pending events that the user made
     */
     public void viewPendingEventByUser(User u) {
+        boolean found = false;
         for (int i = 0; i < numPendingEvents; i ++) {
-            if (pendingEventList[i].getCurrentUser1() != null && pendingEventList[i].getCurrentUser1().equals(u)) {
-                System.out.print(pendingEventList[i]);
+            if (pendingEventList[i].getCurrentUser1() != null && pendingEventList[i].getCurrentUser1().getUsername().equals(u.getUsername())) {
+                System.out.println(pendingEventList[i]);
+                found = true;
             }
+        }
+        if (!found) {
+            System.out.println("No pending events found.");
         }
     }
 
@@ -1018,10 +1028,15 @@ public class EventDatabase {
         Purpose: prints the list of approved events made by the user
     */
     public void viewApprovedEventByUser(User u) {
+        boolean found = false;
         for (int i = 0; i < numApprovedEvents; i ++) {
-            if (approvedEventList[i].getCurrentUser1() != null && approvedEventList[i].getCurrentUser1().equals(u)) {
-                System.out.print(approvedEventList[i]);
+            if (approvedEventList[i].getCurrentUser1() != null && approvedEventList[i].getCurrentUser1().getUsername().equals(u.getUsername())) {
+                System.out.println(approvedEventList[i]);
+                found = true;
             }
+        }
+        if (!found) {
+            System.out.println("No approved events found.");
         }
     }
 
@@ -1061,9 +1076,7 @@ public class EventDatabase {
         boolean sorted = false;
 
         for (int upperBound = numApprovedEvents - 1; upperBound >= 1 && !sorted; upperBound--) {
-
             sorted = true;
-
             for (int j = 0; j < upperBound; j++) {
 
                 boolean greater = false;
@@ -1072,7 +1085,6 @@ public class EventDatabase {
                 if (approvedEventList[j].compareToCost(approvedEventList[j + 1]) > 0) {
                     greater = true;
                 }
-
                 // Second criterion - alphabetical order (if same cost)
                 else if (approvedEventList[j].compareToCost(approvedEventList[j + 1]) == 0) {
                     if (approvedEventList[j].getTitle().compareToIgnoreCase(approvedEventList[j + 1].getTitle()) > 0) {
@@ -1102,10 +1114,7 @@ public void searchApprovedByDateAndCost(LocalDate targetDate, double maxCost) {
     boolean found = false;
 
     for (int i = 0; i < numApprovedEvents; i++) {
-
-        if (approvedEventList[i].getDate().equals(targetDate) &&
-            approvedEventList[i].getOriginalCost() <= maxCost) {
-
+        if (approvedEventList[i].getDate().equals(targetDate) && approvedEventList[i].getOriginalCost() <= maxCost) {
             System.out.print(approvedEventList[i]);
             System.out.println(", Cost: $" + approvedEventList[i].getOriginalCost());
             found = true;

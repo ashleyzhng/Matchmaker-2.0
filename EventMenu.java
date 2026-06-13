@@ -13,7 +13,6 @@ import java.util.*;
 public class EventMenu {
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
-    
     /*
         Parameters: Event, User
         Return values: boolean
@@ -1137,8 +1136,8 @@ int choice;
         System.out.println("1. Create Event");
         System.out.println("2. Choose Pre-existing Event");
         System.out.println("3. Alter pending event");
-        System.out.println("4. View event history");
-        System.out.println("5. View hosted events");
+        System.out.println("4. View hosted events");
+        System.out.println("5. View event history");
         System.out.println("=================================");
         int choice = sc.nextInt();
 
@@ -1147,8 +1146,8 @@ int choice;
             System.out.println("1. Create Event");
             System.out.println("2. Choose Pre-existing Event");
             System.out.println("3. Alter pending event");
-            System.out.println("4. View event history");
-            System.out.println("5. View hosted events");
+            System.out.println("4. View hosted events");
+            System.out.println("5. View event history");
             choice = sc.nextInt();
         }
 
@@ -1254,7 +1253,7 @@ int choice;
         else if (choice == 4) {
             System.out.println("Your hosted pending events:");
             evda.viewPendingEventByUser(user);
-            System.out.println("Your hosted approved events");
+            System.out.println("Your hosted approved events:");
             evda.viewApprovedEventByUser(user);
         } else {
             System.out.println("Your Event History:");

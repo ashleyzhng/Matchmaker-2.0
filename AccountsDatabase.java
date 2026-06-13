@@ -127,6 +127,41 @@ public class AccountsDatabase {
             System.out.println("File format error or missing data");
         }
     }
+
+    public void loadFromFile(String file){
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            // take in first line for number of accounts
+            int numAccounts = Integer.parseInt(in.readLine());
+            int count = 0;
+            for(int i = 0; i < numAccounts; i++){
+                String accountType = in.readLine();
+                if (accountType.equalsIgnoreCase("Admin")){
+                    Admin admin = new Admin(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()));
+                    accounts.add(admin);
+                } else if (accountType.equalsIgnoreCase("Teen")){
+                    Teen teen = new Teen(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
+                    accounts.add(teen);
+                }else if(accountType.equalsIgnoreCase("Adult")){
+                    Adult adult = (new Adult(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()))));
+                    accounts.add(adult);
+                }else if(accountType.equalsIgnoreCase("Senior")){
+                    Senior senior = new Senior(in.readLine(), in.readLine(), in.readLine(), Boolean.parseBoolean(in.readLine()), in.readLine(), LocalDate.parse(in.readLine()), in.readLine(), in.readLine(), in.readLine(), in.readLine().charAt(0), in.readLine().charAt(0), in.readLine(), in.readLine(), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Boolean.parseBoolean(in.readLine()), new Tag(Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine()), Integer.parseInt(in.readLine())));
+                    accounts.add(senior);
+                }
+                in.readLine();
+                count++;
+                    
+            }
+            System.out.println(count + " account(s) created.");
+            in.close(); 
+        } catch (IOException e){
+            System.out.println("Error accessing file " + file);
+        } catch (NullPointerException e) {
+            System.out.println("File format error or missing data");
+        }
+    }
+
     /* Loads match data for users
     * @param Matchmaker the matchmaker containing the match information
     */

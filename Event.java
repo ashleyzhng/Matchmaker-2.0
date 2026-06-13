@@ -192,6 +192,24 @@ public abstract class Event {
     }
 
     /*
+        Parameters: Object
+        Return values: boolean
+        Preconditions: none
+        Purpose: Overrides equals method and determines if two events are the same based on title
+    */
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Event)) {
+            return false;
+        }
+        Event other = (Event) obj;
+        return getTitle().equalsIgnoreCase(other.getTitle());
+    }
+
+    /*
         Parameters: none
         Return values: boolean
         Preconditions: none

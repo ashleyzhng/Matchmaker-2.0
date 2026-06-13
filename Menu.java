@@ -17,7 +17,6 @@ import java.util.Scanner;
  * ----------------------------------------------------------------------------
  */
 public class Menu {
-    // Handles event-related UI screens
     EventMenu em = new EventMenu();
     
      /**
@@ -119,7 +118,7 @@ public class Menu {
         if(choice == 1){
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
-            em.getEventScreen(u);
+            new EventMenu(mm.getEvents(), mm).getEventScreen(u);
             return "user";
         }else if(choice == 3){
             u.printProfile();
