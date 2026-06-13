@@ -101,10 +101,9 @@ public class Virtual extends Event {
     }
 
     public String toString() {
-        return "Virtual Details:" +
-                "Platform:'" + platform + '\'' +
-                ", Meeting ID:" + meetingID +
-                ", Password:" + password +
-                "} " + super.toString();
+        return  super.toString() +
+                "Platform: " + platform + "\n" +
+                "Meeting ID:" + meetingID + "\n" +
+                "Password:" + password;
     }
 }

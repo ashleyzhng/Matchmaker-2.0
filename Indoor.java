@@ -114,11 +114,10 @@ public class Indoor extends Event {
     }
 
     public String toString() {
-        return "Indoor Details:" +
-                "Location:'" + location + '\'' +
-                ", Floor Number:" + floorNumber +
-                ", Room:'" + room + '\'' +
-                "} " + super.toString();
+        return super.toString() +
+                "Location:" + location + "\n" +
+                "Floor Number:" + floorNumber + "\n" +
+                "Room:" + room + "\n";
     }
     
 }

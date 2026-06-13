@@ -89,10 +89,9 @@ public class Outdoor extends Event {
     }
 
     public String toString() {
-        return "Outdoor Details:" +
-                "Location:'" + location + '\'' +
-                ", Temperature:" + temperature +
-                ", Precipitation:" + precipitation +
-                "} " + super.toString();
+        return super.toString() + "\n" + 
+                "Location: " + location + "\n" +
+                "Temperature:" + temperature + "C" + "\n" + 
+                "Precipitation:" + precipitation + "%";
     }
 }

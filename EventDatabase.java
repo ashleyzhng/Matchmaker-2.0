@@ -30,8 +30,8 @@ public class EventDatabase {
         pendingEventList = new Event[maxPendingEvents];
         numApprovedEvents = 0;
         numPendingEvents = 0;
+        ad.loadFromFile("Accounts.txt");
         loadAllEvents("event.txt");
-        ad.loadFromFile("accounts.txt");
     }
     
     /*

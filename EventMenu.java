@@ -8,11 +8,113 @@
    The EventMenu class contains the UI methods to allow user to interact with the program.
 */
 import java.time.*;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class EventMenu {
+
     Scanner sc = new Scanner(System.in);
     EventDatabase evda = new EventDatabase();
+    public int getValidInt() {
+
+        while (true) {
+
+            try {
+                return Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid integer.");
+            }
+        }
+    }
+
+   public int getValidChoice(int min, int max) {
+
+    while (true) {
+
+        try {
+            int num = Integer.parseInt(sc.nextLine());
+
+            if (num < min || num > max) {
+                System.out.println("Please enter a number between " + min + " and " + max + ".");
+            } else {
+                return num;
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+}
+
+    
+
+    public double getValidDouble() {
+        while (true) {
+
+            try {
+                return Double.parseDouble(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+
+    public LocalDate getValidDate() {
+
+        LocalDate date = null;
+
+        while (date == null) {
+
+            try {
+                date = LocalDate.parse(sc.nextLine());
+
+                if (date.isBefore(LocalDate.now())) {
+                    System.out.println("Date cannot be earlier than today.");
+                    date = null;
+                }
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date. Use YYYY-MM-DD.");
+            }
+
+        }
+
+        return date;
+    }
+
+    public LocalTime getValidTime() {
+
+        LocalTime time = null;
+
+        while (time == null) {
+
+            try {
+                time = LocalTime.parse(sc.nextLine());
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time. Use HH:MM.");
+            }
+
+        }
+
+        return time;
+    }
+
+    public String getValidYN() {
+
+        String response = sc.nextLine();
+
+        while (!response.equalsIgnoreCase("Y")
+                && !response.equalsIgnoreCase("N")) {
+
+            System.out.println("Please enter Y or N.");
+            response = sc.nextLine();
+        }
+
+        return response;
+    }
+
     /*
         Parameters: Event, User
         Return values: boolean
@@ -22,7 +124,7 @@ public class EventMenu {
     public boolean dateSim (Event event, User user) {
         System.out.println("Want to continue on date? (Y/N)");
         sc.nextLine();
-        String response = sc.nextLine();
+        String response = getValidYN();
         if (response.equals("Y")) {
             System.out.println("Enjoy the event!!");
             System.out.println(user.getName() + " is currently in " + event.getTitle());
@@ -42,19 +144,20 @@ public class EventMenu {
         Purpose: ui for the admin specifically to veiw events
     */
     public void adminViewEvents() {
+        int choice;
+        String yn;
         System.out.println("View Event Titles:");
 
         System.out.println("1. Approved Events");
         System.out.println("2. Pending Events");
-        int choice = sc.nextInt();
+        choice = getValidChoice(1,2);
         if (choice == 1) {
             evda.printEventByAlphaTitle();
-            System.out.print("Want to view details? (1 for yes, 2 for no): ");
-            choice = sc.nextInt();
+            System.out.print("Want to view details? (Y/N): ");
+            yn = getValidYN();
 
             if (choice == 1) {
                 System.out.println("Enter title: ");
-                sc.nextLine();
                 String title = sc.nextLine();
                 Event ev = evda.searchApprovedEventByTitle(title);
                 while (ev == null) {
@@ -66,12 +169,11 @@ public class EventMenu {
             } 
         } else  {
             evda.printPendingByAlphaTitle();
-            System.out.print("Want to view details? (1 for yes, 2 for no): ");
-            choice = sc.nextInt();
+            System.out.print("Want to view details? (Y/N): ");
+            yn = getValidYN();
 
             if (choice == 1) {
                 System.out.println("Enter title: ");
-                sc.nextLine();
                 String title = sc.nextLine();
                 Event ev = evda.searchPendingEventByTitle(title);
                 while (ev == null) {
@@ -93,7 +195,7 @@ public class EventMenu {
 
     public void rateEvent (Event event, User user) {
         System.out.println("Rate the event out of 5: ");
-        int rate = sc.nextInt();
+        int rate = getValidChoice(0,5);
         event.attendEvent(user, rate);
         evda.removeApprovedEvent(event);
     }
@@ -116,12 +218,12 @@ public class EventMenu {
             amount = applyIndoorCost((Indoor) event);
         }
         System.out.println("Please pay $" + amount);
-        double response = sc.nextDouble();
+        double response = getValidDouble();
         
         while (response < amount) {
            
                 System.out.println("Payment declined. You are still missing $" + (amount-response) +". Reenter full payment: ");
-                amount = sc.nextDouble();
+                response = getValidDouble();
         }
         if (amount > response) {
             System.out.println("Successfully paid! Heres your change: $" + (amount-response));
@@ -139,7 +241,7 @@ public class EventMenu {
     public double applyVirtualCost(Virtual event) {
         
         System.out.println("Discount code? (Y/N): ");
-        String response = sc.nextLine();
+        String response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             return event.getOriginalCost();
         } else {
@@ -214,7 +316,7 @@ public class EventMenu {
                 index ++;
             }    
             System.out.println("Want to approve next event (Y/N)? ");   
-            String response = sc.nextLine();
+            String response = getValidYN();
             if (response.equalsIgnoreCase("N"))  {
                 cont = false;
             }   
@@ -235,7 +337,7 @@ public class EventMenu {
             String response;
             System.out.println(("Title: " + event.getTitle()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -244,7 +346,7 @@ public class EventMenu {
 
         System.out.println(("Date: " + event.getDate()));
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -253,7 +355,7 @@ public class EventMenu {
 
         System.out.println(("Start Time: " + event.getStartTime()));
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -262,7 +364,7 @@ public class EventMenu {
 
         System.out.println("End Time: " + event.getEndTime());
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -271,7 +373,7 @@ public class EventMenu {
 
         System.out.println(("Original Cost: $" + event.getOriginalCost()));
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -280,7 +382,7 @@ public class EventMenu {
 
         System.out.println(("Categories: " + event.getListCategories()));
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -289,7 +391,7 @@ public class EventMenu {
 
         System.out.println("Platform: " + ((Virtual) event).getPlatform());
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -298,7 +400,7 @@ public class EventMenu {
 
         System.out.println("Meeting ID: " + ((Virtual) event).getMeetingID());
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine() + "\n");
@@ -307,7 +409,7 @@ public class EventMenu {
 
         System.out.println("Password: " + ((Virtual) event).getPassword());
         System.out.print("Do you approve this spec? (Y/N): ");
-        response = sc.nextLine();
+        response = getValidYN();
         if (response.equalsIgnoreCase("N")) {
             System.out.println("Why was this event rejected? (Enter reason): ");
             event.setEventAdminFeedback(sc.nextLine());
@@ -347,7 +449,7 @@ public class EventMenu {
             String response;
             System.out.println(("Title: " + event.getTitle()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -356,7 +458,7 @@ public class EventMenu {
 
             System.out.println(("Date: " + event.getDate()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -364,7 +466,7 @@ public class EventMenu {
             }
             System.out.println(("Start Time: " + event.getStartTime()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -372,7 +474,7 @@ public class EventMenu {
             }
             System.out.println("End Time: " + event.getEndTime());
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -380,7 +482,7 @@ public class EventMenu {
             }
             System.out.println(("Original Cost: $" + event.getOriginalCost()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -388,7 +490,7 @@ public class EventMenu {
             }
             System.out.println(("Categories: " + event.getListCategories()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -396,7 +498,7 @@ public class EventMenu {
             }
             System.out.println("Location: " + ((Outdoor)event).getLocation());
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -404,7 +506,7 @@ public class EventMenu {
             }
             System.out.println("Temperature: " + ((Outdoor)event).getTemperature() + "°C");
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -412,7 +514,7 @@ public class EventMenu {
             }
             System.out.println("Precipitation: " + ((Outdoor)event).getPrecipitation() + "%");
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -453,7 +555,7 @@ public class EventMenu {
             String response;
             System.out.println(("Title: " + event.getTitle()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -462,7 +564,7 @@ public class EventMenu {
 
             System.out.println(("Date: " + event.getDate()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -470,7 +572,7 @@ public class EventMenu {
             }
             System.out.println(("Start Time: " + event.getStartTime()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -478,7 +580,7 @@ public class EventMenu {
             }
             System.out.println(("End Time: " + event.getEndTime()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -486,7 +588,7 @@ public class EventMenu {
             }
             System.out.println(("Original Cost: $" + event.getOriginalCost()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -494,7 +596,7 @@ public class EventMenu {
             }
             System.out.println(("Categories: " + event.getListCategories()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -502,7 +604,7 @@ public class EventMenu {
             }
             System.out.println(("Location: " + ((Indoor) event).getLocation()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -510,7 +612,7 @@ public class EventMenu {
             }
             System.out.println(("Floor Number: " + ((Indoor) event).getFloorNumber()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -518,7 +620,7 @@ public class EventMenu {
             }
             System.out.println(("Room: " + ((Indoor) event).getRoom()));
             System.out.print("Do you approve this spec? (Y/N): ");
-            response = sc.nextLine();
+            response = getValidYN();
             if (response.equalsIgnoreCase("N")) {
                 System.out.println("Why was this event rejected? (Enter reason): ");
                 event.setEventAdminFeedback(sc.nextLine());
@@ -569,8 +671,7 @@ public class EventMenu {
         System.out.println("9. Current precipitation: " + ((Outdoor)event).getPrecipitation() + "%");
 
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
-        choice = sc.nextInt();
-        sc.nextLine(); 
+        choice = getValidChoice(0,9);
         switch (choice) {
             case 1:
                 System.out.println("Enter new title: ");
@@ -580,32 +681,28 @@ public class EventMenu {
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                String userdate = sc.nextLine();
-                LocalDate localuserdate = LocalDate.parse(userdate);                
+                LocalDate localuserdate = getValidDate();                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
-                String usertime = sc.nextLine();
-                LocalTime localusertime = LocalTime.parse(usertime);
+                LocalTime localusertime = getValidTime();
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
-                String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = LocalTime.parse(endusertime);
+                LocalTime endlocalusertime = getValidTime();
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
-                sc.nextLine(); 
+                event.setOriginalCost(getValidDouble());
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
@@ -659,16 +756,14 @@ public class EventMenu {
                 break;
             case 8:
                 System.out.println("Enter new temperature (in °C): ");
-                ((Outdoor)event).setTemperature(sc.nextInt());
+                ((Outdoor)event).setTemperature(getValidInt());
                 System.out.println("Change successful!");
-                sc.nextLine(); 
                 event.setEventAdminFeedback(null);
                 break;
             case 9:
                 System.out.println("Enter new precipitation (in %): ");
-                ((Outdoor)event).setPrecipitation(sc.nextInt());
+                ((Outdoor)event).setPrecipitation(getValidInt());
                 System.out.println("Change successful!");
-                sc.nextLine(); 
                 event.setEventAdminFeedback(null);  
                 break;
             case 0:
@@ -679,7 +774,7 @@ public class EventMenu {
         }
     } while (choice!= 0);
 } 
-    }
+}
 
     /*
         Parameters: String
@@ -705,7 +800,7 @@ public void changeVirtualPendingEventDetails(String eventname) {
         
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
 
-        choice = sc.nextInt();
+        choice = getValidChoice(0,9);
         switch (choice) {
             case 1:
                 System.out.println("Enter new title: ");
@@ -715,32 +810,28 @@ public void changeVirtualPendingEventDetails(String eventname) {
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                String userdate = sc.nextLine();
-                LocalDate localuserdate = LocalDate.parse(userdate);                
+                LocalDate localuserdate = getValidDate();                
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
-                String usertime = sc.nextLine();
-                LocalTime localusertime = LocalTime.parse(usertime);
+                LocalTime localusertime = getValidTime();
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
-                String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = LocalTime.parse(endusertime);
+                LocalTime endlocalusertime = getValidTime();
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
-                sc.nextLine(); 
+                event.setOriginalCost(getValidDouble());
                 System.out.println("Change successful!");
                 event.setEventAdminFeedback(null);
                 break;
@@ -794,16 +885,14 @@ public void changeVirtualPendingEventDetails(String eventname) {
                 break;
             case 8:
                 System.out.println("Enter new meeting ID: ");
-                ((Virtual)event).setMeetingID(sc.nextInt());
+                ((Virtual)event).setMeetingID(getValidInt());
                 System.out.println("Change successful!");
-                sc.nextLine(); 
                 event.setEventAdminFeedback(null);
                 break;
             case 9:
                 System.out.println("Enter new password: ");
-                ((Virtual)event).setPassword(sc.nextInt());
+                ((Virtual)event).setPassword(getValidInt());
                 System.out.println("Change successful!");
-                sc.nextLine(); 
                 event.setEventAdminFeedback(null);
                 break;
             case 0:
@@ -813,8 +902,7 @@ public void changeVirtualPendingEventDetails(String eventname) {
                 System.out.println("Invalid choice. No changes made.");
             }
         
-        } while (choice != 0);
-        sc.nextLine();        
+        } while (choice != 0);     
     }
 }
 
@@ -841,8 +929,7 @@ int choice;
         System.out.println("9. Current room: " + ((Indoor) event).getRoom());
 
         System.out.println("Enter spec you want to change (1-9 or 0 to cancel): ");
-        choice = sc.nextInt();
-        sc.nextLine(); 
+        choice = getValidChoice(0,9);
         switch (choice) {
              case 1:
                 System.out.println("Enter new title: ");
@@ -851,29 +938,25 @@ int choice;
                 break;
             case 2:
                 System.out.println("Enter new date (YYYY-MM-DD): ");
-                String userdate = sc.nextLine();
-                LocalDate localuserdate = LocalDate.parse(userdate);                
+                LocalDate localuserdate = getValidDate();               
                 event.setDate(localuserdate);
                 System.out.println("Change successful!");
                 break;
             case 3:
                 System.out.println("Enter new start time (HH:MM): ");
-                String usertime = sc.nextLine();
-                LocalTime localusertime = LocalTime.parse(usertime);
+                LocalTime localusertime = getValidTime();
                 event.setStartTime(localusertime);
                 System.out.println("Change successful!");
                 break;
             case 4:
                 System.out.println("Enter new end time (HH:MM): ");
-                String endusertime = sc.nextLine();
-                LocalTime endlocalusertime = LocalTime.parse(endusertime);
+                LocalTime endlocalusertime = getValidTime();
                 event.setEndTime(endlocalusertime);
                 System.out.println("Change successful!");
                 break;
             case 5:
                 System.out.println("Enter new original cost: ");
-                event.setOriginalCost(sc.nextDouble());
-                sc.nextLine(); 
+                event.setOriginalCost(getValidDouble());
                 System.out.println("Change successful!");
                 break;
             case 6:
@@ -924,9 +1007,8 @@ int choice;
                 break;
             case 8:
                 System.out.println("Enter new floor number: ");
-                ((Indoor) event).setFloorNumber(sc.nextInt());
+                ((Indoor) event).setFloorNumber(getValidInt());
                 System.out.println("Change successful!");
-                sc.nextLine(); 
                 break;
             case 9:
                 System.out.println("Enter new room: ");
@@ -954,44 +1036,40 @@ int choice;
         System.out.print("Enter title: ");
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = LocalDate.parse(date);
+        LocalDate ld = getValidDate();
         System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = LocalTime.parse(startTime);
+        LocalTime lst = getValidTime();
         System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = LocalTime.parse(endTime);
+        LocalTime ldt = getValidTime();
         System.out.print("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
+        double originalCost = getValidDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
         System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
+        int r = getValidChoice(0,1);
         System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
+        int s = getValidChoice(0,1);
         System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
+        int m = getValidChoice(0,1);
         System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
+        int a = getValidChoice(0,1);
         System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
+        int t = getValidChoice(0,1);
         System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
+        int f = getValidChoice(0,1);
         System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
+        int g = getValidChoice(0,1);
         System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
+        int c = getValidChoice(0,1);
         System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
+        int an = getValidChoice(0,1);
         System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
+        int re = getValidChoice(0,1);
         System.out.print("Platform: ");
         String platform = sc.nextLine();
         System.out.print("Meeting ID: ");
-        int meetingid = sc.nextInt();
+        int meetingid = getValidInt();
         System.out.print("Password: ");
-        int password = sc.nextInt();
+        int password = getValidInt();
 
         Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, u, platform, meetingid, password);
         boolean added = evda.addPendingEvent(vir);
@@ -1013,46 +1091,42 @@ int choice;
         System.out.println("Enter title: ");
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = LocalDate.parse(date);
+        LocalDate ld = getValidDate();
         System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = LocalTime.parse(startTime);
+        LocalTime lst = getValidTime();
         System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = LocalTime.parse(endTime);
+        LocalTime ldt = getValidTime();
         System.out.println("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
+        double originalCost = getValidDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
         System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
+        int r = getValidChoice(0,1);
         System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
+        int s = getValidChoice(0,1);
         System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
+        int m = getValidChoice(0,1);
         System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
+        int a = getValidChoice(0,1);
         System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
+        int t = getValidChoice(0,1);
         System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
+        int f = getValidChoice(0,1);
         System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
+        int g = getValidChoice(0,1);
         System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
+        int c = getValidChoice(0,1);
         System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
+        int an = getValidChoice(0,1);
         System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
+        int re = getValidChoice(0,1);
         System.out.print("Location: (postal code): ");
         String location = sc.nextLine();
 
         System.out.print("Temperature (celsius): ");
-        int temp = sc.nextInt();
+        int temp = getValidInt();
 
         System.out.print("Chance of precipitation %: ");
-        int precip = sc.nextInt();
+        int precip = getValidInt();
         Outdoor out = new Outdoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, u, location, temp, precip);
         boolean added = evda.addPendingEvent(out);
 
@@ -1073,43 +1147,38 @@ int choice;
         System.out.println("Enter title: ");
         String title = sc.nextLine();
         System.out.print("Enter date (YYYY-MM-DD): ");
-        String date = sc.nextLine();
-        LocalDate ld = LocalDate.parse(date);
+        LocalDate ld = getValidDate();
         System.out.print("Enter starting time (HH:MM): ");
-        String startTime = sc.nextLine();
-        LocalTime lst = LocalTime.parse(startTime);
+        LocalTime lst = getValidTime();
         System.out.print("Enter ending time (HH:MM): ");
-        String endTime = sc.nextLine();
-        LocalTime ldt = LocalTime.parse(endTime);
+        LocalTime ldt = getValidTime();
         System.out.println("Enter base cost $: ");
-        double originalCost = sc.nextDouble();
+        double originalCost = getValidDouble();
         System.out.println("For the following categories, enter 0 for N/A, enter 1 for applied: ");
         System.out.print("Religion (0/1): ");
-        int r = sc.nextInt();
+        int r = getValidChoice(0,1);
         System.out.print("Sports (0/1): ");
-        int s = sc.nextInt();
+        int s = getValidChoice(0,1);
         System.out.print("Music (0/1): ");
-        int m = sc.nextInt();
+        int m = getValidChoice(0,1);
         System.out.print("Art (0/1): ");
-        int a = sc.nextInt();
+        int a = getValidChoice(0,1);
         System.out.print("Traveling (0/1): ");
-        int t = sc.nextInt();
+        int t = getValidChoice(0,1);
         System.out.print("Fitness (0/1): ");
-        int f = sc.nextInt();
+        int f = getValidChoice(0,1);
         System.out.print("Gaming (0/1): ");
-        int g = sc.nextInt();
+        int g = getValidChoice(0,1);
         System.out.print("Cooking (0/1): ");
-        int c = sc.nextInt();
+        int c = getValidChoice(0,1);
         System.out.print("Animal (0/1): ");
-        int an = sc.nextInt();
+        int an = getValidChoice(0,1);
         System.out.print("Reading (0/1): ");
-        int re = sc.nextInt();
-        sc.nextLine();
+        int re = getValidChoice(0,1);
         System.out.print("Location (postal code): ");
         String loca = sc.nextLine();
         System.out.print("Floor number: ");
-        int floornum = sc.nextInt();
-        sc.nextLine();
+        int floornum = getValidInt();
         System.out.print("Room (name or number): ");
         String room = sc.nextLine();
 
@@ -1139,35 +1208,16 @@ int choice;
         System.out.println("4. View hosted events");
         System.out.println("5. View event history");
         System.out.println("=================================");
-        int choice = sc.nextInt();
-
-        while (choice < 1 && choice > 5) {
-            System.out.println("That is not a valid choice");
-            System.out.println("1. Create Event");
-            System.out.println("2. Choose Pre-existing Event");
-            System.out.println("3. Alter pending event");
-            System.out.println("4. View hosted events");
-            System.out.println("5. View event history");
-            choice = sc.nextInt();
-        }
+        int choice = getValidChoice(1,5);
 
         if (choice == 1) {
             System.out.println("Which of the following types of events do you wanna create?");
             System.out.println("1. Virtual");
             System.out.println("2. Outdoor");
             System.out.println("3. Indoor");
-            choice = sc.nextInt();
+            choice = getValidChoice(1,3);
 
-            while (choice < 1 || choice > 3){
-                System.out.println("That is an invalid choice");
-                System.out.println("Which of the following types of events do you wanna create?");
-                System.out.println("1. Virtual");
-                System.out.println("2. Outdoor");
-                System.out.println("3. Indoor");
-                choice = sc.nextInt();
-            }
 
-            sc.nextLine();
             if (choice == 1) {
                 createVirtualEvent(user);
             } else if (choice == 2) {
@@ -1180,17 +1230,10 @@ int choice;
             System.out.println("OPTIONS");
             System.out.println("1. Search for an event by title");
             System.out.println("2. Show all events");
-            choice = sc.nextInt();
-            while (choice != 1 && choice != 2) {
-                System.out.println("Invalid choice");
-                System.out.println("OPTIONS");
-                System.out.println("1. Search for an event by title");
-                System.out.println("2. Show all events");
-                choice = sc.nextInt();
-            }
+            choice = getValidChoice(1,2);
 
             if (choice == 1) {
-                sc.nextLine();
+
                 System.out.println("Enter event title name (lowercase): ");
                 String name = sc.nextLine();
                 Event ev = evda.searchApprovedEventByTitle(name);
@@ -1206,32 +1249,24 @@ int choice;
                 System.out.println("1. Sort by Title");
                 System.out.println("2. Sort by Date and Time");
                 System.out.println("3. Search & Sort by Date and Max Cost");
-                choice = sc.nextInt();
-                while (choice < 1 || choice > 3) {
-                    System.out.println("That is not a valid option");
-                    System.out.println("Sort Event Options:");
-                    System.out.println("1. Sort by Title");
-                    System.out.println("2. Sort by Date and Time");
-                    System.out.println("3. Search & Sort by Date and Max Cost");
-                    choice = sc.nextInt();
-                }
+                choice = getValidChoice(1,3);
                 System.out.println("List of all events:");
                 if (choice == 1) {
                     evda.printEventByAlphaTitle();
                 } else if (choice == 2) {
                     evda.printEventByTime();
                 } else {
-                    sc.nextLine();
+   
                     System.out.println("Enter target date (YYYY-MM-DD): ");
-                    LocalDate ld = LocalDate.parse(sc.nextLine());
+                    LocalDate ld = getValidDate();
                     System.out.println("Enter max cost");
-                    double maxcost = sc.nextDouble();
+                    double maxcost = getValidDouble();
                     evda.searchApprovedByDateAndCost(ld, maxcost);
                 }
             }
         }
         else if (choice == 3) {
-            sc.nextLine();
+  
             System.out.println("Enter event title: ");
             String title = sc.nextLine();
             Event e = evda.searchPendingEventByTitle(title);
@@ -1252,6 +1287,7 @@ int choice;
         }
         else if (choice == 4) {
             System.out.println("Your hosted pending events:");
+            System.out.println(user.getUsername());
             evda.viewPendingEventByUser(user);
             System.out.println("Your hosted approved events:");
             evda.viewApprovedEventByUser(user);
@@ -1262,8 +1298,8 @@ int choice;
             System.out.println("-----------------------------");
             if (eh != null) {
                 System.out.println("Archive event history? (Y/N): "); 
-                sc.nextLine();
-                String response = sc.nextLine();
+  
+                String response = getValidYN();
                 if (response.equalsIgnoreCase("y")) {
                     System.out.print("Enter file name: ");
                     String file = sc.nextLine();
@@ -1273,3 +1309,4 @@ int choice;
         }
     }
 }
+

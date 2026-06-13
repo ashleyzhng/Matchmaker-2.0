@@ -118,7 +118,7 @@ public class Menu {
         if(choice == 1){
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
-            new EventMenu(mm.getEvents(), mm).getEventScreen(u);
+            em.getEventScreen(u);
             return "user";
         }else if(choice == 3){
             u.printProfile();

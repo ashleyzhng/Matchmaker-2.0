@@ -411,5 +411,6 @@ public abstract class Event {
                 "Base cost: $" + originalCost + "\n" +
                 "Categories: " + getListCategories() + "\n" +
                 "Approved: " + approved + "\n";
+
     }
 }
