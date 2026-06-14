@@ -737,7 +737,7 @@ public class EventDatabase {
     public void printEventByTime() {
         sortApprovedByDateThenTime();
         for (int i = 0; i < numApprovedEvents; i++) {
-            System.out.println(approvedEventList[i].getTitle());
+            System.out.println(approvedEventList[i].getTitle() + ", Date: " + approvedEventList[i].getDate() + ", Time: " + approvedEventList[i].getStartTime());
         }
     }
 
@@ -1115,7 +1115,7 @@ public void searchApprovedByDateAndCost(LocalDate targetDate, double maxCost) {
 
     for (int i = 0; i < numApprovedEvents; i++) {
         if (approvedEventList[i].getDate().equals(targetDate) && approvedEventList[i].getOriginalCost() <= maxCost) {
-            System.out.print(approvedEventList[i]);
+            System.out.print(approvedEventList[i].getTitle());
             System.out.println(", Cost: $" + approvedEventList[i].getOriginalCost());
             found = true;
         }

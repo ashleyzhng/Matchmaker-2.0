@@ -1278,7 +1278,6 @@ int choice;
                     name = sc.nextLine();
                     ev = evda.searchApprovedEventByTitle(name);
                 }
-                System.out.println("Event details: ");
                 System.out.println(ev);
             } else {
                 System.out.println("Sort Event Options:");
