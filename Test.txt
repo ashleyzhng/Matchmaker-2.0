@@ -1,4 +1,4 @@
-admin
+admin
 admin1
 adminpass1
 admin1@example.com
@@ -461,4 +461,22 @@ Retired Professor
 Widowed
 79
 60
+false
+senior
+kkk
+kkk
+
+false
+kkk
+2008-10-20
+mmmmmm
+
+null
+M
+M
+false
+
+single
+15
+15
 false

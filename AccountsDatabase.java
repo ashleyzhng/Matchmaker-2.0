@@ -37,7 +37,6 @@ public class AccountsDatabase {
     public boolean deleteAccount(Account a, String pass){
         if(a != null && a.correctPass(pass)){
             accounts.remove(a);
-            //call logout() method
             return true;
         }else{
             return false;

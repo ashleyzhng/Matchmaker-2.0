@@ -237,7 +237,11 @@ public class MatchFileManager {
             }
             out.println(nonNullCount);
             ArrayList<Match> pastMatches = matchmaker.searchByUsername(username).getMatchHistory();
-            out.println(pastMatches.size());
+            if (pastMatches == null){
+                out.println("0");
+            }else{
+                out.println(pastMatches.size());
+            }
             for (int i = 0; i < (curMatches == null ? 0 : curMatches.length); i ++){
                 if (curMatches[i] == null) continue;
                 if(curMatches[i] instanceof InterestMatch){
@@ -315,7 +319,7 @@ public class MatchFileManager {
                 }
             }
             
-            for(int k = 0; k < pastMatches.size(); k++){
+            for(int k = 0; pastMatches!= null && k < pastMatches.size(); k++){
 
                 Match m = pastMatches.get(k);
 

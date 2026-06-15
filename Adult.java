@@ -10,7 +10,7 @@
 */
 import java.time.LocalDate;
 public class Adult extends User {
-    public static final int MIN_AGE = 13;
+    public static final int MIN_AGE = 18;
     private String occupation;
     private String maritalStatus;
     private int preferredMaxAge;

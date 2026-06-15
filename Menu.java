@@ -391,6 +391,7 @@ public class Menu {
 
             case 15:
                 System.out.print("Enter mobility limitations (true/false): ");
+                sc.nextLine();
                 ((Senior)u).setHasMobilityLimitations(Boolean.parseBoolean(sc.nextLine()));
                 break;
         }
@@ -530,6 +531,7 @@ public class Menu {
             }
         System.out.print("Password: ");
         String password = sc.next();
+        sc.nextLine();
         System.out.print("Email: ");
         String email = sc.nextLine();
         System.out.print("Name: ");
@@ -537,6 +539,7 @@ public class Menu {
         LocalDate birthday = validLocalDate(sc);
         System.out.print("Postal Code: ");
         String postalCode = sc.next();
+        sc.nextLine();
         System.out.print("City: ");
         String city = sc.nextLine();
         System.out.print("Bio: ");
