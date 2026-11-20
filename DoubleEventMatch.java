@@ -149,7 +149,8 @@ public class DoubleEventMatch extends EventMatch {
                  setEnd(end);
                  setDate(date);
                  setEventType("Indoor");
-                 setEvent(event); 
+                 setEvent(event);
+                 setScore(determineScore(event));
                  
                  sortIncomingUsers(event.getCurrentUser1(), event.getCurrentUser2(), ((Indoor)event).getUser3());
                  setEventTitle(event.getTitle());
