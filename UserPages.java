@@ -155,7 +155,7 @@ public class UserPages {
         int shown = 0;
         for(int i = 0; i < ev.getNumApprovedEvents() && shown < 3; i++){
             if(list[i] != null && !list[i].isExpired()){
-                cards += Html.eventCard(list[i], null);
+                cards += Html.eventCard(list[i], joinFooter(u, list[i]));
                 shown++;
             }
         }
@@ -312,7 +312,7 @@ public class UserPages {
         if(!search.isEmpty()){
             Event found = ev.searchApprovedEventByTitle(search);
             if(found != null){
-                cards = Html.eventCard(found, null);
+                cards = Html.eventCard(found, joinFooter(u, found));
             }
         }else{
             Event[] list = ev.getApprovedEventList();
@@ -322,7 +322,7 @@ public class UserPages {
                 if(!type.equals("all") && !Html.eventKind(e).equalsIgnoreCase(type)) continue;
                 if(onDate != null && !e.getDate().equals(onDate)) continue;
                 if(max >= 0 && e.getOriginalCost() > max) continue;
-                cards += Html.eventCard(e, null);
+                cards += Html.eventCard(e, joinFooter(u, e));
             }
         }
         c += cards.isEmpty() ? "<p class=\"muted\">No events match. Try clearing the filters.</p>" : "<div class=\"grid grid-4\">" + cards + "</div>";
@@ -357,7 +357,7 @@ public class UserPages {
      */
     public String eventView(Account a, String flash, Event e){
         String c = Html.head(Html.eventKind(e).toLowerCase() + " event", e.getTitle().toLowerCase(), null, "<a class=\"btn btn-secondary\" href=\"" + (a instanceof Admin ? "/admin/events" : "/events") + "\">Back</a>");
-        c += "<div class=\"grid grid-2\" style=\"align-items:start\"><div>" + Html.eventCard(e, null) + "</div><div class=\"card\">";
+        c += "<div class=\"grid grid-2\" style=\"align-items:start\"><div>" + Html.eventCard(e, a instanceof User ? joinFooter((User)a, e) : null) + "</div><div class=\"card\">";
         String[][] rows = specRows(e);
         for(int i = 0; i < rows.length; i++){
             c += "<div class=\"field-row\"><span>" + rows[i][0] + "</span><span>" + Html.esc(rows[i][1]) + "</span></div>";
@@ -551,6 +551,81 @@ public class UserPages {
             + "<label class=\"field\">Reason (optional)<textarea name=\"reason\" placeholder=\"What happened?\"></textarea></label>"
             + "<div class=\"row\" style=\"justify-content:flex-end\"><button class=\"btn btn-primary\">Send report</button></div></form>";
         return layout(u, "Report a User", flash, c);
+    }
+
+    // =====================================================================
+    // Joining events
+    // =====================================================================
+
+    /**
+     * Checks if an event is in a pool of events made by the Matchmaker.
+     */
+    public static boolean inPool(Object[] pool, Event e){
+        if(pool == null){
+            return false;
+        }
+        for(int i = 0; i < pool.length; i++){
+            if(pool[i] == e){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a user is already one of the people booked into an event.
+     */
+    public static boolean isIn(User u, Event e){
+        if(e.getCurrentUser1() == u || e.getCurrentUser2() == u){
+            return true;
+        }
+        if(e instanceof Indoor){
+            return ((Indoor)e).getUser3() == u || ((Indoor)e).getUser4() == u;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a user could join an event, using the same rules as single and
+     * double date matching. The test matches made here are never stored.
+     */
+    public boolean canJoin(User u, Event e){
+        if(e instanceof Indoor){
+            if(!inPool(mm.generateDoubleEventPool(u), e)){
+                return false;
+            }
+            DoubleEventMatch check = new DoubleEventMatch(u);
+            return check.isValidEventCandidate(e) && check.canBeSortedSuccessfully(e);
+        }
+        if(!inPool(mm.generateSingleEventPool(u), e)){
+            return false;
+        }
+        SingleEventMatch check = new SingleEventMatch(u);
+        return check.prelimCheck(e.getCurrentUser1());
+    }
+
+    /**
+     * Builds the bottom of an event card: a Join button if the matching rules
+     * would offer this event to the user, otherwise the reason they can't join.
+     */
+    public String joinFooter(User u, Event e){
+        String note;
+        if(isIn(u, e)){
+            note = "You're in this event";
+        }else if(e.isExpired()){
+            note = "Already happened";
+        }else if(Html.attendees(e) >= Html.capacity(e)){
+            note = "Full";
+        }else if(u.maxMatches()){
+            note = "You already have 5 matches";
+        }else{
+            if(canJoin(u, e)){
+                return "<form method=\"post\" action=\"/events/join\" style=\"margin-top:8px\">" + Html.hidden("t", e.getTitle())
+                    + "<button class=\"btn btn-primary wide\">Join this " + (e instanceof Indoor ? "double date" : "single date") + "</button></form>";
+            }
+            note = "Not open to you (age group, preferences or past matches)";
+        }
+        return "<p class=\"muted small\" style=\"margin-top:8px;text-align:center\">" + note + "</p>";
     }
 
     // =====================================================================

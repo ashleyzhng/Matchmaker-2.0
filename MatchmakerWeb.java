@@ -186,6 +186,7 @@ public class MatchmakerWeb implements HttpHandler {
             return;
         }
         if(path.equals("/events")){ sendHtml(ex, 200, userPages.events(u, flash, p)); return; }
+        if(path.equals("/events/join") && post){ joinEvent(ex, p, sid, u); return; }
         if(path.equals("/events/host")){
             if(post){ hostEvent(ex, p, sid, u, null); }
             else { sendHtml(ex, 200, userPages.hostForm(u, flash, typeOf(p.get("type")), null)); }
@@ -459,6 +460,39 @@ public class MatchmakerWeb implements HttpHandler {
     // =====================================================================
     // Events
     // =====================================================================
+
+    /**
+     * Joins an event the user picked. Uses the same single or double date
+     * matching as the New Match page, but with only this one event to choose from.
+     */
+    private void joinEvent(HttpExchange ex, HashMap<String, String> p, String sid, User u) throws IOException {
+        Event e = mm.getEvents().searchApprovedEventByTitle(p.getOrDefault("t", ""));
+        if(e == null){
+            redirect(ex, "/events", sid, "err:That event does not exist.");
+            return;
+        }
+        if(u.maxMatches()){
+            redirect(ex, "/events", sid, "err:You already have 5 matches. Finish your existing matches first.");
+            return;
+        }
+        if(!userPages.canJoin(u, e)){
+            redirect(ex, "/events", sid, "err:You can't join " + e.getTitle() + ". It doesn't fit your age group, preferences or past matches, or it is full.");
+            return;
+        }
+        EventMatch m;
+        if(e instanceof Indoor){
+            m = new DoubleEventMatch(u);
+        }else{
+            m = new SingleEventMatch(u);
+        }
+        m.execute(new Object[]{e});
+        if(m.getEvent() == null){
+            redirect(ex, "/events", sid, "err:You can't join " + e.getTitle() + " because the people in it aren't compatible with you.");
+            return;
+        }
+        saveAll();
+        redirect(ex, "/matches", sid, "ok:You joined " + e.getTitle() + "! Accept the match when you're ready.");
+    }
 
     /**
      * Creates a new pending event, or updates one that is still pending.
