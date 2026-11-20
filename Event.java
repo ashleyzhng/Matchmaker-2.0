@@ -216,7 +216,7 @@ public abstract class Event {
         Purpose: returns whther event is expired and should be removed from system
     */
     public boolean isExpired() {
-        if (determineDatePassed() && determineTimePassed()) {
+        if (determineDatePassed() || (date.equals(todayDate) && determineTimePassed())) {
             return true;
         }
         return false;

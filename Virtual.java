@@ -78,6 +78,9 @@ public class Virtual extends Event {
     }
 
     public double calculateCost() {
+        if (usedDiscountCode == null) {
+            return getOriginalCost();
+        }
         switch (usedDiscountCode) {
             case "DISCOUNT10":
                 return getOriginalCost() * 0.9; // 10% discount

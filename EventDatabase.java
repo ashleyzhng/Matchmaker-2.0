@@ -33,6 +33,16 @@ public class EventDatabase {
         ad.loadFromFile("Accounts.txt");
         loadAllEvents("event.txt");
     }
+
+    //constructor that uses the system's existing accounts instead of loading a separate copy
+    public EventDatabase(AccountsDatabase accounts) {
+        approvedEventList = new Event[maxApprovedEvents];
+        pendingEventList = new Event[maxPendingEvents];
+        numApprovedEvents = 0;
+        numPendingEvents = 0;
+        ad = accounts;
+        loadAllEvents("event.txt");
+    }
     
     /*
         Parameters: String
@@ -82,6 +92,7 @@ public class EventDatabase {
                 Virtual vir = new Virtual(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, platform, meetingid, password);
                 boolean added;
                 if (approved.equals("true")) {
+                    vir.setApproved(true);
                     added = addApprovedEvent(vir);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
@@ -140,6 +151,7 @@ public class EventDatabase {
 
                 boolean added;
                 if (approved.equals("true")) {
+                    outdoor.setApproved(true);
                     added = addApprovedEvent(outdoor);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
@@ -194,6 +206,7 @@ public class EventDatabase {
                 Indoor indoor = new Indoor(title, ld, lst, ldt, originalCost, r, s, m, a, t, f, g, c, an, re, initialUser, loca, floornum, room);
                 boolean added;
                 if (approved.equals("true")) {
+                    indoor.setApproved(true);
                     added = addApprovedEvent(indoor);
                     if (added) {
                         System.out.print("Approved event was succesfuly added.");
@@ -318,9 +331,9 @@ public class EventDatabase {
                 out.newLine();
                 out.write(((Outdoor)e.get(i)).getLocation());
                 out.newLine();
-                out.write(((Outdoor)e.get(i)).getTemperature());
+                out.write(((Outdoor)e.get(i)).getTemperature() + "");
                 out.newLine();
-                out.write(((Outdoor)e.get(i)).getPrecipitation());
+                out.write(((Outdoor)e.get(i)).getPrecipitation() + "");
                 out.newLine();
                 out.write(e.get(i).getApproved() + "");
                 out.newLine();
@@ -366,7 +379,7 @@ public class EventDatabase {
                 out.newLine();
                 out.write(((Indoor)e.get(i)).getLocation());
                 out.newLine();
-                out.write(((Indoor)e.get(i)).getFloorNumber());
+                out.write(((Indoor)e.get(i)).getFloorNumber() + "");
                 out.newLine();
                 out.write(((Indoor)e.get(i)).getRoom());
                 out.newLine();
@@ -478,9 +491,9 @@ public class EventDatabase {
                 out.newLine();
                 out.write(((Outdoor)event).getLocation());
                 out.newLine();
-                out.write(((Outdoor)event).getTemperature());
+                out.write(((Outdoor)event).getTemperature() + "");
                 out.newLine();
-                out.write(((Outdoor)event).getPrecipitation());
+                out.write(((Outdoor)event).getPrecipitation() + "");
                 out.newLine();
                 out.write(event.getApproved() + "");
                 out.newLine();
@@ -525,7 +538,7 @@ public class EventDatabase {
                 out.newLine();
                 out.write(((Indoor)event).getLocation());
                 out.newLine();
-                out.write(((Indoor)event).getFloorNumber());
+                out.write(((Indoor)event).getFloorNumber() + "");
                 out.newLine();
                 out.write(((Indoor)event).getRoom());
                 out.newLine();
@@ -550,6 +563,10 @@ public class EventDatabase {
     //accessors and mutators
     public Event[] getApprovedEventList() {
         return approvedEventList;
+    }
+
+    public ArrayList<Event> getAllEventList() {
+        return allEventList;
     }
 
     public Event[] getEventList() {

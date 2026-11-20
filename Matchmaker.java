@@ -28,8 +28,9 @@ public class Matchmaker {
      * Sets up the databases and loads existing match history from storage.
      */
     public Matchmaker(){
-        events = new EventDatabase();
         accounts = new AccountsDatabase(this);
+        // events share the same accounts so a user in an event is the same object as the logged in user
+        events = new EventDatabase(accounts);
         appeals = new AppealDatabase(); // changes
         accounts.loadMatches(this);
     }
@@ -173,7 +174,7 @@ public class Matchmaker {
 
         for (int i = 0; i < all.length; i ++){
             Event curEvent = all[i];
-            if (curEvent!= null && (curEvent instanceof Virtual || curEvent instanceof Outdoor)){
+            if (curEvent!= null && !curEvent.isExpired() && (curEvent instanceof Virtual || curEvent instanceof Outdoor)){
                 User cur1 = all[i].getCurrentUser1();
                 User cur2 = all[i].getCurrentUser2();
                 
@@ -204,7 +205,7 @@ public class Matchmaker {
         for (int i = 0; i < all.length; i ++){
             Event curEvent = all[i];
             
-            if(curEvent != null && curEvent instanceof Indoor){
+            if(curEvent != null && !curEvent.isExpired() && curEvent instanceof Indoor){
                 Indoor indoor = (Indoor)curEvent;
                 User cur1 = indoor.getCurrentUser1();
                 User cur2 = indoor.getCurrentUser2();
@@ -319,7 +320,8 @@ public class Matchmaker {
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             ArrayList<Account> a = accounts.getAccounts(); 
-            out.write(a.size());
+            out.write("" + a.size());
+            out.newLine();
             for(int i = 0; i< a.size(); i++){
                 if(a.get(i) instanceof Admin){
                     out.write("admin");
@@ -357,9 +359,6 @@ public class Matchmaker {
                     out.newLine();
                     out.write("" + ((User) (a.get(i))).getPreferredGender());
                     out.newLine();
-                    out.write("" + ((User) (a.get(i))).getMatched());
-                    out.newLine();
-                    //out.write("" + ((User) (a.get(i))).InterestTagInt());
                 }
                 if(a.get(i) instanceof Adult){
                     out.write("" + ((Adult) (a.get(i))).getOccupation());
@@ -381,8 +380,15 @@ public class Matchmaker {
                     out.write("" + ((Senior)(a.get(i))).getPreferredMinAge());
                     out.newLine();
                     out.write("" + ((Senior) (a.get(i))).hasMobilityLimitations());
-                } 
-                out.newLine();   
+                    out.newLine();
+                }
+                if(a.get(i) instanceof User){
+                    Tag t = ((User) (a.get(i))).getTag();
+                    out.write(t.getReligion() + "\n" + t.getSports() + "\n" + t.getMusic() + "\n" + t.getArt() + "\n" + t.getTraveling() + "\n"
+                        + t.getFitness() + "\n" + t.getGaming() + "\n" + t.getCooking() + "\n" + t.getAnimal() + "\n" + t.getReading());
+                    out.newLine();
+                }
+                out.newLine();
             }
             out.close();
         } catch (IOException e){
@@ -407,10 +413,13 @@ public class Matchmaker {
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             ArrayList<Appeal> a = appeals.getAppeals();
-            out.write(a.size());
+            out.write("" + a.size());
+            out.newLine();
             for(int i = 0; i< a.size(); i++){
                 out.write(a.get(i).getUser().getUsername());
+                out.newLine();
                 out.write(a.get(i).getReason());
+                out.newLine();
             }
             out.close();
         }catch (IOException e){
@@ -459,7 +468,7 @@ public class Matchmaker {
      * @return      The matching Account object instance, or null if not found
      */
     public Account searchAccountByUsername(String targetUsername){
-        return accounts.searchByUsername(targetUsername);
+        return accounts.searchAccountByUsername(targetUsername);
     }
 
 }
