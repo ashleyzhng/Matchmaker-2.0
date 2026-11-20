@@ -325,12 +325,64 @@ public class MatchmakerWeb implements HttpHandler {
             found = ((EventMatch)m).getEvent() != null;
         }
         if(!found){
-            redirect(ex, "/new-match", sid, "err:No compatible match right now. Try another match type, or check back once more people join.");
+            redirect(ex, "/new-match", sid, "err:" + noMatchReason(u, type));
             return;
         }
         saveAll();
         lastMatch.put(sid, m);
         redirect(ex, "/new-match", sid);
+    }
+
+    /**
+     * Explains why no match was found, using the same checks the matching code uses.
+     * Nothing is matched or saved here.
+     *
+     * @param u    The user who asked for a match
+     * @param type 1 = interest, 2 = distance, 3 = single date, 4 = double date
+     * @return     A sentence telling the user why there was no match
+     */
+    private String noMatchReason(User u, int type){
+        if(type == 3){
+            Object[] events = mm.generateSingleEventPool(u);
+            if(events == null || events.length == 0){
+                return "No upcoming virtual or outdoor events have an open spot for you right now. Try hosting one on the Events page!";
+            }
+            return "The upcoming virtual and outdoor events only have people you've already matched with, or people outside your age group or gender preferences.";
+        }
+        if(type == 4){
+            Object[] events = mm.generateDoubleEventPool(u);
+            if(events == null || events.length == 0){
+                return "No upcoming indoor events have people you can double date with right now. Indoor events need a host first, so try hosting one!";
+            }
+            return "The upcoming indoor events only have people you've already matched with, or people outside your age group or gender preferences.";
+        }
+        if(u.getPreferredGender() == 'O'){
+            return "No one matches the \"Other\" preference yet. You can change who you're interested in on the Settings page.";
+        }
+        // a test match that is never stored, used only to check compatibility
+        InterestMatch check = new InterestMatch(u);
+        ArrayList<User> notMatchedYet = mm.eligibleUserPool(u);
+        User[] everyone = mm.getAccounts().getUsers();
+        int compatible = 0;
+        for(int i = 0; i < everyone.length; i++){
+            if(everyone[i] != null && everyone[i] != u && check.prelimCheck(everyone[i])){
+                compatible++;
+            }
+        }
+        if(compatible == 0){
+            return "Nobody in Matchmaker fits your age group and gender preferences yet. Check back when more people join!";
+        }
+        int fresh = 0;
+        for(int i = 0; i < notMatchedYet.size(); i++){
+            if(check.prelimCheck(notMatchedYet.get(i))){
+                fresh++;
+            }
+        }
+        if(fresh == 0){
+            return "You've already been matched with everyone who fits your age group and gender preferences ("
+                + compatible + (compatible == 1 ? " person" : " people") + "). You can't be matched with the same person twice, so check back when more people join!";
+        }
+        return "No compatible match right now. Try another match type, or check back once more people join.";
     }
 
     private void decide(HttpExchange ex, HashMap<String, String> p, String sid, User u) throws IOException {
