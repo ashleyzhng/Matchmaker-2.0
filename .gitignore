@@ -1,0 +1,2 @@
+# Compiled Java files. These are rebuilt by "javac *.java", so they are not saved in Git.
+*.class
