@@ -41,8 +41,9 @@ The website uses the same accounts, events and matches as the console version, a
 | Teen  | `skatergirl16` | `pass123`    |
 | Adult | `teacheremma`  | `emma123`    |
 | Senior | `retiredbob`  | `bobpass`    |
+| Teen  | `musicfan18` (Noah) | `song888` |
 
-More accounts are in `Accounts.txt`.
+More accounts are in `Accounts.txt`. The newer sample accounts (for example `jakeskates`, `mayaswims`, `danielfit`, `priyareads`, `margaretknits` and `haroldchess`) all use the password `pass123`.
 
 ## Features
 
