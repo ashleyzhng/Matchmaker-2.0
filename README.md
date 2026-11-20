@@ -1,12 +1,12 @@
 # Matchmaker 2.0
 
-A console-based matchmaking app written in Java. Users create a profile, get matched with other users by shared interests or distance, and can be paired up for single or double dates at hosted events. Admins approve events, handle reports, and manage accounts.
+A matchmaking app written in Java, with a console version and a website. Users create a profile, get matched with other users by shared interests or distance, and can be paired up for single or double dates at hosted events. Admins approve events, handle reports, and manage accounts.
 
 **Authors:** Ashley Zhong, Joyce Lin, Kathy Wu. Built for ICS4U1.
 
 ## Running the program
 
-You need a Java JDK (8 or newer). From the project folder:
+You need a Java JDK (8 or newer, or 11 or newer for the website). From the project folder:
 
 ```bash
 javac *.java
@@ -18,12 +18,29 @@ java MatchmakerRunner
 
 Run it from the project root so it can find `Accounts.txt`, `event.txt` and the `matches/` folder.
 
+## Running the website
+
+After compiling, start the website instead of the console menus:
+
+```bash
+java MatchmakerWeb
+```
+
+Then open **http://localhost:8080** in your browser. Press `Ctrl+C` in the terminal to stop it. To use a different port, add it at the end, for example `java MatchmakerWeb 9090`.
+
+The website uses the same accounts, events and matches as the console version, and adds:
+- Five colour themes (Blush, Powder Blue, Sage, Lavender and Midnight) and nine avatars, picked in **Settings**.
+- Profile pages that show the differences between Teen, Adult and Senior accounts.
+- Admin pages for users (filter by age group), reports, event review and all events.
+
 ### Sample logins
 
 | Role  | Username       | Password     |
 |-------|----------------|--------------|
 | Admin | `admin1`       | `adminpass1` |
-| User  | `skatergirl16` | `pass123`    |
+| Teen  | `skatergirl16` | `pass123`    |
+| Adult | `teacheremma`  | `emma123`    |
+| Senior | `retiredbob`  | `bobpass`    |
 
 More accounts are in `Accounts.txt`.
 
@@ -60,7 +77,7 @@ From the **Match Menu**, users can create a new match or manage their current on
 
 ## Data files
 
-Data is saved when you log out or exit the program.
+Data is saved when you log out or exit the program. The website saves after every change.
 
 | File / folder            | Holds |
 |--------------------------|-------|
@@ -68,12 +85,15 @@ Data is saved when you log out or exit the program.
 | `event.txt`              | All events. The first line is the event count. |
 | `matches/matches_<username>.txt` | Each user's current matches and match history. |
 | `Test.txt`               | A sample accounts file for the **Load from File** option. |
+| `appeals.txt`            | Reports sent to admins (website). |
+| `preferences.txt`        | Each user's theme and avatar (website). |
 
 ## Code overview
 
 | Area | Classes |
 |------|---------|
 | Entry point and UI | `MatchmakerRunner`, `Menu`, `EventMenu`, `LoginResults` |
+| Website | `MatchmakerWeb` (web server and actions), `UserPages`, `AdminPages`, `Html`, `Preferences` |
 | Core system | `Matchmaker` connects the account, event, and appeal databases. |
 | Accounts | `Account` (abstract), `Admin`, `User`, `Teen`, `Adult`, `Senior`, `Tag` |
 | Events | `Event` (abstract), `Indoor`, `Outdoor`, `Virtual` |
@@ -81,3 +101,5 @@ Data is saved when you log out or exit the program.
 | Storage | `AccountsDatabase`, `EventDatabase`, `AppealDatabase`, `MatchFileManager` |
 | Reports | `Appeal` |
 | Test drivers | `TestEventMatch`, `TestManualEvent` |
+
+The website's styles are in `web/style.css`, the characters and avatars in `images/`, and the fonts (Cormorant Garamond, DM Sans and Caveat, free under the SIL Open Font License) in `fonts/`.
