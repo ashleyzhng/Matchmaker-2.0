@@ -83,7 +83,7 @@ public class AccountsDatabase {
     * @return true if the username exists, false otherwise
     */
     public boolean usernameExists(String u){
-        if(searchByUsername(u) == null){
+        if(searchAccountByUsername(u) == null){
             return false;
         }
         return true;
@@ -174,13 +174,25 @@ public class AccountsDatabase {
         }
         return null;
     }
+    /* Searches for any account (user or admin) with a specific username
+    * @param String the username to search for
+    * @return the matching account, or null if not found
+    */
+    public Account searchAccountByUsername(String targetUsername){
+        for (int i = 0; i < accounts.size(); i++){
+            if(accounts.get(i).getUsername().equals(targetUsername)){
+                return accounts.get(i);
+            }
+        }
+        return null;
+    }
     /* Searches for a user with a specific first name
     * @param String the first name to search for
     * @return the matching user, or null if not found
     */
     public User searchByFirstName(String firstName) {
         for (int i = 0; i<accounts.size(); i++) {
-            if (accounts != null && ((User)accounts.get(i)).getName() != null) {
+            if (accounts.get(i) instanceof User && ((User)accounts.get(i)).getName() != null) {
                 String[] parts = ((User)accounts.get(i)).getName().split(" ");
                 if (parts.length > 0 && parts[0].equalsIgnoreCase(firstName)) {
                     return (User)accounts.get(i);
@@ -195,7 +207,7 @@ public class AccountsDatabase {
     */
     public User searchByLastName(String lastName) {
         for (int i = 0; i<accounts.size(); i++)  {
-            if (accounts != null && ((User)accounts.get(i)).getName() != null) {
+            if (accounts.get(i) instanceof User && ((User)accounts.get(i)).getName() != null) {
                 String[] parts = ((User)accounts.get(i)).getName().split(" ");           
                 if (parts.length > 1 && parts[parts.length - 1].equalsIgnoreCase(lastName)) {
                     return (User)accounts.get(i);

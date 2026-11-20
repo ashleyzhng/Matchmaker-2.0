@@ -36,11 +36,13 @@ public class User extends Account {
         birthday = b;
         postalCode = pc;
         city = c;
+        bio = bi;
         gender = g;
         preferredGender = pg;
         interestTag = t;
         matches = new Match[MAX_MATCHES];
         numMatches = 0;
+        matchHistory = new ArrayList<>();
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
@@ -57,6 +59,7 @@ public class User extends Account {
         interestTag = t;
         matches = new Match[MAX_MATCHES];
         numMatches = 0;
+        matchHistory = new ArrayList<>();
         eventHistory = new ArrayList<>();
         eventHosted = new ArrayList<>();
     }
@@ -179,7 +182,7 @@ public class User extends Account {
     */
     public void deleteMatch(String name){
         for(int i = 0; i < matches.length; i++){
-            if(matches[i] instanceof EventMatch && ((EventMatch)matches[i]).getEventTitle().equals(name)){
+            if(matches[i] instanceof EventMatch && name.equals(((EventMatch)matches[i]).getEventTitle())){
                 matches[i] = null;
                 numMatches--;
                 for(int j = i; j < matches.length - 1; j++){
@@ -196,7 +199,7 @@ public class User extends Account {
     public EventMatch getEventMatch(String name){
         for(int i = 0; i < matches.length; i++){
             if(matches[i] instanceof EventMatch){ 
-                if (((EventMatch)matches[i]).getEventTitle().equals(name)){
+                if (name.equals(((EventMatch)matches[i]).getEventTitle())){
                     return ((EventMatch)matches[i]);
                 }
             }
@@ -244,12 +247,10 @@ public class User extends Account {
     /* Removes expired matches from this user's current matches
     */
     public void updateMatches(){
-        if(numMatches > 0){
-            for(int i = 0; i<numMatches; i++){
-                if(matches[i]!= null && matches[i].isExpire() && matches[1] != null){
-                        deleteMatch(matches[i]);
-
-                }
+        // loops backwards so removing a match does not skip the one after it
+        for(int i = matches.length - 1; i >= 0; i--){
+            if(matches[i] != null && matches[i].isExpire()){
+                deleteMatch(matches[i]);
             }
         }
     }

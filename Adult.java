@@ -19,6 +19,7 @@ public class Adult extends User {
     //constructors
     public Adult(String u, String p, String e, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, Tag t){
         super(u, p, e, n, b, pc, c, bi, g, pg, t);
+        occupation = o;
         maritalStatus = m;
         preferredMaxAge = max;
         preferredMinAge = min;
@@ -26,6 +27,7 @@ public class Adult extends User {
 
     public Adult(String u, String p, String e, boolean ev, String n, LocalDate b, String pc, String c, String bi, char g, char pg, String o, String m, int max, int min, Tag t){
         super(u, p, e, ev, n, b, pc, c, bi, g, pg, t);
+        occupation = o;
         maritalStatus = m;
         preferredMaxAge = max;
         preferredMinAge = min;
