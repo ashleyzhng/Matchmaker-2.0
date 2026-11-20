@@ -201,7 +201,7 @@ public class DoubleEventMatch extends EventMatch {
      * Parameters: e - the event to check
      * Returns: true if the event is valid, false otherwise
      */
-    private boolean isValidEventCandidate(Event e) {
+    public boolean isValidEventCandidate(Event e) {
         User u1 = e.getCurrentUser1();
         User u2 = e.getCurrentUser2();
         User u3 = ((Indoor)e).getUser3();
@@ -265,7 +265,7 @@ public class DoubleEventMatch extends EventMatch {
      * Parameters: e - the event to check
      * Returns: true if the users can be sorted successfully, false otherwise
      */
-    private boolean canBeSortedSuccessfully(Event e) {
+    public boolean canBeSortedSuccessfully(Event e) {
         User u1 = e.getCurrentUser1();
         User u2 = e.getCurrentUser2();
         User u3 = ((Indoor) e).getUser3();
