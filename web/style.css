@@ -72,7 +72,6 @@ p { margin: 0; }
 /* ---------- characters (white backgrounds blend into light themes) ---------- */
 .character { display: block; object-fit: contain; }
 .theme-midnight .character { mix-blend-mode: normal; background: #FFFFFF; border-radius: 18px; padding: 6px; }
-.photo { border-radius: 16px; object-fit: cover; mix-blend-mode: normal !important; }
 
 /* ---------- app shell ---------- */
 .app { display: flex; min-height: 100vh; }

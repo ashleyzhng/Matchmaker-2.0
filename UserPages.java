@@ -184,7 +184,7 @@ public class UserPages {
             {"4", "double date", "Join an indoor event with three other people.", "double_date", "lower success rate"}};
         c += "<form class=\"stack\" method=\"post\" action=\"/new-match\"><div class=\"grid grid-4\">";
         for(int i = 0; i < opts.length; i++){
-            String img = opts[i][3].equals("single_date") ? "<img class=\"photo\" src=\"/images/single_date.png\" alt=\"\" style=\"height:120px;object-fit:contain\">" : Html.character(opts[i][3], "");
+            String img = Html.character(opts[i][3], "");
             c += "<label class=\"pick\"><input type=\"radio\" name=\"type\" value=\"" + opts[i][0] + "\"" + (i == 0 ? " checked" : "") + "><div class=\"card\">" + img
                 + "<h3>" + opts[i][1] + "</h3><p class=\"muted small\">" + opts[i][2] + "</p>" + (opts[i][4].isEmpty() ? "" : "<span class=\"low\">" + opts[i][4] + "</span>") + "</div></label>";
         }
@@ -651,7 +651,7 @@ public class UserPages {
             Event e = em.getEvent();
             name = e == null ? em.getEventTitle() : e.getTitle();
             handle = e == null ? "" : Html.eventKind(e) + " · " + Html.place(e);
-            pic = dbl ? Html.character("double_date", "width:48px;height:48px") : "<img class=\"photo\" src=\"/images/single_date.png\" alt=\"\" style=\"width:48px;height:48px\">";
+            pic = Html.character(dbl ? "double_date" : "single_date", "width:48px;height:48px");
             details = Html.day(em.getDate()) + " · " + Html.time(em.getStart()) + " – " + Html.time(em.getEnd()) + " · " + (o.isEmpty() ? "Still searching for a date" : "With " + names(o));
         }
         double score = Math.max(0, Math.min(100, m.getScore()));

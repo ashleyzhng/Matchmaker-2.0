@@ -285,7 +285,7 @@ public class Html {
     public static String eventCard(Event e, String footerExtra){
         String kind = eventKind(e);
         boolean dbl = e instanceof Indoor;
-        String pic = dbl ? character("double_date", "") : "<img class=\"photo\" src=\"/images/single_date.png\" alt=\"\" style=\"width:96px;height:96px\">";
+        String pic = character(dbl ? "double_date" : "single_date", "");
         int open = capacity(e) - attendees(e);
         return "<div class=\"card event\"><div class=\"banner\"><span class=\"type-chip\">" + kind + " · " + (dbl ? "Double date" : "Single date")
             + "</span>" + pic + "</div><div class=\"body\"><h3><a href=\"/events/view?t=" + url(e.getTitle()) + "\">" + esc(e.getTitle()) + "</a></h3>"
