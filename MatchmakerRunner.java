@@ -22,7 +22,7 @@ public class MatchmakerRunner{
         //core databae
         Matchmaker system = new Matchmaker();
         //Matchmaker system = new Matchmaker(file.txt);
-        Menu menu = new Menu();
+        Menu menu = new Menu(sc, system);
 
         //keep track of whether the application should stay open
         boolean running = true;

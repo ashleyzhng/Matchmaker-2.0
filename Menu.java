@@ -17,7 +17,28 @@ import java.util.Scanner;
  * ----------------------------------------------------------------------------
  */
 public class Menu {
-    EventMenu em = new EventMenu();
+    EventMenu em;
+
+    /**
+     * Creates the menus. The event menu shares the same Scanner and
+     * event database as the rest of the program.
+     *
+     * @param sc  The Scanner used to read what the user types
+     * @param mm  The Matchmaker system that holds all records
+     */
+    public Menu(Scanner sc, Matchmaker mm){
+        em = new EventMenu(sc, mm.getEvents());
+    }
+
+    /**
+     * Saves accounts, matches and events so changes are kept after the program closes.
+     *
+     * @param mm  The Matchmaker system instance
+     */
+    public void saveAll(Matchmaker mm){
+        mm.saveAccountsToFile("Accounts.txt");
+        mm.getEvents().saveAllEvents("event.txt", mm.getEvents().getAllEventList());
+    }
     
      /**
      * Handles the login process for users and admins.
@@ -89,6 +110,7 @@ public class Menu {
         }else if(choice == 3){
             return "createAccount";
         }else if(choice == 4){
+            saveAll(mm);
             return "exit";
         }
         return "";
@@ -118,6 +140,7 @@ public class Menu {
         if(choice == 1){
             return matchMenu(sc, u, mm);
         }else if (choice == 2){
+            sc.nextLine();
             em.getEventScreen(u);
             return "user";
         }else if(choice == 3){
@@ -142,7 +165,7 @@ public class Menu {
             return "user";
         }else if (choice == 6){
             System.out.println("Logout successful.");
-            mm.saveAccountsToFile("Test.txt");
+            saveAll(mm);
             return "logout"; 
         }
         return "user";
@@ -169,15 +192,15 @@ public class Menu {
         if(choice == 1){
             if(a instanceof User){
                 userChangeDetails((User)a, sc, mm);
-                mm.saveAccountsToFile("Test.txt");
+                saveAll(mm);
                 return "user";
             }else if(a instanceof Admin){
                 accountChangeDetails(a, sc, mm);
-                mm.saveAccountsToFile("Test.txt");
+                saveAll(mm);
                 return "admin";
             }else{
                 accountChangeDetails(a, sc, mm);
-                mm.saveAccountsToFile("Test.txt");
+                saveAll(mm);
                 return "parent";
             }
         }else if(choice == 2){
@@ -187,15 +210,19 @@ public class Menu {
                 a.setEmailVerified(true);
                 System.out.println("Email verified.");
             }
-            mm.saveAccountsToFile("Test.txt");
+            saveAll(mm);
             return "user";
         }else if(choice == 3){
             System.out.print("Enter Password to delete account: ");
+            sc.nextLine();
             String pass = sc.nextLine();
-            System.out.println("Account Deleted Succesfully. Logging out.");
-            mm.getAccounts().deleteAccount(a, pass);
-            mm.saveAccountsToFile("Test.txt");
-            return "logout";
+            if(mm.getAccounts().deleteAccount(a, pass)){
+                System.out.println("Account Deleted Succesfully. Logging out.");
+                saveAll(mm);
+                return "logout";
+            }
+            System.out.println("Incorrect password. Account was not deleted.");
+            return "user";
         }
         return "user";
     }
@@ -242,6 +269,7 @@ public class Menu {
             System.out.println("=======================");
             choice = input(1,10,sc);
         }
+        sc.nextLine();
         editProfile(choice, u, sc, mm);
     }
 
@@ -261,6 +289,7 @@ public class Menu {
         System.out.println("3. Email");
         System.out.println("=======================");
         int choice = input(1,3,sc);
+        sc.nextLine();
         editProfile(choice, a, sc, mm);
     }
 
@@ -287,10 +316,10 @@ public class Menu {
                     while(userExists){
                         System.out.println("Username already exsits. Please input another username");
                         System.out.print("Username: ");
-                        username = sc.next();
+                        username = sc.nextLine();
                         userExists = mm.getAccounts().usernameExists(username);
                     }
-                a.setUsername(sc.nextLine());
+                a.setUsername(username);
                 break;
 
             case 2:
@@ -344,8 +373,10 @@ public class Menu {
                 choice2 = input(1,3,sc);
                     if(choice2 == 1){
                         u.setPreferredGender('M');
-                    }else{
+                    }else if(choice2 == 2){
                         u.setPreferredGender('F');
+                    }else{
+                        u.setPreferredGender('O');
                     }
                 break;
 
@@ -391,7 +422,6 @@ public class Menu {
 
             case 15:
                 System.out.print("Enter mobility limitations (true/false): ");
-                sc.nextLine();
                 ((Senior)u).setHasMobilityLimitations(Boolean.parseBoolean(sc.nextLine()));
                 break;
         }
@@ -429,21 +459,39 @@ public class Menu {
             ad.viewUserInfo(mm.getAccounts().searchByUsername(username));
             return "admin";
         }else if(choice == 3) {
+            if(mm.getAppeals().getAppeals().size() == 0){
+                System.out.println("No appeals to review.");
+                return "admin";
+            }
             ad.viewAllAppeals(mm.getAppeals());
             System.out.println("(Delete User)Resolve Appeal #: ");
             int idx = input(1,mm.getAppeals().getAppeals().size(),sc);
             idx--;
             User d = mm.getAppeals().getAppeals().get(idx).getUser();
             mm.getAccounts().deleteAccount(d, d.getPassword());
-            mm.saveAccountsToFile("Test.txt");
+            mm.getAppeals().getAppeals().remove(idx);
+            saveAll(mm);
             return "admin";
         } else if (choice == 4) {
+            sc.nextLine();
             em.adminViewEvents();
             return "admin";
         } else if (choice == 5) {
+            sc.nextLine();
             em.adminEventReview();
             return "admin";
+        } else if (choice == 6) {
+            System.out.print("Enter username to promote: ");
+            sc.nextLine();
+            String username = sc.nextLine();
+            Admin newAdmin = ad.promoteUser(mm.getAccounts().searchByUsername(username), mm.getAccounts());
+            if(newAdmin != null){
+                mm.getAccounts().addAccount(newAdmin);
+                saveAll(mm);
+            }
+            return "admin";
         }
+        saveAll(mm);
         return "logout";
     }
 
@@ -496,14 +544,16 @@ public class Menu {
         System.out.println("2. User Account");
         System.out.println("3. GO BACK");
         System.out.println("=======================");
-        int choice = input(1,4,sc);
+        int choice = input(1,3,sc);
         if(choice == 1){
             System.out.print("Enter file name: ");
             mm.loadAccountsFromFile(sc.next());
             return "createAccount";
         }else if(choice == 2){
-            createUser(sc, mm);
-            System.out.println("Account Created Succesfully. Please Login to start Matching!");
+            if(createUser(sc, mm)){
+                saveAll(mm);
+                System.out.println("Account Created Succesfully. Please Login to start Matching!");
+            }
             return "main";
         }
         return "main";
@@ -517,7 +567,7 @@ public class Menu {
      * @param sc  The Scanner used to read all the registration answers
      * @param mm  The Matchmaker system instance where the new account will be saved
      */
-    public void createUser(Scanner sc, Matchmaker mm){ 
+    public boolean createUser(Scanner sc, Matchmaker mm){ 
         System.out.flush();
         System.out.println("ENTER THE FOLLOWING INFORMATION" );
         System.out.print("Username: ");
@@ -562,7 +612,7 @@ public class Menu {
             }
             sc.nextLine();
         int age = Period.between(birthday, LocalDate.now()).getYears();
-        if(age > Senior.MIN_AGE){
+        if(age >= Senior.MIN_AGE){
             System.out.println("Occupation: ");
             String occupation = sc.nextLine(); 
             System.out.print("Marital status: ");
@@ -576,7 +626,7 @@ public class Menu {
             boolean mobilityStatus = Boolean.parseBoolean(sc.nextLine()); 
             Tag interestTag = tagMenu(sc);
             mm.getAccounts().addAccount(new Senior(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, mobilityStatus, interestTag));
-        }else if(age > Adult.MIN_AGE){
+        }else if(age >= Adult.MIN_AGE){
             System.out.println("Occupation: ");
             String occupation = sc.nextLine(); 
             System.out.print("Marital status: ");
@@ -587,12 +637,14 @@ public class Menu {
             int minAge = input(Adult.MIN_AGE, 100, sc);
             Tag interestTag = tagMenu(sc);
             mm.getAccounts().addAccount(new Adult(username, password, email, name, birthday, postalCode, city, bio, gender, preferredGender, occupation, maritalStatus, maxAge, minAge, interestTag));
-        }else if(age > Teen.MIN_AGE){
+        }else if(age >= Teen.MIN_AGE){
             Tag interestTag = tagMenu(sc);
             mm.getAccounts().addAccount(new Teen(username, password, email, false, name, birthday, postalCode, city, bio, gender, preferredGender, interestTag));
         }else{
             System.out.println("You are too young to use the service. Minmium age is 13");
+            return false;
         }
+        return true;
     }
 
     /**
@@ -680,16 +732,13 @@ public class Menu {
         System.out.println("=======================");
         int choice = input(1, 3, sc);
         if(choice == 1){
-            currentMatchMenu(sc, u, mm);
-            return "currentMatchMenu";
+            return currentMatchMenu(sc, u, mm);
         }else if (choice == 2){
             if(u.getNumMatches() != 5){
-                newMatchMenu(sc, u, mm);
-                return "newMatchMenu";
+                return newMatchMenu(sc, u, mm);
             }else{
                 System.out.println("You cannot generate New Matches! You already have 5! Finish your existing matches before continuing!");
-                matchMenu(sc, u, mm);
-                return "matchMenu";
+                return matchMenu(sc, u, mm);
             }
             
         }else if (choice == 3){
@@ -831,6 +880,7 @@ public class Menu {
             match.completed();
             boolean dated = true;
             if (match instanceof SingleEventMatch || match instanceof DoubleEventMatch) {
+                sc.nextLine();
                 em.payForEvent( ((EventMatch)match).getEvent());
                 dated = em.dateSim(((EventMatch)match).getEvent(), user);
             } 

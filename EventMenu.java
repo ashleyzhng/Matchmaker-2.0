@@ -13,8 +13,20 @@ import java.util.*;
 
 public class EventMenu {
 
-    Scanner sc = new Scanner(System.in);
-    EventDatabase evda = new EventDatabase();
+    Scanner sc;
+    EventDatabase evda;
+
+    //constructor
+    public EventMenu() {
+        sc = new Scanner(System.in);
+        evda = new EventDatabase();
+    }
+
+    //constructor that shares the program's Scanner and event database
+    public EventMenu(Scanner s, EventDatabase e) {
+        sc = s;
+        evda = e;
+    }
     
 
     /*
@@ -159,9 +171,8 @@ public class EventMenu {
     */
     public boolean dateSim (Event event, User user) {
         System.out.println("Want to continue on date? (Y/N)");
-        sc.nextLine();
         String response = getValidYN();
-        if (response.equals("Y")) {
+        if (response.equalsIgnoreCase("Y")) {
             System.out.println("Enjoy the event!!");
             System.out.println(user.getName() + " is currently in " + event.getTitle());
             return true;
@@ -192,7 +203,7 @@ public class EventMenu {
             System.out.print("Want to view details? (Y/N): ");
             yn = getValidYN();
 
-            if (choice == 1) {
+            if (yn.equalsIgnoreCase("Y")) {
                 System.out.println("Enter title: ");
                 String title = sc.nextLine();
                 Event ev = evda.searchApprovedEventByTitle(title);
@@ -208,7 +219,7 @@ public class EventMenu {
             System.out.print("Want to view details? (Y/N): ");
             yn = getValidYN();
 
-            if (choice == 1) {
+            if (yn.equalsIgnoreCase("Y")) {
                 System.out.println("Enter title: ");
                 String title = sc.nextLine();
                 Event ev = evda.searchPendingEventByTitle(title);
@@ -341,7 +352,10 @@ public class EventMenu {
                     } else {
                         result = manualApproveIndoorEvent(event);
                     }
-                    if (!result) {
+                    if (result) {
+                        // approved events move off the pending list so they are not reviewed again
+                        evda.removePendingEvent(event);
+                    } else {
                         evda.shiftPendingFrontToBack();
                     }
                 } else {
