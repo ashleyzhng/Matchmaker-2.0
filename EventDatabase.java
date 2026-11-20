@@ -94,22 +94,14 @@ public class EventDatabase {
                 if (approved.equals("true")) {
                     vir.setApproved(true);
                     added = addApprovedEvent(vir);
-                    if (added) {
-                        System.out.print("Approved event was succesfuly added.");
-
-                    } else {
-                        System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-
+                    if (!added) {
+                        System.out.println("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
                     }
 
                 } else {
                     added = addPendingEvent(vir);
-                    if (added) {
-                        System.out.print("Event was successfully added. To be approved by admin.");
-
-                    } else {
-                        System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-  
+                    if (!added) {
+                        System.out.println("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
                     } 
                 }
             } else if (type.equals("outdoor")) {
@@ -153,22 +145,14 @@ public class EventDatabase {
                 if (approved.equals("true")) {
                     outdoor.setApproved(true);
                     added = addApprovedEvent(outdoor);
-                    if (added) {
-                        System.out.print("Approved event was succesfuly added.");
-
-                    } else {
-                        System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-
+                    if (!added) {
+                        System.out.println("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
                     }
 
                 } else {
                     added = addPendingEvent(outdoor);
-                    if (added) {
-                        System.out.print("Event was successfully added. To be approved by admin.");
-
-                    } else {
-                        System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-  
+                    if (!added) {
+                        System.out.println("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
                     } 
                 }
             } else {
@@ -208,28 +192,21 @@ public class EventDatabase {
                 if (approved.equals("true")) {
                     indoor.setApproved(true);
                     added = addApprovedEvent(indoor);
-                    if (added) {
-                        System.out.print("Approved event was succesfuly added.");
-
-                    } else {
-                        System.out.print("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
-
+                    if (!added) {
+                        System.out.println("Reached max capacity for approved events. Wait later to create this event once admin frees more space.");
                     }
 
                 } else {
                     added = addPendingEvent(indoor);
-                    if (added) {
-                        System.out.print("Event was successfully added. To be approved by admin.");
-
-                    } else {
-                        System.out.print("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
-
+                    if (!added) {
+                        System.out.println("Reached max capacity for pending events. Wait later to create this event once more have been approved.");
                     } 
                 }
             }
             
         }
         in.close();
+        System.out.println(numEvents + " event(s) loaded (" + numApprovedEvents + " approved, " + numPendingEvents + " waiting for approval).");
         } catch (IOException iox) {
             System.out.println("Cannot load from file!");
 

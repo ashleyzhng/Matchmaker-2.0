@@ -49,6 +49,14 @@ public class MatchFileManager {
      * Returns: None (updates the user's current matches and match history)
      */
     public void loadMatches(String username) {
+        // users who have never had a match don't have a file yet, so they start with none
+        if (!new File("matches/matches_" + username + ".txt").exists()) {
+            User newUser = matchmaker.searchByUsername(username);
+            newUser.setMatches(new Match[User.MAX_MATCHES]);
+            newUser.setMatchHistory(new ArrayList<Match>());
+            newUser.setNumMatches(0);
+            return;
+        }
         try {
             BufferedReader in = new BufferedReader(
                 new FileReader("matches/matches_" + username + ".txt")
