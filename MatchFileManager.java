@@ -59,7 +59,7 @@ public class MatchFileManager {
             User user = matchmaker.searchByUsername(username);
             if (firstLine == null || firstLine.isEmpty()){
                 // Malformed or empty file: initialize empty match lists and return
-                matches = new Match[5];
+                matches = new Match[User.MAX_MATCHES];
                 matchHistory = new ArrayList<Match>();
                 user.setMatches(matches);
                 user.setMatchHistory(matchHistory);
@@ -69,7 +69,7 @@ public class MatchFileManager {
             }
             int numMatches = Integer.parseInt(firstLine);
             user.setNumMatches(numMatches);
-            matches = new Match[5];
+            matches = new Match[User.MAX_MATCHES];
             String historyLine = in.readLine();
             int historySize = 0;
             if (historyLine != null && !historyLine.isEmpty()){
@@ -208,7 +208,7 @@ public class MatchFileManager {
             user.setMatchHistory(matchHistory);
         } catch(IOException e){
             System.out.println("Error loading matches for " + username);
-            matches = new Match[0];
+            matches = new Match[User.MAX_MATCHES];
             matchHistory = new ArrayList<Match>();
             User user = matchmaker.searchByUsername(username);
             user.setMatches(matches);
@@ -272,8 +272,8 @@ public class MatchFileManager {
                     out.println(((SingleEventMatch)curMatches[i]).getStart());
                     out.println(((SingleEventMatch)curMatches[i]).getEnd());
                     out.println(((SingleEventMatch)curMatches[i]).getDate());
-                    out.println(((SingleEventMatch)curMatches[i]).getEvent().getTitle());
-                    out.println(((SingleEventMatch)curMatches[i]).getOwner().getUsername());
+                    out.println(((SingleEventMatch)curMatches[i]).getEventTitle());
+                    out.println(((SingleEventMatch)curMatches[i]).getOwner() == null ? "null" : ((SingleEventMatch)curMatches[i]).getOwner().getUsername());
                     if (((SingleEventMatch) curMatches[i]).getSoulmate() != null){
                         out.println(((SingleEventMatch) curMatches[i]).getSoulmate().getUsername());
                     } else {
@@ -291,8 +291,8 @@ public class MatchFileManager {
                     out.println(((DoubleEventMatch)curMatches[i]).getStart());
                     out.println(((DoubleEventMatch)curMatches[i]).getEnd());
                     out.println(((DoubleEventMatch)curMatches[i]).getDate());
-                    out.println(((DoubleEventMatch)curMatches[i]).getEvent().getTitle());
-                    out.println(((DoubleEventMatch)curMatches[i]).getUser(0).getUsername());
+                    out.println(((DoubleEventMatch)curMatches[i]).getEventTitle());
+                    out.println(((DoubleEventMatch)curMatches[i]).getUser(0) == null ? "null" : ((DoubleEventMatch)curMatches[i]).getUser(0).getUsername());
                     if (((DoubleEventMatch) curMatches[i]).getUser(1) != null){
                         out.println(((DoubleEventMatch) curMatches[i]).getUser(1).getUsername());
                     } else {
@@ -358,8 +358,8 @@ public class MatchFileManager {
                     out.println(((SingleEventMatch)m).getEnd());
                     out.println(((SingleEventMatch)m).getDate());
 
-                    out.println(((SingleEventMatch)m).getEvent().getTitle());
-                    out.println(((SingleEventMatch)m).getOwner().getUsername());
+                    out.println(((SingleEventMatch)m).getEventTitle());
+                    out.println(((SingleEventMatch)m).getOwner() == null ? "null" : ((SingleEventMatch)m).getOwner().getUsername());
 
                     if (((SingleEventMatch)m).getSoulmate() != null){
                         out.println(((SingleEventMatch)m).getSoulmate().getUsername());
@@ -380,9 +380,9 @@ public class MatchFileManager {
                     out.println(((DoubleEventMatch)m).getEnd());
                     out.println(((DoubleEventMatch)m).getDate());
 
-                    out.println(((DoubleEventMatch)m).getEvent().getTitle());
+                    out.println(((DoubleEventMatch)m).getEventTitle());
 
-                    out.println(((DoubleEventMatch)m).getUser(0).getUsername());
+                    out.println(((DoubleEventMatch)m).getUser(0) == null ? "null" : ((DoubleEventMatch)m).getUser(0).getUsername());
 
                     if (((DoubleEventMatch)m).getUser(1) != null){
                         out.println(((DoubleEventMatch)m).getUser(1).getUsername());

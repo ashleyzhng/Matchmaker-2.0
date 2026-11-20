@@ -105,10 +105,10 @@ public abstract class PersonMatch extends Match{
     }
 
     public int getRating1(){
-        return rating[1];
+        return rating[0];
     }
     public int getRating2(){
-        return rating[2];
+        return rating[1];
     }
     public int getRating(User u){
         if (u == pair[0]){
@@ -154,8 +154,12 @@ public abstract class PersonMatch extends Match{
      * Returns: none
      */
     public void deleteMatch(){
-        pair[0].deleteMatch(this);
-        pair[1].deleteMatch(this);
+        if(pair[0] != null){
+            pair[0].deleteMatch(this);
+        }
+        if(pair[1] != null){
+            pair[1].deleteMatch(this);
+        }
     }
     /*
      * Stores the match in both users' records
@@ -177,8 +181,7 @@ public abstract class PersonMatch extends Match{
      */
     public void updateUserDecision(User u, char c){
         if (c == 'R'){
-            pair[0].deleteMatch(this);
-            pair[1].deleteMatch(this);
+            deleteMatch();
         }else{
             if (u == pair[0]){
                 status[0]=c;

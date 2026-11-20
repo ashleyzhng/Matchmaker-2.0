@@ -106,7 +106,7 @@ public class DistanceMatch extends PersonMatch{
         }
         int count = 0;
         boolean exit = false;
-        for (int i = 0; i < 6 && !exit; i ++){
+        for (int i = 0; i < 6 && i < ps1.length() && i < ps2.length() && !exit; i ++){
             if (ps1.charAt(i) == ps2.charAt(i)){
                 count ++;
             }else{

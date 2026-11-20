@@ -51,6 +51,9 @@ public abstract class EventMatch extends Match{
         end = LocalTime.parse(en);
         date = LocalDate.parse(d);
         event = eve; 
+        if (eve != null){
+            eventTitle = eve.getTitle();
+        }
     }
 
     //---accessors and mutators---

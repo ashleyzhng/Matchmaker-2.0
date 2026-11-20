@@ -32,6 +32,8 @@ public class SingleEventMatch extends EventMatch{
         pair[0] = u;
         status[0]= 'P';
         status[1]= 'P';
+        rating[0] = -1;
+        rating[1] = -1;
     }
     /*
     Constructs a SingleEventMatch object given all attributes, used for reading in file for User
@@ -102,7 +104,9 @@ public class SingleEventMatch extends EventMatch{
                 
                 setEventTitle(event.getTitle());
                 storeMatch();
-                event.addUser(pair[0]);
+                if (pair[1] != null){
+                    event.addUser(pair[0]);
+                }
             }
         }
         
@@ -182,8 +186,12 @@ public class SingleEventMatch extends EventMatch{
     public void completed(){
         status[0] = 'C';
         status[1] = 'C';
-        pair[0].deleteMatch(this);
-        pair[1].deleteMatch(this);
+        if (pair[0] != null){
+            pair[0].deleteMatch(this);
+        }
+        if (pair[1] != null){
+            pair[1].deleteMatch(this);
+        }
     }
     public boolean isCompleted(){
         return status[0]=='C' && status[1]=='C';
@@ -199,17 +207,34 @@ public class SingleEventMatch extends EventMatch{
         if (u == pair[0]) {
             status[0] = x;
             if (x == 'R'){
+                pair[0].deleteMatch(this);
+                removeFromEvent(pair[0]);
                 pair[0] = null;
-                getEvent().setCurrentUser1(null);
             }
         } else if (u == pair[1]) {
             status[1] = x;
             if (x == 'R'){
+                pair[1].deleteMatch(this);
+                removeFromEvent(pair[1]);
                 pair[1] = null;
-                getEvent().setCurrentUser2(null);
             }   
         }
     }
+    /*
+     * Frees the seat the given user has in this match's event
+     * Parameters: u - the user leaving the event
+     * Returns: None
+     */
+    private void removeFromEvent(User u){
+        if (getEvent() != null){
+            if (getEvent().getCurrentUser1() == u){
+                getEvent().setCurrentUser1(null);
+            }else if (getEvent().getCurrentUser2() == u){
+                getEvent().setCurrentUser2(null);
+            }
+        }
+    }
+
     /*
      * Checks if the match has been accepted
      * Parameters: none
@@ -240,8 +265,12 @@ public class SingleEventMatch extends EventMatch{
      * Returns: none
      */
     public void deleteMatch(EventDatabase sys){
-        pair[0].deleteMatch(this);
-        pair[1].deleteMatch(this);
+        if (pair[0] != null){
+            pair[0].deleteMatch(this);
+        }
+        if (pair[1] != null){
+            pair[1].deleteMatch(this);
+        }
         sys.removeApprovedEvent(getEvent());
     }
 
@@ -318,8 +347,11 @@ public class SingleEventMatch extends EventMatch{
      */
     @Override
     public boolean checkAgeCompatibility(User u){
-        if (u instanceof Teen){
-            return true;
+        if (u instanceof Teen || pair[0] instanceof Teen){
+            return u instanceof Teen && pair[0] instanceof Teen;
+        }
+        if (!(u instanceof Adult && pair[0] instanceof Adult) && !(u instanceof Senior && pair[0] instanceof Senior)){
+            return false;
         }
         if (u.getBirthday() == null){
             return false;

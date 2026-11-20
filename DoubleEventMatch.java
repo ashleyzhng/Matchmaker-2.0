@@ -33,6 +33,10 @@ public class DoubleEventMatch extends EventMatch {
         status[1] = 'P'; 
         status[2] = 'P';
         status[3] = 'P'; 
+        rating[0] = -1;
+        rating[1] = -1;
+        rating[2] = -1;
+        rating[3] = -1;
     }
 
     /*
@@ -113,10 +117,10 @@ public class DoubleEventMatch extends EventMatch {
         status[1]='C';
         status[2]='C';
         status[3]='C';
-        pair1[0].deleteMatch(this);
-        pair1[1].deleteMatch(this);
-        pair2[0].deleteMatch(this);
-        pair2[1].deleteMatch(this);
+        if (pair1[0] != null) pair1[0].deleteMatch(this);
+        if (pair1[1] != null) pair1[1].deleteMatch(this);
+        if (pair2[0] != null) pair2[0].deleteMatch(this);
+        if (pair2[1] != null) pair2[1].deleteMatch(this);
     }
     public boolean isCompleted(){
         return status[0] =='C' && status[1] == 'C' && status[2] == 'C' && status[3] == 'C';
@@ -150,18 +154,17 @@ public class DoubleEventMatch extends EventMatch {
                  sortIncomingUsers(event.getCurrentUser1(), event.getCurrentUser2(), ((Indoor)event).getUser3());
                  setEventTitle(event.getTitle());
                  
-                 if (pair1[1] != null) {
+                 if (pair1[1] != null && pair1[1].getEventMatch(getEvent().getTitle()) instanceof DoubleEventMatch) {
                      status[1] = ((DoubleEventMatch)(pair1[1].getEventMatch(getEvent().getTitle()))).getStatus(pair1[1]);
                  }
-                 if (pair2[0] != null) {
+                 if (pair2[0] != null && pair2[0].getEventMatch(getEvent().getTitle()) instanceof DoubleEventMatch) {
                      status[2] = ((DoubleEventMatch)(pair2[0].getEventMatch(getEvent().getTitle()))).getStatus(pair2[0]);
                  }
-                 if (pair2[1] != null) {
+                 if (pair2[1] != null && pair2[1].getEventMatch(getEvent().getTitle()) instanceof DoubleEventMatch) {
                      status[3] = ((DoubleEventMatch)(pair2[1].getEventMatch(getEvent().getTitle()))).getStatus(pair2[1]);
                  }
 
                  storeMatch();
-                 event.addUser(pair1[0]); 
              }
          }
      }
@@ -338,37 +341,49 @@ public class DoubleEventMatch extends EventMatch {
             status[0] = x;
             if (x == 'R'){
                 deleteMatch(pair1[0]);
+                removeFromEvent(pair1[0]);
                 pair1[0] = null;
-                if (getEvent() != null){
-                    getEvent().setCurrentUser1(null);
-                }
             }
         } else if (u == pair1[1]) {
             status[1] = x;
             if (x == 'R'){
                 deleteMatch(pair1[1]);
+                removeFromEvent(pair1[1]);
                 pair1[1] = null;
-                if (getEvent() != null){
-                    getEvent().setCurrentUser2(null);
-                }
             }
         } else if (u == pair2[0]) {
             status[2] = x;
             if (x == 'R'){
                 deleteMatch(pair2[0]);
+                removeFromEvent(pair2[0]);
                 pair2[0] = null;
-                if (getEvent() != null){
-                    ((Indoor)getEvent()).setUser3(null);
-                }
             }
         } else if (u == pair2[1]) {
             status[3] = x;
             if (x == 'R'){
                 deleteMatch(pair2[1]);
+                removeFromEvent(pair2[1]);
                 pair2[1] = null;
-                if (getEvent() != null){
-                    ((Indoor)getEvent()).setUser4(null);
-                }
+            }
+        }
+    }
+
+    /*
+     * Frees the seat the given user has in this match's event
+     * Parameters: u - the user leaving the event
+     * Returns: None
+     */
+    private void removeFromEvent(User u) {
+        if (getEvent() != null) {
+            Indoor indoor = (Indoor)getEvent();
+            if (indoor.getCurrentUser1() == u) {
+                indoor.setCurrentUser1(null);
+            } else if (indoor.getCurrentUser2() == u) {
+                indoor.setCurrentUser2(null);
+            } else if (indoor.getUser3() == u) {
+                indoor.setUser3(null);
+            } else if (indoor.getUser4() == u) {
+                indoor.setUser4(null);
             }
         }
     }
